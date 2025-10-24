@@ -1,4 +1,12 @@
-npm install @supabase/supabase-js
-motion
-node 
-zod
+npm install @supabase/supabase-js @types/react @types/react-dom @vitejs/plugin-react autoprefixer eslint eslint-plugin-react-hooks eslint-plugin-react-refresh lucide-react postcss react react-dom react-router-dom recharts sonner tailwindcss typescript vite zod
+npm install @radix-ui/react-navigation-menu @radix-ui/react-slot class-variance-authority clsx tailwind-merge
+
+cd server
+npm install cors express
+cd ..
+
+npm install
+
+cd server
+npm install
+cd ..
