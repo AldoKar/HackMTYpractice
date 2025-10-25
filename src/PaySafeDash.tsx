@@ -2,7 +2,18 @@ import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts"
+<<<<<<< Updated upstream
 import { Activity, Thermometer, AlertTriangle, Clock, Calendar, Gauge, MapPin, Navigation } from "lucide-react"
+=======
+import { Activity, Thermometer, AlertTriangle, Clock, Calendar, Gauge, MapPin } from "lucide-react"
+
+interface SensorData {
+    lat: number | null
+    lng: number | null
+    at: number
+    T: number
+}
+>>>>>>> Stashed changes
 
 interface HistoryItem {
     t: string
@@ -18,7 +29,7 @@ interface CardProps {
 }
 
 export default function PaySafeDashboard() {
-    const [dato, setDato] = useState({ lat: 0, lng: 0, at: 0, T: 0 })
+    const [dato, setDato] = useState<SensorData>({ lat: null, lng: null, at: 0, T: 0 })
     const [connected, setConnected] = useState(false)
     const [history, setHistory] = useState<HistoryItem[]>([])
     const [suddenMovements, setSuddenMovements] = useState(0)
@@ -34,12 +45,17 @@ export default function PaySafeDashboard() {
         mounted.current = true
 
         function applyPayload(json: any) {
-            const accel =
-                Number(json.at ?? json.accelTotal ?? json.raw?.at ?? json.raw?.accelTotal ?? 0) || 0
-            const temp =
-                Number(json.T ?? json.temp ?? json.raw?.T ?? json.raw?.temp ?? 0) || 0
-            const lat = Number(json.lat ?? json.raw?.lat ?? 0) || 0
-            const lng = Number(json.lng ?? json.raw?.lng ?? 0) || 0
+            console.log('Datos recibidos del servidor:', json); // Para debugging
+            
+            const accel = Number(json.at ?? json.accelTotal ?? json.raw?.at ?? json.raw?.accelTotal ?? 0) || 0
+            const temp = Number(json.T ?? json.temp ?? json.raw?.T ?? json.raw?.temp ?? 0) || 0
+            
+            // Procesar coordenadas GPS
+            const lat = json.lat != null ? Number(json.lat) : (json.raw?.lat != null ? Number(json.raw.lat) : null)
+            const lng = json.lng != null ? Number(json.lng) : (json.raw?.lng != null ? Number(json.raw.lng) : null)
+            
+            console.log('Valores procesados:', { accel, temp, lat, lng }); // Para debugging
+            
             const lastUpdate = Number(json.lastUpdate ?? json.raw?.lastUpdate ?? Date.now())
 
             // update main values
@@ -199,7 +215,11 @@ export default function PaySafeDashboard() {
                             </p>
                         </div>
 
+<<<<<<< Updated upstream
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+=======
+                        <div className="grid grid-cols-2 gap-8 mb-8">
+>>>>>>> Stashed changes
                             <MetricCard 
                                 title="Aceleración Total" 
                                 value={dato.at.toFixed(3)} 
@@ -213,6 +233,23 @@ export default function PaySafeDashboard() {
                                 unit="°C"
                                 icon={Thermometer}
                                 iconBg="bg-gray-700"
+                            />
+                        </div>
+                        
+                        <div className="grid grid-cols-3 gap-8">
+                            <MetricCard 
+                                title="Latitud" 
+                                value={dato.lat ? dato.lat.toFixed(6) : "N/A"} 
+                                unit="°"
+                                icon={MapPin}
+                                iconBg="bg-blue-600"
+                            />
+                            <MetricCard 
+                                title="Longitud" 
+                                value={dato.lng ? dato.lng.toFixed(6) : "N/A"} 
+                                unit="°"
+                                icon={MapPin}
+                                iconBg="bg-green-600"
                             />
                             <MetricCard 
                                 title="Movimientos Bruscos" 
