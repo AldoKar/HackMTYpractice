@@ -9,7 +9,11 @@ import BeneficiosPage from './BeneficiosPage.tsx';
 import MapPage from './MapPage.tsx';
 import { ChatBot } from './components/ChatBot.tsx';
 import PaySafeDashboard from './PaySafeDash.tsx';
+<<<<<<< HEAD
 import MapPageBanorte from './MapPageBanorte.tsx';
+=======
+import AdminPage from './AdminPage.tsx';
+>>>>>>> 4fcba25b452c6fc3ae3400b4dd6c35e80557d466
 
 function App() {
 
@@ -29,7 +33,11 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/beneficios" element={<BeneficiosPage />} />
         <Route path="/mapa" element={<MapPage />} />
+<<<<<<< HEAD
         <Route path="/mapabanorte" element={<MapPageBanorte />} />
+=======
+        <Route path="/adminpage" element={<AdminPage />} />
+>>>>>>> 4fcba25b452c6fc3ae3400b4dd6c35e80557d466
       </Routes>
     </>
 

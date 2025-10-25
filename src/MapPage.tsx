@@ -140,7 +140,7 @@ function MapPage() {
                         </div>
 
                         {/* Mapa */}
-                        <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-700">
+                        <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-700 z-0">
                             <MapContainer
                                 center={[25.6866, -100.3161]} // Monterrey, México
                                 zoom={13}
@@ -155,7 +155,7 @@ function MapPage() {
                             </MapContainer>
 
                             {/* Leyenda sobre el mapa */}
-                            <div className="absolute top-4 right-4 z-1000 bg-gray-800/95 backdrop-blur p-4 rounded-lg border border-gray-700">
+                            <div className="absolute top-4 right-4 z-10 bg-gray-800/95 backdrop-blur p-4 rounded-lg border border-gray-700">
                                 <h3 className="text-white font-semibold mb-3 text-sm">Eventos</h3>
                                 <div className="space-y-2 text-xs">
                                     <div className="flex items-center gap-2">
@@ -587,7 +587,7 @@ function MapPage() {
                                 </p>
                             </CardHeader>
                             <CardContent>
-                                <div className="relative rounded-xl overflow-hidden">
+                                <div className="relative rounded-xl overflow-hidden z-0">
                                     <MapContainer
                                         center={[25.6866, -100.3161]}
                                         zoom={12}
@@ -646,7 +646,7 @@ function MapPage() {
                                     </MapContainer>
 
                                     {/* Leyenda de riesgo */}
-                                    <div className="absolute bottom-4 right-4 z-1000 bg-gray-800/95 backdrop-blur p-4 rounded-lg border border-gray-700">
+                                    <div className="absolute bottom-4 right-4 z-10 bg-gray-800/95 backdrop-blur p-4 rounded-lg border border-gray-700">
                                         <h3 className="text-white font-semibold mb-3 text-sm">Nivel de Riesgo</h3>
                                         <div className="space-y-2 text-xs">
                                             <div className="flex items-center gap-2">

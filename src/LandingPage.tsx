@@ -86,22 +86,6 @@ export default function LandingPage() {
                             Comprar Dispositivo
                         </Button>
                     </div>
-
-                    {/* Stats */}
-                    <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
-                        <div className="text-center">
-                            <p className="text-3xl font-bold text-white">$250+</p>
-                            <p className="text-sm text-gray-400 mt-1">Ahorro promedio/mes</p>
-                        </div>
-                        <div className="text-center">
-                            <p className="text-3xl font-bold text-white">98%</p>
-                            <p className="text-sm text-gray-400 mt-1">Satisfacción usuarios</p>
-                        </div>
-                        <div className="text-center">
-                            <p className="text-3xl font-bold text-white">50k+</p>
-                            <p className="text-sm text-gray-400 mt-1">Conductores activos</p>
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -403,61 +387,15 @@ export default function LandingPage() {
             {/* Footer */}
             <footer className="bg-gray-900 text-white py-12">
                 <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-4 gap-8 mb-8">
-                        <div>
-                            <h3 className="text-xl font-bold mb-4">Pay$afe</h3>
-                            <p className="text-gray-400 text-sm">
-                                La manera inteligente de convertir tu seguridad al volante en recompensas reales.
-                            </p>
-                        </div>
-
-                        <div>
-                            <h4 className="font-semibold mb-4">Producto</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-white transition-colors">Cómo funciona</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Dispositivo</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Beneficios</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Precios</a></li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h4 className="font-semibold mb-4">Soporte</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-white transition-colors">Centro de ayuda</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Instalación</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Contacto</a></li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h4 className="font-semibold mb-4">Legal</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-white transition-colors">Privacidad</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Términos</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Cookies</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Licencias</a></li>
-                            </ul>
-                        </div>
+                    <div className="text-center mb-8">
+                        <h3 className="text-xl font-bold mb-4">Pay$afe</h3>
+                        <p className="text-gray-400 text-sm max-w-2xl mx-auto">
+                            La manera inteligente de convertir tu seguridad al volante en recompensas reales.
+                        </p>
                     </div>
 
-                    <div className="border-t border-gray-800 pt-8 flex justify-between items-center">
+                    <div className="border-t border-gray-800 pt-8 text-center">
                         <p className="text-gray-400 text-sm">© 2025 Pay$afe. Todos los derechos reservados.</p>
-                        <div className="flex gap-6">
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                                <span className="sr-only">Twitter</span>
-                                Twitter
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                                <span className="sr-only">Facebook</span>
-                                Facebook
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                                <span className="sr-only">Instagram</span>
-                                Instagram
-                            </a>
-                        </div>
                     </div>
                 </div>
             </footer>
