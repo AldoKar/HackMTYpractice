@@ -34,9 +34,9 @@ export function ChatBot() {
         startY: 0
     })
 
-    // Inicializar Gemini
+    // Inicializar Gemini con el modelo 2.5 Flash (rápido y eficiente)
     const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEIMINI_API_KEY || '')
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
     // Auto-scroll al final de los mensajes
     useEffect(() => {
@@ -84,31 +84,28 @@ export function ChatBot() {
         setIsLoading(true)
 
         try {
-            // Construir el historial con el prompt del sistema incluido
-            const chatHistory = [
-                {
-                    role: 'user',
-                    parts: [{ text: SYSTEM_PROMPT }]
-                },
-                {
-                    role: 'model',
-                    parts: [{ text: 'Entendido. Actuaré como asistente virtual de Pay$afe siguiendo todas las instrucciones proporcionadas. Estoy listo para ayudar a los usuarios.' }]
-                },
-                ...messages.slice(0, -1).map(msg => ({
+            // Construir el historial de conversación (excluyendo el mensaje que acabamos de agregar)
+            const conversationHistory = messages
+                .filter(msg => msg.content !== WELCOME_MESSAGE) // Excluir mensaje de bienvenida
+                .map(msg => ({
                     role: msg.role === 'user' ? 'user' : 'model',
                     parts: [{ text: msg.content }]
                 }))
-            ]
+
+            // Agregar el prompt del sistema al inicio del mensaje del usuario solo en el primer mensaje
+            const messageToSend = conversationHistory.length === 0 
+                ? `${SYSTEM_PROMPT}\n\nUsuario: ${currentInput}` 
+                : currentInput
 
             const chat = model.startChat({
-                history: chatHistory,
+                history: conversationHistory,
                 generationConfig: {
                     maxOutputTokens: 1000,
                     temperature: 0.7,
                 }
             })
 
-            const result = await chat.sendMessage(currentInput)
+            const result = await chat.sendMessage(messageToSend)
             const response = await result.response
             const text = response.text()
 
@@ -119,11 +116,12 @@ export function ChatBot() {
             }
 
             setMessages(prev => [...prev, assistantMessage])
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error al enviar mensaje:', error)
+            console.error('Detalles:', error?.message || 'Sin detalles')
             const errorMessage: Message = {
                 role: 'assistant',
-                content: 'Lo siento, hubo un error al procesar tu mensaje. Por favor, intenta de nuevo.',
+                content: `Error: ${error?.message || 'No se pudo procesar el mensaje'}. Intenta de nuevo.`,
                 timestamp: new Date()
             }
             setMessages(prev => [...prev, errorMessage])
