@@ -92,6 +92,7 @@ export function NavigationMenuDemo() {
                     <div className="flex-1">
                         <NavigationMenu className="w-full">
                             <NavigationMenuList className="flex items-center gap-2">
+
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger>Home</NavigationMenuTrigger>
                                     <NavigationMenuContent>
@@ -165,23 +166,23 @@ export function NavigationMenuDemo() {
                                 </NavigationMenuItem>
 
                                 <NavigationMenuItem>
-                                    <NavigationMenuTrigger>Simulador</NavigationMenuTrigger>
+                                    <NavigationMenuTrigger>Pay$afe</NavigationMenuTrigger>
                                     <NavigationMenuContent>
                                         <ul className="grid w-[300px] gap-4">
                                             <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link href="#">
-                                                        <div className="font-medium">Simulador de SafeCoins</div>
+                                                    <Link href="/mapa">
+                                                        <div className="font-medium">Administra tu Pay$afe</div>
                                                         <div className="text-muted-foreground">
-                                                            Simula tus transacciones con SafeCoins.
+                                                            Configura y gestiona tu Pay$afe.
                                                         </div>
                                                     </Link>
                                                 </NavigationMenuLink>
                                                 <NavigationMenuLink asChild>
-                                                    <Link href="#">
-                                                        <div className="font-medium">Simulador del componente</div>
+                                                    <Link href="/mapa">
+                                                        <div className="font-medium">Historial de Pay$afe</div>
                                                         <div className="text-muted-foreground">
-                                                            Simula el comportamiento del componente y el como te ayuda.
+                                                            Visualiza tu historial de transacciones de Pay$afe.
                                                         </div>
                                                     </Link>
                                                 </NavigationMenuLink>
@@ -200,8 +201,8 @@ export function NavigationMenuDemo() {
                         </Badge>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </div >
+        </nav >
     )
 }
 

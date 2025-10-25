@@ -4,7 +4,7 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 
-// ✅ Permitir CORS desde tu frontend (puerto 5173) y cualquier origen para el ESP32
+// Para mandar datos al frontend desde otro origen (CORS)
 app.use(cors({
     origin: ["http://localhost:5173", "*"],  // "*" permite cualquier origen, pero para producción limita
     methods: ["GET", "POST"],
@@ -12,7 +12,7 @@ app.use(cors({
 }));
 
 // Datos globales del acelerómetro
-let ultimoDato = { ax: 0, ay: 0, az: 0, lat: 0, lng: 0, lastUpdate: 0 };
+let ultimoDato = { ax: 0, ay: 0, az: 0, lat: 0, lng: 0, at: 0, T: 0, lastUpdate: 0 };
 
 // Endpoint para recibir datos del ESP32 (cambiado a /datos para coincidir con ESP32)
 app.post("/datos", (req, res) => {

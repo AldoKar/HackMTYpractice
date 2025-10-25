@@ -22,7 +22,7 @@ interface CardProps {
 }
 
 export default function MPU6050Dashboard() {
-    const [dato, setDato] = useState({ ax: 0, ay: 0, az: 0, lat: 0, lng: 0 });
+    const [dato, setDato] = useState({ ax: 0, ay: 0, az: 0, lat: 0, lng: 0, at: 0, T: 0 });
     const [connected, setConnected] = useState(false);
     const [history, setHistory] = useState<HistoryItem[]>([]);
     const [suddenMovements, setSuddenMovements] = useState(0);
@@ -44,8 +44,10 @@ export default function MPU6050Dashboard() {
                 const lat = Number(json.lat) || 0;
                 const lng = Number(json.lng) || 0;
                 const lastUpdate = Number(json.lastUpdate) || 0;
+                const at = Number(json.at) || 0;
+                const T = Number(json.T) || 0;
 
-                setDato({ ax, ay, az, lat, lng });
+                setDato({ ax, ay, az, lat, lng, at, T });
                 // Considera conectado si el último update fue hace menos de 5 segundos
                 setConnected(Date.now() - lastUpdate < 5000);
 
@@ -91,6 +93,8 @@ export default function MPU6050Dashboard() {
                 <AccelCard title="Acc X" value={dato.ax} unit="g" />
                 <AccelCard title="Acc Y" value={dato.ay} unit="g" />
                 <AccelCard title="Acc Z" value={dato.az} unit="g" />
+                <AccelCard title="Acc AT" value={dato.at} unit="g" />
+                <AccelCard title="Temp" value={dato.T} unit="g" />
             </section>
 
             <section className="grid grid-cols-3 gap-4 mb-6">
