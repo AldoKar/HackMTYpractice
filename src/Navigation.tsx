@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Badge } from "@/components/ui/badge"
 import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 type NextLikeLinkProps = React.ComponentPropsWithoutRef<"a"> & { href: string }
 const Link = React.forwardRef<HTMLAnchorElement, NextLikeLinkProps>(
@@ -66,6 +67,19 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function NavigationMenuDemo() {
     const safeCoins = 34 // temporal, reemplazar por contexto/backend si hace falta
+    const navigate = useNavigate()
+
+    const handleEstadisticasClick = (e: React.MouseEvent) => {
+        e.preventDefault()
+        navigate('/mapa')
+        // Pequeño delay para asegurar que la página se cargue antes de hacer scroll
+        setTimeout(() => {
+            const element = document.getElementById('grafica')
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+        }, 100)
+    }
 
     return (
         <nav className="w-full bg-background border-b">
@@ -133,9 +147,17 @@ export function NavigationMenuDemo() {
                                             <li>
                                                 <NavigationMenuLink asChild>
                                                     <Link href="/mapa">
-                                                        <div className="font-medium">Components</div>
+                                                        <div className="font-medium">Mapa Interactivo</div>
                                                         <div className="text-muted-foreground">
-                                                            Browse all components in the library.
+                                                            Visualiza tus rutas y eventos de conducción en tiempo real.
+                                                        </div>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                                <NavigationMenuLink asChild>
+                                                    <Link href="/mapa#grafica" onClick={handleEstadisticasClick}>
+                                                        <div className="font-medium">Estadísticas</div>
+                                                        <div className="text-muted-foreground">
+                                                            Consulta tu rendimiento semanal y gráficas de progreso.
                                                         </div>
                                                     </Link>
                                                 </NavigationMenuLink>

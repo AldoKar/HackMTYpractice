@@ -16,12 +16,12 @@ export default function LandingPage() {
                 <div className="max-w-4xl mx-auto text-center">
                     <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
                         <Award className="w-4 h-4" />
-                        Conduce Seguro, Gana Recompensas
+                        Tu manejo seguro vale mas
                     </div>
 
                     <h1 className="text-7xl font-bold text-white mb-6">
                         <TextType
-                            text="PaySafe"
+                            text="Pay$afe"
                             typingSpeed={175}
                             pauseDuration={1500}
                             showCursor={false}
@@ -33,7 +33,7 @@ export default function LandingPage() {
                     </p>
 
                     <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
-                        Transforma tu forma de conducir en ingresos reales. PaySafe monitorea tu comportamiento al volante
+                        Transforma tu forma de conducir en ingresos reales. Pay$afe monitorea tu comportamiento al volante
                         y te recompensa con <span className="font-semibold text-red-600">SafeCoins</span> que puedes canjear por dinero,
                         descuentos en gasolina, seguros más baratos y beneficios exclusivos de Banorte.
                     </p>
@@ -45,8 +45,8 @@ export default function LandingPage() {
                                 <ChevronRight className="ml-2 w-5 h-5" />
                             </Button>
                         </Link>
-                        <Button size="lg" variant="outline" className="text-lg px-8 py-6">
-                            Ver Demo
+                        <Button size="lg" className="text-lg px-10 py-6 bg-gray-800 text-white hover:bg-gray-700 border-2 border-white font-semibold">
+                            Comprar Dispositivo
                         </Button>
                     </div>
 
@@ -68,13 +68,13 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* Introducción - Qué es PaySafe */}
+            {/* Introducción - Qué es Pay$afe */}
             <section className="bg-gray-800 py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-4xl mx-auto">
                         <div className="text-center mb-12">
                             <h2 className="text-4xl font-bold text-white mb-4">
-                                ¿Qué es PaySafe?
+                                ¿Qué es Pay$afe?
                             </h2>
                             <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
                         </div>
@@ -82,7 +82,7 @@ export default function LandingPage() {
                         <div className="grid grid-cols-2 gap-12 items-center">
                             <div>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                    PaySafe es un <span className="font-semibold text-red-600">dispositivo inteligente MPU6050</span> que
+                                    Pay$afe es un <span className="font-semibold text-red-600">dispositivo inteligente MPU6050</span> que
                                     se conecta fácilmente a tu vehículo y analiza tu forma de conducir en tiempo real.
                                 </p>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
@@ -331,7 +331,7 @@ export default function LandingPage() {
                         Únete a miles de conductores que ya están convirtiendo su seguridad en recompensas reales.
                     </p>
                     <p className="text-lg mb-10 max-w-xl mx-auto opacity-80">
-                        Instala PaySafe hoy y comienza a acumular SafeCoins desde tu primer viaje.
+                        Instala Pay$afe hoy y comienza a acumular SafeCoins desde tu primer viaje.
                     </p>
 
                     <div className="flex gap-4 justify-center items-center">
@@ -368,7 +368,7 @@ export default function LandingPage() {
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-4 gap-8 mb-8">
                         <div>
-                            <h3 className="text-xl font-bold mb-4">PaySafe</h3>
+                            <h3 className="text-xl font-bold mb-4">Pay$afe</h3>
                             <p className="text-gray-400 text-sm">
                                 La manera inteligente de convertir tu seguridad al volante en recompensas reales.
                             </p>
@@ -406,7 +406,7 @@ export default function LandingPage() {
                     </div>
 
                     <div className="border-t border-gray-800 pt-8 flex justify-between items-center">
-                        <p className="text-gray-400 text-sm">© 2025 PaySafe. Todos los derechos reservados.</p>
+                        <p className="text-gray-400 text-sm">© 2025 Pay$afe. Todos los derechos reservados.</p>
                         <div className="flex gap-6">
                             <a href="#" className="text-gray-400 hover:text-white transition-colors">
                                 <span className="sr-only">Twitter</span>
