@@ -80,7 +80,7 @@ export function NavigationMenuDemo() {
     }
 
     return (
-        <nav className="w-full bg-background border-b">
+        <nav className="w-full bg-background border-b sticky top-0 z-100">
             <div className="max-w-6xl mx-auto px-4">
                 <div className="flex items-center gap-6 h-16">
                     <div className="flex items-center gap-4">
@@ -89,8 +89,8 @@ export function NavigationMenuDemo() {
                         </a>
                     </div>
 
-                    <div className="flex-1">
-                        <NavigationMenu className="w-full">
+                    <div className="flex-1 relative">
+                        <NavigationMenu viewport={false}>
                             <NavigationMenuList className="flex items-center gap-2">
 
                                 <NavigationMenuItem>
@@ -142,22 +142,31 @@ export function NavigationMenuDemo() {
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger>Mapa</NavigationMenuTrigger>
                                     <NavigationMenuContent>
-                                        <ul className="grid w-[300px] gap-4">
+                                        <ul className="grid w-[400px] gap-3 p-4">
                                             <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link href="/mapa">
-                                                        <div className="font-medium">Mapa Interactivo</div>
-                                                        <div className="text-muted-foreground">
+                                                    <Link 
+                                                        href="/mapa"
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none">Mapa Interactivo</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
                                                             Visualiza tus rutas y eventos de conducción en tiempo real.
-                                                        </div>
+                                                        </p>
                                                     </Link>
                                                 </NavigationMenuLink>
+                                            </li>
+                                            <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link href="/mapa#grafica" onClick={handleEstadisticasClick}>
-                                                        <div className="font-medium">Estadísticas</div>
-                                                        <div className="text-muted-foreground">
+                                                    <Link 
+                                                        href="/mapa#grafica" 
+                                                        onClick={handleEstadisticasClick}
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none">Estadísticas</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
                                                             Consulta tu rendimiento semanal y gráficas de progreso.
-                                                        </div>
+                                                        </p>
                                                     </Link>
                                                 </NavigationMenuLink>
                                             </li>
@@ -168,30 +177,43 @@ export function NavigationMenuDemo() {
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger>Pay$afe</NavigationMenuTrigger>
                                     <NavigationMenuContent>
-                                        <ul className="grid w-[300px] gap-4">
+                                        <ul className="grid w-[400px] gap-3 p-4">
                                             <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link href="/mapa">
-                                                        <div className="font-medium">Administra tu Pay$afe</div>
-                                                        <div className="text-muted-foreground">
+                                                    <Link 
+                                                        href="/mapa"
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none">Administra tu Pay$afe</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
                                                             Configura y gestiona tu Pay$afe.
-                                                        </div>
+                                                        </p>
                                                     </Link>
                                                 </NavigationMenuLink>
+                                            </li>
+                                            <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link href="/mapa">
-                                                        <div className="font-medium">Historial de Pay$afe</div>
-                                                        <div className="text-muted-foreground">
+                                                    <Link 
+                                                        href="/mapa"
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none">Historial de Pay$afe</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
                                                             Visualiza tu historial de transacciones de Pay$afe.
-                                                        </div>
+                                                        </p>
                                                     </Link>
                                                 </NavigationMenuLink>
+                                            </li>
+                                            <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link href="/paysafe">
-                                                        <div className="font-medium">Pruebas de Pay$afe</div>
-                                                        <div className="text-muted-foreground">
+                                                    <Link 
+                                                        href="/paysafe"
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none">Pruebas de Pay$afe</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
                                                             Visualiza tus pruebas de Pay$afe.
-                                                        </div>
+                                                        </p>
                                                     </Link>
                                                 </NavigationMenuLink>
                                             </li>
@@ -223,7 +245,10 @@ function ListItem({
     return (
         <li {...props}>
             <NavigationMenuLink asChild>
-                <Link href={href}>
+                <Link 
+                    href={href}
+                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                >
                     <div className="text-sm leading-none font-medium">{title}</div>
                     <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
                         {children}

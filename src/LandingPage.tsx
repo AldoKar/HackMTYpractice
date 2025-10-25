@@ -133,7 +133,7 @@ export default function LandingPage() {
                                 </p>
                             </div>
 
-                            <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-8 rounded-2xl">
+                            <div className="bg-linear-to-br from-gray-700 to-gray-800 p-8 rounded-2xl">
                                 <div className="space-y-6">
                                     <div className="flex items-start gap-4">
                                         <div className="bg-gray-600 text-white p-3 rounded-lg">
@@ -221,7 +221,7 @@ export default function LandingPage() {
             </section>
 
             {/* Visualización en Tiempo Real */}
-            <section className="bg-gradient-to-b from-gray-800 to-gray-700 py-20">
+            <section className="bg-linear-to-b from-gray-800 to-gray-700 py-20">
                 <div className="container mx-auto px-4">
                     <h2 className="text-4xl font-bold text-center text-white mb-4">
                         Tu Seguridad Visualizada
@@ -234,7 +234,7 @@ export default function LandingPage() {
 
                     <Card className="max-w-5xl mx-auto shadow-2xl">
                         <CardContent className="p-0">
-                            <div className="h-96 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative overflow-hidden">
+                            <div className="h-96 bg-linear-to-br from-gray-800 to-gray-900 flex items-center justify-center relative overflow-hidden">
                                 <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
                                 <div className="text-center z-10">
                                     <MapPin className="w-20 h-20 text-red-500/70 mx-auto mb-6 animate-pulse" />
@@ -261,7 +261,7 @@ export default function LandingPage() {
             </section>
 
             {/* Beneficios Exclusivos - ScrollStack */}
-            <section className="relative bg-gradient-to-b from-gray-900 to-gray-800">
+            <section className="relative bg-linear-to-b from-gray-900 to-gray-800">
                 <div className="sticky top-0 py-20 bg-gray-900/95 backdrop-blur-sm z-10">
                     <h2 className="text-4xl font-bold text-center text-white mb-4">
                         Beneficios Exclusivos
@@ -359,7 +359,7 @@ export default function LandingPage() {
             </section>
 
             {/* CTA Final */}
-            <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-20">
+            <section className="bg-linear-to-r from-red-600 to-red-700 text-white py-20">
                 <div className="container mx-auto px-4 text-center">
                     <h2 className="text-5xl font-bold mb-6">
                         ¿Listo para ganar mientras conduces?

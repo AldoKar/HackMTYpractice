@@ -30,6 +30,14 @@ Las gráficas te muestran:
 - Tendencias de mejora en tu conducción
 - Encuentras las gráficas en: Menú → Mapa → Estadísticas
 
+**Smart City Analytics (Nuevo):**
+Pay$afe contribuye al desarrollo de Smart Cities en Monterrey:
+- Análisis de rutas con IA (Gemini): Calcula el riesgo de una ruta basado en datos históricos
+- Mapa de zonas de riesgo: Visualiza dónde hay más conducción imprudente
+- Reportes para autoridades: Insights de planificación urbana y seguridad vial
+- Datos recopilados: frenadas bruscas, aceleraciones, giros por zona
+- Encuentra Smart City Analytics en: Menú → Mapa → Sección Smart City Analytics (al final de la página)
+
 **Beneficios Canjeables:**
 - Gasolina: 500 SafeCoins
 - Boletos de conciertos: 800 SafeCoins
