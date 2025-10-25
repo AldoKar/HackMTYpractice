@@ -225,23 +225,22 @@ export default function LandingPage() {
 
             {/* Beneficios Exclusivos - ScrollStack */}
             <section className="relative bg-white">
-                <div className="sticky top-0 py-20 bg-white z-50 shadow-sm">
+                <div className="sticky top-0 py-20 bg-white z-10">
                     <h2 className="text-4xl font-bold text-center text-gray-900 mb-4">
                         Beneficios Exclusivos
                     </h2>
                     <div className="w-20 h-1 bg-blue-600 mx-auto mb-8"></div>
                 </div>
                 
-                <div className="relative z-0">
-                    <ScrollStack 
-                        useWindowScroll={true}
-                        itemDistance={250}
-                        itemScale={0.05}
-                        itemStackDistance={8}
-                        stackPosition="30%"
-                        scaleEndPosition="25%"
-                        baseScale={0.92}
-                    >
+                <ScrollStack 
+                    useWindowScroll={true}
+                    itemDistance={150}
+                    itemScale={0.05}
+                    itemStackDistance={12}
+                    stackPosition="30%"
+                    scaleEndPosition="25%"
+                    baseScale={0.92}
+                >
                     <ScrollStackItem itemClassName="bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 max-w-5xl mx-auto opacity-100">
                         <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
                             <div className="w-20 h-20 bg-yellow-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
@@ -320,7 +319,6 @@ export default function LandingPage() {
                         </div>
                     </ScrollStackItem>
                 </ScrollStack>
-                </div>
             </section>
 
             {/* CTA Final */}
