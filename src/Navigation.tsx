@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { Badge } from "@/components/ui/badge"
+import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react"
 
 type NextLikeLinkProps = React.ComponentPropsWithoutRef<"a"> & { href: string }
 const Link = React.forwardRef<HTMLAnchorElement, NextLikeLinkProps>(
@@ -14,44 +16,6 @@ const Link = React.forwardRef<HTMLAnchorElement, NextLikeLinkProps>(
 )
 Link.displayName = "Link"
 
-const useIsMobile = (): boolean => {
-    const [isMobile, setIsMobile] = React.useState<boolean>(false)
-
-    React.useEffect(() => {
-        if (typeof window === "undefined") return
-
-        const mediaQuery = window.matchMedia("(max-width: 767px)")
-        const handleChange = (event: MediaQueryListEvent | MediaQueryList) => {
-            // MediaQueryListEvent for modern browsers, MediaQueryList for older ones when used directly
-            // @ts-ignore - unify types for runtime check
-            setIsMobile(event.matches ?? mediaQuery.matches)
-        }
-
-        // initialize state
-        setIsMobile(mediaQuery.matches)
-
-        // prefer addEventListener if available, fallback to addListener
-        if ("addEventListener" in mediaQuery) {
-            // modern API
-            // @ts-ignore
-            mediaQuery.addEventListener("change", handleChange)
-            return () => {
-                // @ts-ignore
-                mediaQuery.removeEventListener("change", handleChange)
-            }
-        } else {
-            // legacy API
-            // @ts-ignore
-            mediaQuery.addListener(handleChange)
-            return () => {
-                // @ts-ignore
-                mediaQuery.removeListener(handleChange)
-            }
-        }
-    }, [])
-
-    return isMobile
-}
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -59,6 +23,7 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
+    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 
 const components: { title: string; href: string; description: string }[] = [
@@ -100,188 +65,157 @@ const components: { title: string; href: string; description: string }[] = [
 ]
 
 export function NavigationMenuDemo() {
-    const isMobile = useIsMobile()
+    const safeCoins = 34 // temporal, reemplazar por contexto/backend si hace falta
 
     return (
-        <NavigationMenu viewport={isMobile} className="max-w-4xl mx-auto p-4 bg-background" >
-            <NavigationMenuList className="flex-wrap justify-start w-full">
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>Home</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                            <li className="row-span-3">
-                                <NavigationMenuLink asChild>
-                                    <a
-                                        className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-4 no-underline outline-hidden transition-all duration-200 select-none focus:shadow-md md:p-6"
-                                        href="/"
-                                    >
-                                        <div className="mb-2 text-lg font-medium sm:mt-4">
-                                            PaySafe
-                                        </div>
-                                        <p className="text-muted-foreground text-sm leading-tight">
-                                            Disfrute de ingresos pasivos mientras explora el potencial de PaySafe.
-                                        </p>
-                                    </a>
-                                </NavigationMenuLink>
-                            </li>
-                            <ListItem href="/" title="Introduccion">
-                                Conoce como funciona PaySafe y comienza a usarlo.
-                            </ListItem>
-                            <ListItem href="/" title="Proposito">
-                                Conoce el proposito detras de PaySafe y su impacto en la seguridad vial.
-                            </ListItem>
-                            <ListItem href="/" title="Funcionamiento">
-                                Conoce el funcionamiento de PaySafe y como nuestro dispositivo manda datos.
-                            </ListItem>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>Beneficios Banorte</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid gap-2 sm:w-[400px] md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                            {components.map((component) => (
-                                <ListItem
-                                    key={component.title}
-                                    title={component.title}
-                                    href={component.href}
-                                >
-                                    {component.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem className="hidden md:block">
-                    <NavigationMenuTrigger>Mapa y datos</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[300px] gap-4">
-                            <li>
-                                <NavigationMenuLink asChild>
-                                    <Link href="/mapa">
-                                        <div className="font-medium">Consulta tu mapa de rutas</div>
-                                        <div className="text-muted-foreground">
-                                            Mapa interactivo de rutas y datos de conducción.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                                <NavigationMenuLink asChild>
-                                    <Link href="/mapa">
-                                        <div className="font-medium">Consulta tu estado esta ultima semana</div>
-                                        <div className="text-muted-foreground">
-                                            Consulta tu estado de conducción y estadísticas.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                                <NavigationMenuLink asChild>
-                                    <Link href="/mapa">
-                                        <div className="font-medium">Reporte</div>
-                                        <div className="text-muted-foreground">
-                                            Consulta tus reportes de conducción.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                            </li>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
+        <nav className="w-full bg-background border-b">
+            <div className="max-w-6xl mx-auto px-4">
+                <div className="flex items-center gap-6 h-16">
+                    <div className="flex items-center gap-4">
+                        <a href="/" className="text-lg font-semibold">
+                            PaySafe
+                        </a>
+                    </div>
 
-                <NavigationMenuItem className="hidden md:block">
-                    <NavigationMenuTrigger>Leaderboard</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[300px] gap-4">
-                            <li>
-                                <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Racha</div>
-                                        <div className="text-muted-foreground">
-                                            Consulta tu racha actual y compite con otros usuarios.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                                <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Primeros lugares</div>
-                                        <div className="text-muted-foreground">
-                                            Consulta los primeros lugares de la competencia.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                                <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Insignias</div>
-                                        <div className="text-muted-foreground">
-                                            Consulta tus insignias y logros.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                            </li>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
+                    <div className="flex-1">
+                        <NavigationMenu className="w-full">
+                            <NavigationMenuList className="flex items-center gap-2">
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>Home</NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                                            <li className="row-span-3">
+                                                <NavigationMenuLink asChild>
+                                                    <Link
+                                                        href="/"
+                                                        className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-4 no-underline outline-hidden transition-all duration-200 select-none focus:shadow-md md:p-6"
+                                                    >
+                                                        <div className="mb-2 text-lg font-medium sm:mt-4">
+                                                            PaySafe
+                                                        </div>
+                                                        <p className="text-muted-foreground text-sm leading-tight">
+                                                            Disfrute de ingresos pasivos mientras explora el potencial de PaySafe.
+                                                        </p>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
 
-                <NavigationMenuItem className="hidden md:block">
-                    <NavigationMenuTrigger>Simulador</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[300px] gap-4">
-                            <li>
-                                <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Simulador de SafeCoins</div>
-                                        <div className="text-muted-foreground">
-                                            Simula tus transacciones con SafeCoins.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                                <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Simulador del componente</div>
-                                        <div className="text-muted-foreground">
-                                            Simula el comportamiento del componente y el como te ayuda.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
+                                            <ListItem href="/" title="Introduccion">
+                                                Conoce como funciona PaySafe y comienza a usarlo.
+                                            </ListItem>
+                                            <ListItem href="/" title="Proposito">
+                                                Conoce el proposito detras de PaySafe y su impacto en la seguridad vial.
+                                            </ListItem>
+                                            <ListItem href="/" title="Funcionamiento">
+                                                Conoce el funcionamiento de PaySafe y como nuestro dispositivo manda datos.
+                                            </ListItem>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
 
-                            </li>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>Beneficios Banorte</NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid gap-2 sm:w-[400px] md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                                            {components.map((component) => (
+                                                <ListItem key={component.title} title={component.title} href={component.href}>
+                                                    {component.description}
+                                                </ListItem>
+                                            ))}
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
 
-            </NavigationMenuList>
-            <NavigationMenuItem className="hidden md:block text-align-right">
-                <NavigationMenuTrigger>Tus Safecoins: 34</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                    <ul className="grid w-[300px] gap-4">
-                        <li>
-                            <NavigationMenuLink asChild>
-                                <Link href="#">
-                                    <div className="font-medium">Administra tus SafeCoins</div>
-                                    <div className="text-muted-foreground">
-                                        Administra tus SafeCoins de manera eficiente.
-                                    </div>
-                                </Link>
-                            </NavigationMenuLink>
-                            <NavigationMenuLink asChild>
-                                <Link href="#">
-                                    <div className="font-medium">Market</div>
-                                    <div className="text-muted-foreground">
-                                        Explora el mercado de SafeCoins.
-                                    </div>
-                                </Link>
-                            </NavigationMenuLink>
-                            <NavigationMenuLink asChild>
-                                <Link href="#">
-                                    <div className="font-medium">Score Banorte</div>
-                                    <div className="text-muted-foreground">
-                                        Consulta tu Score Banorte y mejora tus beneficios.
-                                    </div>
-                                </Link>
-                            </NavigationMenuLink>
-                        </li>
-                    </ul>
-                </NavigationMenuContent>
-            </NavigationMenuItem>
-        </NavigationMenu>
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>Mapa</NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[300px] gap-4">
+                                            <li>
+                                                <NavigationMenuLink asChild>
+                                                    <Link href="/mapa">
+                                                        <div className="font-medium">Components</div>
+                                                        <div className="text-muted-foreground">
+                                                            Browse all components in the library.
+                                                        </div>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>Leaderboard</NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[300px] gap-4">
+                                            <li>
+                                                <NavigationMenuLink asChild>
+                                                    <Link href="#">
+                                                        <div className="font-medium">Racha</div>
+                                                        <div className="text-muted-foreground">
+                                                            Consulta tu racha actual y compite con otros usuarios.
+                                                        </div>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                                <NavigationMenuLink asChild>
+                                                    <Link href="#">
+                                                        <div className="font-medium">Primeros lugares</div>
+                                                        <div className="text-muted-foreground">
+                                                            Consulta los primeros lugares de la competencia.
+                                                        </div>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                                <NavigationMenuLink asChild>
+                                                    <Link href="#">
+                                                        <div className="font-medium">Insignias</div>
+                                                        <div className="text-muted-foreground">
+                                                            Consulta tus insignias y logros.
+                                                        </div>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>Simulador</NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[300px] gap-4">
+                                            <li>
+                                                <NavigationMenuLink asChild>
+                                                    <Link href="#">
+                                                        <div className="font-medium">Simulador de SafeCoins</div>
+                                                        <div className="text-muted-foreground">
+                                                            Simula tus transacciones con SafeCoins.
+                                                        </div>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                                <NavigationMenuLink asChild>
+                                                    <Link href="#">
+                                                        <div className="font-medium">Simulador del componente</div>
+                                                        <div className="text-muted-foreground">
+                                                            Simula el comportamiento del componente y el como te ayuda.
+                                                        </div>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+
+                            </NavigationMenuList>
+                        </NavigationMenu>
+                    </div>
+
+                    <div className="ml-4 flex items-center">
+                        <Badge variant="secondary" className="text-sm font-semibold">
+                            SafeCoins: {safeCoins}
+                        </Badge>
+                    </div>
+                </div>
+            </div>
+        </nav>
     )
 }
 

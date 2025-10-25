@@ -1,5 +1,3 @@
-import React from 'react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts'
 import {
     ResizableHandle,
     ResizablePanel,
@@ -7,7 +5,7 @@ import {
 } from "@/components/ui/resizable"
 
 
-function MapPage() {
+export default function ResizableDemo() {
     return (
         <ResizablePanelGroup
             direction="horizontal"
@@ -37,6 +35,3 @@ function MapPage() {
         </ResizablePanelGroup>
     )
 }
-
-
-export default MapPage

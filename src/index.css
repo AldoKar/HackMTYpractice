@@ -10,6 +10,7 @@
   --color-banorte-gray-light: #d1d3d4;
 }
 
+
 @custom-variant dark (&:is(.dark *));
 
 @tailwind utilities;
