@@ -4,6 +4,7 @@ import { MapPin, Shield, DollarSign, Car, TrendingUp, Award, Gauge, Coins, Chevr
 import { Link } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import TextType from './TextType';
+import ScrollStack, { ScrollStackItem } from './ScrollStack';
 
 export default function LandingPage() {
     const { user } = useAuth();
@@ -24,7 +25,6 @@ export default function LandingPage() {
                             typingSpeed={175}
                             pauseDuration={1500}
                             showCursor={false}
-                            cursorCharacter="|"
                         />
                     </h1>
                     
@@ -223,86 +223,102 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* Beneficios */}
-            <section className="container mx-auto px-4 py-20">
-                <h2 className="text-4xl font-bold text-center text-gray-900 mb-4">
-                    Beneficios Exclusivos
-                </h2>
-                <div className="w-20 h-1 bg-blue-600 mx-auto mb-16"></div>
-                
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    <Card className="hover:shadow-xl transition-shadow">
-                        <CardHeader>
-                            <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-3">
-                                <Coins className="w-6 h-6 text-yellow-600" />
-                            </div>
-                            <CardTitle>Cupones de Gasolina</CardTitle>
-                            <CardDescription>
-                                Canjea tus SafeCoins por descuentos de hasta 20% en estaciones de servicio afiliadas
-                            </CardDescription>
-                        </CardHeader>
-                    </Card>
-                    
-                    <Card className="hover:shadow-xl transition-shadow">
-                        <CardHeader>
-                            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
-                                <Shield className="w-6 h-6 text-blue-600" />
-                            </div>
-                            <CardTitle>Seguro de Auto Económico</CardTitle>
-                            <CardDescription>
-                                Conductores seguros obtienen hasta 30% de descuento en pólizas de seguro automotriz
-                            </CardDescription>
-                        </CardHeader>
-                    </Card>
-                    
-                    <Card className="hover:shadow-xl transition-shadow">
-                        <CardHeader>
-                            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
-                                <Award className="w-6 h-6 text-purple-600" />
-                            </div>
-                            <CardTitle>Eventos Exclusivos</CardTitle>
-                            <CardDescription>
-                                Acceso preferencial a conciertos, cine y eventos deportivos mediante SafeCoins
-                            </CardDescription>
-                        </CardHeader>
-                    </Card>
-                    
-                    <Card className="hover:shadow-xl transition-shadow">
-                        <CardHeader>
-                            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-3">
-                                <TrendingUp className="w-6 h-6 text-green-600" />
-                            </div>
-                            <CardTitle>Créditos Banorte</CardTitle>
-                            <CardDescription>
-                                Mejora tu Score Banorte y accede a tasas preferenciales en créditos automotrices
-                            </CardDescription>
-                        </CardHeader>
-                    </Card>
-                    
-                    <Card className="hover:shadow-xl transition-shadow">
-                        <CardHeader>
-                            <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-3">
-                                <DollarSign className="w-6 h-6 text-indigo-600" />
-                            </div>
-                            <CardTitle>Fondos de Inversión</CardTitle>
-                            <CardDescription>
-                                Convierte tus SafeCoins en inversiones y haz crecer tu dinero automáticamente
-                            </CardDescription>
-                        </CardHeader>
-                    </Card>
-                    
-                    <Card className="hover:shadow-xl transition-shadow">
-                        <CardHeader>
-                            <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-3">
-                                <Gauge className="w-6 h-6 text-red-600" />
-                            </div>
-                            <CardTitle>Competencias y Ranking</CardTitle>
-                            <CardDescription>
-                                Compite con otros conductores y gana premios mensuales por tu ranking de seguridad
-                            </CardDescription>
-                        </CardHeader>
-                    </Card>
+            {/* Beneficios Exclusivos - ScrollStack */}
+            <section className="relative bg-white">
+                <div className="sticky top-0 py-20 bg-white z-10">
+                    <h2 className="text-4xl font-bold text-center text-gray-900 mb-4">
+                        Beneficios Exclusivos
+                    </h2>
+                    <div className="w-20 h-1 bg-blue-600 mx-auto mb-8"></div>
                 </div>
+                
+                <ScrollStack 
+                    useWindowScroll={true}
+                    itemDistance={150}
+                    itemScale={0.05}
+                    itemStackDistance={12}
+                    stackPosition="30%"
+                    scaleEndPosition="25%"
+                    baseScale={0.92}
+                >
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 max-w-5xl mx-auto opacity-100">
+                        <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+                            <div className="w-20 h-20 bg-yellow-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                                <Coins className="w-10 h-10 text-white" />
+                            </div>
+                            <h3 className="text-3xl font-bold text-gray-900 mb-4">Cupones de Gasolina</h3>
+                            <p className="text-lg text-gray-700 max-w-2xl">
+                                Canjea tus SafeCoins por descuentos de hasta <span className="font-bold text-yellow-600">20%</span> en estaciones de servicio afiliadas. 
+                                Cada vez que llenas tu tanque, recuperas parte de tu inversión en seguridad.
+                            </p>
+                        </div>
+                    </ScrollStackItem>
+                    
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 max-w-5xl mx-auto opacity-100">
+                        <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+                            <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                                <Shield className="w-10 h-10 text-white" />
+                            </div>
+                            <h3 className="text-3xl font-bold text-gray-900 mb-4">Seguro de Auto Económico</h3>
+                            <p className="text-lg text-gray-700 max-w-2xl">
+                                Los conductores seguros obtienen hasta <span className="font-bold text-blue-600">30% de descuento</span> en pólizas de seguro automotriz. 
+                                Tu historial de conducción responsable se traduce en ahorros reales.
+                            </p>
+                        </div>
+                    </ScrollStackItem>
+                    
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 max-w-5xl mx-auto opacity-100">
+                        <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+                            <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                                <Award className="w-10 h-10 text-white" />
+                            </div>
+                            <h3 className="text-3xl font-bold text-gray-900 mb-4">Eventos Exclusivos</h3>
+                            <p className="text-lg text-gray-700 max-w-2xl">
+                                Accede a conciertos, cine y eventos deportivos de manera preferencial. 
+                                Usa tus SafeCoins para experiencias inolvidables sin gastar dinero extra.
+                            </p>
+                        </div>
+                    </ScrollStackItem>
+                    
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 max-w-5xl mx-auto opacity-100">
+                        <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+                            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                                <TrendingUp className="w-10 h-10 text-white" />
+                            </div>
+                            <h3 className="text-3xl font-bold text-gray-900 mb-4">Créditos Banorte</h3>
+                            <p className="text-lg text-gray-700 max-w-2xl">
+                                Mejora tu Score Banorte automáticamente y accede a tasas preferenciales en créditos automotrices. 
+                                Conducir bien mejora tu perfil crediticio.
+                            </p>
+                        </div>
+                    </ScrollStackItem>
+                    
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-indigo-50 to-indigo-100 border-2 border-indigo-200 max-w-5xl mx-auto opacity-100">
+                        <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+                            <div className="w-20 h-20 bg-indigo-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                                <DollarSign className="w-10 h-10 text-white" />
+                            </div>
+                            <h3 className="text-3xl font-bold text-gray-900 mb-4">Fondos de Inversión</h3>
+                            <p className="text-lg text-gray-700 max-w-2xl">
+                                Convierte tus SafeCoins en inversiones y haz crecer tu dinero automáticamente. 
+                                Accede a fondos exclusivos con rendimientos garantizados de Banorte.
+                            </p>
+                        </div>
+                    </ScrollStackItem>
+                    
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 max-w-5xl mx-auto opacity-100">
+                        <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+                            <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                                <Gauge className="w-10 h-10 text-white" />
+                            </div>
+                            <h3 className="text-3xl font-bold text-gray-900 mb-4">Competencias y Ranking</h3>
+                            <p className="text-lg text-gray-700 max-w-2xl">
+                                Compite con otros conductores en el leaderboard nacional y gana premios mensuales. 
+                                Los mejores conductores reciben bonos adicionales de SafeCoins.
+                            </p>
+                        </div>
+                    </ScrollStackItem>
+                </ScrollStack>
             </section>
 
             {/* CTA Final */}
