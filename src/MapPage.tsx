@@ -1,7 +1,8 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { MapPin, Navigation, TrendingUp, AlertCircle, Award, Activity } from 'lucide-react';
+import { MapPin, Navigation, TrendingUp, AlertCircle, Award, Activity, BarChart3 } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -26,6 +27,17 @@ function MapPage() {
         { id: 1, type: 'safe', location: 'Av. Constitución', score: 95, coins: 15 },
         { id: 2, type: 'warning', location: 'Blvd. Morelos', score: 78, coins: 5 },
         { id: 3, type: 'safe', location: 'Calzada del Valle', score: 98, coins: 20 },
+    ];
+
+    // Datos para la gráfica
+    const chartData = [
+        { name: 'Lunes', score: 85, coins: 45 },
+        { name: 'Martes', score: 88, coins: 52 },
+        { name: 'Miércoles', score: 92, coins: 60 },
+        { name: 'Jueves', score: 87, coins: 48 },
+        { name: 'Viernes', score: 95, coins: 68 },
+        { name: 'Sábado', score: 90, coins: 55 },
+        { name: 'Domingo', score: 93, coins: 62 },
     ];
 
     return (
@@ -241,6 +253,76 @@ function MapPage() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Gráfica de Rendimiento Semanal */}
+            <section className="bg-gray-900 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-bold text-white mb-4">
+                                Rendimiento Semanal
+                            </h2>
+                            <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
+                            <p className="text-gray-300 max-w-2xl mx-auto">
+                                Observa la evolución de tu score de conducción y SafeCoins ganados durante la última semana.
+                            </p>
+                        </div>
+
+                        <Card className="bg-gray-800 border-gray-700">
+                            <CardHeader>
+                                <CardTitle className="text-white text-2xl">Últimos 7 días</CardTitle>
+                            </CardHeader>
+                            <CardContent className="pt-6">
+                                <div className="h-[400px]">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <LineChart data={chartData}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                            <XAxis 
+                                                dataKey="name" 
+                                                stroke="#9CA3AF"
+                                                style={{ fontSize: '14px' }}
+                                            />
+                                            <YAxis 
+                                                stroke="#9CA3AF"
+                                                style={{ fontSize: '14px' }}
+                                            />
+                                            <Tooltip 
+                                                contentStyle={{ 
+                                                    backgroundColor: '#1F2937', 
+                                                    border: '1px solid #374151',
+                                                    borderRadius: '8px',
+                                                    color: '#fff'
+                                                }}
+                                            />
+                                            <Legend 
+                                                wrapperStyle={{ color: '#fff' }}
+                                            />
+                                            <Line 
+                                                type="monotone" 
+                                                dataKey="score" 
+                                                stroke="#DC2626" 
+                                                strokeWidth={3}
+                                                name="Score de Conducción (%)"
+                                                dot={{ fill: '#DC2626', r: 5 }}
+                                                activeDot={{ r: 7 }}
+                                            />
+                                            <Line 
+                                                type="monotone" 
+                                                dataKey="coins" 
+                                                stroke="#FFFFFF" 
+                                                strokeWidth={3}
+                                                name="SafeCoins Ganados"
+                                                dot={{ fill: '#FFFFFF', r: 5 }}
+                                                activeDot={{ r: 7 }}
+                                            />
+                                        </LineChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </section>
