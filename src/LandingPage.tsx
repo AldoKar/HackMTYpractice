@@ -23,7 +23,7 @@ export default function LandingPage() {
                             text="PaySafe"
                             typingSpeed={175}
                             pauseDuration={1500}
-                            showCursor={true}
+                            showCursor={false}
                             cursorCharacter="|"
                         />
                     </h1>
