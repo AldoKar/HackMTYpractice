@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './LandingPage.tsx';
-import MPU6050Dashboard from './MPU6050Dash.tsx';
+import MPU6050Dashboard from './PaySafeDash.tsx';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -20,6 +20,7 @@ import { Toaster } from "@/components/ui/sonner";
 import BeneficiosPage from './BeneficiosPage.tsx';
 import MapPage from './MapPage.tsx';
 import { ChatBot } from './components/ChatBot.tsx';
+import PaySafeDashboard from './PaySafeDash.tsx';
 
 function App() {
 
@@ -34,7 +35,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/dashboard" element={<MPU6050Dashboard />} />
+        <Route path="/paysafe" element={<PaySafeDashboard />} />
         <Route path="/register" element={<SignupForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/beneficios" element={<BeneficiosPage />} />
