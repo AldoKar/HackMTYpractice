@@ -47,10 +47,25 @@ export function ChatBot() {
     useEffect(() => {
         if (!hasShownWelcome) {
             const timer = setTimeout(() => {
-                toast('¡Bienvenido a Pay$afe!', {
-                    description: 'Aquí estoy para ayudarte con cualquier duda o consulta.',
-                    duration: 5000,
-                })
+                toast(
+                    <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center shrink-0">
+                            <MessageCircle className="w-5 h-5 text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="font-semibold text-white text-base mb-1">¡Bienvenido a Pay$afe! 🚗✨</h3>
+                            <p className="text-gray-300 text-sm">Aquí estoy para ayudarte con cualquier duda o consulta. Haz clic en el botón rojo para chatear conmigo.</p>
+                        </div>
+                    </div>,
+                    {
+                        duration: 2500,
+                        style: {
+                            background: '#1F2937',
+                            border: '1px solid #374151',
+                            padding: '16px',
+                        }
+                    }
+                )
                 setHasShownWelcome(true)
             }, 1000)
             
@@ -319,23 +334,59 @@ export function ChatBot() {
 
                     {/* Mensajes */}
                     <div 
-                        className="overflow-y-scroll p-4 space-y-4 bg-gray-900 flex-1"
+                        className="overflow-y-scroll p-4 space-y-3 bg-gray-900 flex-1"
                         onMouseDown={(e) => e.stopPropagation()}
                     >
                         {messages.map((message, index) => (
                             <div
                                 key={index}
-                                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                                className={`flex items-end gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                             >
+                                {/* Avatar del bot */}
+                                {message.role === 'assistant' && (
+                                    <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center shrink-0 mb-1">
+                                        <MessageCircle className="w-4 h-4 text-white" />
+                                    </div>
+                                )}
+                                
+                                {/* Burbuja de mensaje */}
                                 <div
-                                    className={`max-w-[80%] rounded-lg p-3 ${
+                                    className={`relative max-w-[75%] rounded-2xl p-3 ${
                                         message.role === 'user'
-                                            ? 'bg-red-600 text-white'
-                                            : 'bg-gray-800 text-white border border-gray-700'
+                                            ? 'bg-red-600 text-white rounded-br-sm'
+                                            : 'bg-gray-800 text-white border border-gray-700 rounded-bl-sm'
                                     }`}
                                 >
-                                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                                    <p className="text-xs opacity-70 mt-1">
+                                    {/* Cola de la burbuja */}
+                                    <div 
+                                        className={`absolute bottom-0 ${
+                                            message.role === 'user' 
+                                                ? 'right-0 translate-x-0' 
+                                                : 'left-0 translate-x-0'
+                                        }`}
+                                        style={{
+                                            width: 0,
+                                            height: 0,
+                                            borderStyle: 'solid',
+                                            ...(message.role === 'user' 
+                                                ? {
+                                                    borderWidth: '0 0 10px 10px',
+                                                    borderColor: 'transparent transparent transparent #DC2626',
+                                                    right: '-4px',
+                                                    bottom: '0'
+                                                }
+                                                : {
+                                                    borderWidth: '0 10px 10px 0',
+                                                    borderColor: 'transparent #1F2937 transparent transparent',
+                                                    left: '-4px',
+                                                    bottom: '0'
+                                                }
+                                            )
+                                        }}
+                                    />
+                                    
+                                    <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                                    <p className="text-xs opacity-60 mt-2 text-right">
                                         {message.timestamp.toLocaleTimeString('es-MX', {
                                             hour: '2-digit',
                                             minute: '2-digit'
@@ -345,8 +396,11 @@ export function ChatBot() {
                             </div>
                         ))}
                         {isLoading && (
-                            <div className="flex justify-start">
-                                <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
+                            <div className="flex items-end gap-2 justify-start">
+                                <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center shrink-0 mb-1">
+                                    <MessageCircle className="w-4 h-4 text-white" />
+                                </div>
+                                <div className="bg-gray-800 rounded-2xl rounded-bl-sm p-3 border border-gray-700">
                                     <Loader2 className="w-5 h-5 animate-spin text-red-600" />
                                 </div>
                             </div>
