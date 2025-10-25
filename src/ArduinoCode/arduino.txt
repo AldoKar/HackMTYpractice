@@ -1,0 +1,285 @@
+//PaySafe - Sistema completo con envío de datos
+#include <Wire.h>
+#include "RTClib.h"
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+// Configuración WiFi
+const char* ssid = "esp32";
+const char* password = "prueba123";
+const char* serverUrl = "http://10.22.198.150:3000/datos";
+
+// Objetos de los sensores
+RTC_DS3231 rtc;
+Adafruit_MPU6050 mpu;
+
+char daysOfTheWeek[7][12] = {"Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"};
+
+// Variable para controlar el modo de visualización
+bool mostrarSerial = true;
+
+void setup() {
+  Serial.begin(9600);
+  delay(1000);
+  
+  Serial.println("\n=================================");
+  Serial.println("     PaySafe - Sistema ESP32");
+  Serial.println("  RTC DS3231 + MPU6050 + WiFi");
+  Serial.println("=================================\n");
+
+  // Inicializar I2C en los pines correctos para ESP32
+  Wire.begin(21, 22); // SDA=21, SCL=22
+  
+  // ========== Conectar WiFi ==========
+  Serial.print("Conectando a WiFi ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi conectado!");
+  Serial.print("IP local: ");
+  Serial.println(WiFi.localIP());
+  Serial.println();
+  
+  // ========== Escanear bus I2C ==========
+  Serial.println("--- Escaneando dispositivos I2C ---");
+  byte dispositivos = 0;
+  for (byte i = 1; i < 127; i++) {
+    Wire.beginTransmission(i);
+    if (Wire.endTransmission() == 0) {
+      Serial.print("Dispositivo en 0x");
+      if (i < 16) Serial.print('0');
+      Serial.println(i, HEX);
+      dispositivos++;
+    }
+  }
+  
+  if (dispositivos == 0) {
+    Serial.println("ERROR: No se encontraron dispositivos");
+    Serial.println("Verifica las conexiones I2C");
+    while (1) delay(10);
+  }
+  Serial.print("Total: ");
+  Serial.println(dispositivos);
+  Serial.println();
+  
+  // ========== Inicializar RTC DS3231 ==========
+  Serial.println("--- Inicializando RTC DS3231 ---");
+  if (!rtc.begin()) {
+    Serial.println("ERROR: No se encontro el RTC");
+    while (1) delay(10);
+  }
+  
+  if (rtc.lostPower()) {
+    Serial.println("RTC perdio energia, ajustando...");
+    rtc.adjust(DateTime(F(_DATE), F(TIME_)));
+  }
+  
+  Serial.println("RTC inicializado OK");
+  
+  // ========== Inicializar MPU6050 ==========
+  Serial.println("\n--- Inicializando MPU6050 ---");
+  
+  // Intentar con dirección 0x69 (AD0 en HIGH)
+  if (!mpu.begin(0x69)) {
+    Serial.println("No se encontro MPU6050 en 0x69");
+    Serial.println("Intentando con direccion 0x68...");
+    
+    // Intentar con dirección 0x68 (AD0 en LOW)
+    if (!mpu.begin(0x68)) {
+      Serial.println("ERROR: No se encontro MPU6050");
+      Serial.println("Verifica las conexiones");
+      while (1) delay(10);
+    } else {
+      Serial.println("MPU6050 encontrado en 0x68");
+      Serial.println("ADVERTENCIA: Puede haber conflicto con DS3231");
+    }
+  } else {
+    Serial.println("MPU6050 encontrado en 0x69 OK");
+  }
+  
+  // Configurar rangos del MPU6050
+  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
+  
+  Serial.println("MPU6050 configurado");
+  
+  Serial.println("\n=================================");
+  Serial.println("Sistema listo");
+  Serial.println("=================================\n");
+  
+  delay(1000);
+}
+
+void loop() {
+  if (mostrarSerial) {
+    serialOn();
+  } else {
+    serialOff();
+  }
+}
+
+void serialOff() {
+  // Modo silencioso - solo lee sensores y envía datos
+  DateTime now = rtc.now();
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+  
+  float ax = a.acceleration.x / 9.81;
+  float ay = a.acceleration.y / 9.81;
+  float az = a.acceleration.z / 9.81;
+  float aceleracionTotal = sqrt(ax*ax + ay*ay + az*az);
+  
+  // Enviar datos sin mostrar en Serial
+  enviarDatos(now, aceleracionTotal, temp.temperature);
+  
+  delay(500);
+}
+
+void serialOn() {
+  // ========== Leer RTC DS3231 ==========
+  DateTime now = rtc.now();
+  
+  Serial.println("\n--- FECHA Y HORA ---");
+  Serial.print("Fecha: ");
+  Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+  Serial.print(", ");
+  if (now.day() < 10) Serial.print('0');
+  Serial.print(now.day());
+  Serial.print('/');
+  if (now.month() < 10) Serial.print('0');
+  Serial.print(now.month());
+  Serial.print('/');
+  Serial.println(now.year());
+  
+  Serial.print("Hora: ");
+  if (now.hour() < 10) Serial.print('0');
+  Serial.print(now.hour());
+  Serial.print(':');
+  if (now.minute() < 10) Serial.print('0');
+  Serial.print(now.minute());
+  Serial.print(':');
+  if (now.second() < 10) Serial.print('0');
+  Serial.println(now.second());
+  
+  Serial.print("Temperatura RTC: ");
+  Serial.print(rtc.getTemperature(), 1);
+  Serial.println(" C");
+  
+  // ========== Leer MPU6050 ==========
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+  
+  float ax = a.acceleration.x / 9.81; // Convertir m/s² a g
+  float ay = a.acceleration.y / 9.81;
+  float az = a.acceleration.z / 9.81;
+  
+  float gx = g.gyro.x * 57.2958; // Convertir rad/s a °/s
+  float gy = g.gyro.y * 57.2958;
+  float gz = g.gyro.z * 57.2958;
+  
+  float aceleracionTotal = sqrt(ax*ax + ay*ay + az*az);
+  
+  Serial.println("\n--- ACELERACION TOTAL (g) ---");
+  Serial.println(aceleracionTotal, 2);
+  
+  Serial.println("\n--- GIROSCOPIO (grados/s) ---");
+  Serial.print("X: "); Serial.print(gx, 2);
+  Serial.print(" | Y: "); Serial.print(gy, 2);
+  Serial.print(" | Z: "); Serial.println(gz, 2);
+  
+  Serial.print("Aceleracion Total: ");
+  Serial.print(aceleracionTotal, 2);
+  Serial.print(" g");
+  
+  if (aceleracionTotal > 2.0) {
+    Serial.println(" - MOVIMIENTO BRUSCO!");
+  } else {
+    Serial.println(" - Estable");
+  }
+  
+  Serial.print("Temperatura MPU: ");
+  Serial.print(temp.temperature, 1);
+  Serial.println(" C");
+  
+  Serial.println("=================================");
+  
+  // ========== Enviar datos al servidor ==========
+  enviarDatos(now, aceleracionTotal, temp.temperature);
+  
+  delay(500);
+}
+
+void enviarDatos(DateTime now, float at, float T) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(serverUrl);
+    http.addHeader("Content-Type", "application/json");
+    
+    // Formatear fecha y hora
+    String fecha = String(now.year()) + "-" + 
+                   (now.month() < 10 ? "0" : "") + String(now.month()) + "-" +
+                   (now.day() < 10 ? "0" : "") + String(now.day());
+    
+    String hora = (now.hour() < 10 ? "0" : "") + String(now.hour()) + ":" +
+                  (now.minute() < 10 ? "0" : "") + String(now.minute()) + ":" +
+                  (now.second() < 10 ? "0" : "") + String(now.second());
+    
+    // Crear JSON con los datos
+    String jsonData = "{\"at\":" + String(at, 2) +
+                      ",\"T\":" + String(T, 1) +
+                      /*",\"fecha\":\"" + fecha + "\"" +
+                      ",\"hora\":\"" + hora + "\"" +
+                      ",\"timestamp\":" + String(now.unixtime()) + "}";*/
+    
+    Serial.println("\nEnviando: " + jsonData);
+    
+    int code = http.POST(jsonData);
+    if (code > 0) {
+      Serial.println("Datos enviados OK - Codigo: " + String(code));
+    } else {
+      Serial.println("Error al enviar - Codigo: " + String(code));
+    }
+    
+    http.end();
+  } else {
+    Serial.println("WiFi desconectado - No se enviaron datos");
+  }
+}
+
+/*
+ * FORMATO JSON ENVIADO AL SERVIDOR:
+ * {
+ *   "at": 1.03,              // Aceleración total en g
+ *   "T": 25.2,               // Temperatura en °C
+ *   "fecha": "2025-10-25",   // Fecha del RTC
+ *   "hora": "00:48:30",      // Hora del RTC
+ *   "timestamp": 1729825710  // Unix timestamp
+ * }
+ * 
+ * CONEXIONES FÍSICAS:
+ * DS3231:
+ *   VCC → ESP32 3.3V
+ *   GND → ESP32 GND
+ *   SDA → ESP32 GPIO 21
+ *   SCL → ESP32 GPIO 22
+ * 
+ * MPU6050:
+ *   VCC → ESP32 3.3V
+ *   GND → ESP32 GND
+ *   SDA → ESP32 GPIO 21
+ *   SCL → ESP32 GPIO 22
+ *   AD0 → ESP32 3.3V (para dirección 0x69)
+ * 
+ * CONFIGURACIÓN:
+ * - Cambiar ssid y password de WiFi
+ * - Cambiar serverUrl con tu IP y puerto
+ * - mostrarSerial = true: muestra datos en Serial y envía
+ * - mostrarSerial = false: solo envía datos sin mostrar
+ */
