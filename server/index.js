@@ -14,14 +14,16 @@ app.use(
 
 // estado y historial
 let ultimoDato = {
-    at: null,
-    T: null,
+    at: 0,           // Aceleración total
+    T: 0,           // Temperatura
+    lat: null,      // Latitud
+    lng: null,      // Longitud
     timestamp: null, // ISO string
     time: { hour: null, minute: null, second: null },
-    day: null, // YYYY-MM-DD
-    weekday: null, // nombre en es-ES
-    lastUpdate: null,
-    raw: {},
+    day: null,      // YYYY-MM-DD
+    weekday: null,  // nombre en es-ES
+    lastUpdate: Date.now(),
+    raw: {}
 }
 const history = []
 
@@ -79,7 +81,17 @@ app.post("/datos", (req, res) => {
         console.log("Timestamp:", new Date().toISOString());
         console.log("==============================\n");
 
-        const { at: at_in, T: T_in, fecha, hora, timestamp } = body
+        const { 
+            at: at_in, 
+            T: T_in, 
+            lat: lat_in, 
+            lng: lng_in,
+            latitud, // Nombre alternativo para lat
+            longitud, // Nombre alternativo para lng 
+            fecha, 
+            hora, 
+            timestamp 
+        } = body
 
         // Si no hay at ni ejes, rechaza
         if (at_in == null && body.ax == null && body.ay == null && body.az == null) {
@@ -105,9 +117,15 @@ app.post("/datos", (req, res) => {
 
         const Tvalue = T_in != null ? Number(T_in) : (body.temp != null ? Number(body.temp) : null)
 
+        // Procesar coordenadas GPS
+        const latValue = lat_in != null ? Number(lat_in) : (latitud != null ? Number(latitud) : null);
+        const lngValue = lng_in != null ? Number(lng_in) : (longitud != null ? Number(longitud) : null);
+
         ultimoDato = {
             at: isNaN(atValue) ? null : atValue,
             T: isNaN(Tvalue) ? null : Tvalue,
+            lat: isNaN(latValue) ? null : latValue,
+            lng: isNaN(lngValue) ? null : lngValue,
             timestamp: isoTimestamp,
             time: { hour, minute, second },
             day,
@@ -118,6 +136,16 @@ app.post("/datos", (req, res) => {
 
         history.push({ ...ultimoDato })
         if (history.length > 500) history.shift()
+
+        // Verificar los datos antes de enviar
+        console.log("\n=== DATOS PROCESADOS ===");
+        console.log("Datos a enviar:", {
+            at: ultimoDato.at,
+            T: ultimoDato.T,
+            lat: ultimoDato.lat,
+            lng: ultimoDato.lng
+        });
+        console.log("=======================\n");
 
         // emitir a clientes SSE y responder
         broadcastUpdate(ultimoDato)

@@ -14,6 +14,12 @@ import {
     type SmartCityReport
 } from '@/lib/smartCityAnalyzer';
 import { useState, useRef, useEffect } from 'react'
+import { supabase } from "./lib/supabase"
+
+
+
+
+
 
 // Fix para iconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -30,6 +36,24 @@ function MapPage() {
     const [isGeneratingReport, setIsGeneratingReport] = useState(false);
     const [openDetails, setOpenDetails] = useState(false)
     const detailsRef = useRef<HTMLDivElement | null>(null)
+    const [gpsLogs, setGpsLogs] = useState<Array<{latitude: number, longitude: number, user_id: string}>>([]);
+
+useEffect(() => {
+  async function fetchLogs() {
+    const { data, error } = await supabase
+      .from('sensordata')
+      .select('latitude, longitude, user_id');
+
+    if (error) {
+      console.error('Error fetching GPS logs:', error);
+      return;
+    }
+
+    setGpsLogs(data || []);
+  }
+
+  fetchLogs();
+}, []);
 
 
     useEffect(() => {
@@ -549,6 +573,21 @@ function MapPage() {
                                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                                             url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                                         />
+
+                                        {gpsLogs.map((log, idx) => (
+                                            <Marker
+                                                key={idx}
+                                                position={[log.latitude, log.longitude]}
+                                            >
+                                                <Popup>
+                                                    <div>
+                                                        <p><strong>Usuario:</strong> {log.user_id}</p>
+                                                        <p><strong>Lat:</strong> {log.latitude.toFixed(5)}</p>
+                                                        <p><strong>Lng:</strong> {log.longitude.toFixed(5)}</p>
+                                                    </div>
+                                                </Popup>
+                                            </Marker>
+                                        ))}
 
                                         {/* Marcadores de zonas de riesgo */}
                                         {monterreyZones.map((zone, idx) => {
