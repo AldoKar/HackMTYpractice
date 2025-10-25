@@ -20,58 +20,89 @@ export default function MPU6050Dashboard() {
     const [history, setHistory] = useState<HistoryItem[]>([])
     const [suddenMovements, setSuddenMovements] = useState(0)
     const mounted = useRef(true)
+    const esRef = useRef<EventSource | null>(null)
 
     useEffect(() => {
         mounted.current = true
 
-        async function fetchEstado() {
-            try {
-                const res = await fetch("http://localhost:3000/estado", { cache: "no-store" })
-                if (!res.ok) throw new Error("HTTP " + res.status)
-                const json = await res.json()
-                if (!mounted.current) return
+        function applyPayload(json: any) {
+            const accel =
+                Number(json.at ?? json.accelTotal ?? json.raw?.at ?? json.raw?.accelTotal ?? 0) || 0
+            const temp =
+                Number(json.T ?? json.temp ?? json.raw?.T ?? json.raw?.temp ?? 0) || 0
+            const lat = Number(json.lat ?? json.raw?.lat ?? 0) || 0
+            const lng = Number(json.lng ?? json.raw?.lng ?? 0) || 0
+            const lastUpdate = Number(json.lastUpdate ?? json.raw?.lastUpdate ?? Date.now())
 
-                // Server may return accelTotal / temp or at / T or raw.{...}
-                const accel =
-                    Number(json.accelTotal ?? json.at ?? json.raw?.at ?? json.raw?.accelTotal ?? 0) || 0
-                const temp =
-                    Number(json.temp ?? json.T ?? json.raw?.T ?? json.raw?.temp ?? NaN) || 0
-                const lat = Number(json.raw?.lat ?? json.lat ?? 0) || 0
-                const lng = Number(json.raw?.lng ?? json.lng ?? 0) || 0
-                const lastUpdate = Number(json.lastUpdate ?? json.raw?.lastUpdate ?? 0) || 0
-
-                setDato({ lat, lng, at: accel, T: temp })
-
-                // Consider connected if last update was within 5s
-                setConnected(Date.now() - lastUpdate < 5000)
-
-                // Detect sudden movement (threshold 2g)
-                if (accel > 2) {
-                    setSuddenMovements((prev) => prev + 1)
-                }
-
-                // Append to history (keep last 60)
-                setHistory((h) => {
-                    const next = [
-                        ...h,
-                        {
-                            t: new Date().toLocaleTimeString(),
-                            at: Number(accel.toFixed(3)),
-                        },
-                    ]
-                    return next.slice(-60)
-                })
-            } catch (err) {
-                console.error("Error al obtener /estado:", err)
-                setConnected(false)
-            }
+            setDato({ lat, lng, at: accel, T: temp })
+            setConnected(Date.now() - lastUpdate < 5000)
+            if (accel > 2) setSuddenMovements((p) => p + 1)
+            setHistory((h) => {
+                const next = [
+                    ...h,
+                    { t: new Date().toLocaleTimeString(), at: Number(accel.toFixed(3)) },
+                ]
+                return next.slice(-60)
+            })
         }
 
-        fetchEstado()
-        const id = setInterval(fetchEstado, 1000)
+        // Try SSE connection first
+        try {
+            const url = `${window.location.protocol}//${window.location.hostname}:3000/stream`
+            const es = new EventSource(url)
+            esRef.current = es
+
+            es.onmessage = (e) => {
+                try {
+                    const payload = JSON.parse(e.data)
+                    if (!mounted.current) return
+                    applyPayload(payload)
+                } catch (err) {
+                    // ignore non-json messages
+                }
+            }
+            es.onerror = (e) => {
+                console.warn("SSE error, falling back to polling", e)
+                es.close()
+                esRef.current = null
+            }
+        } catch (err) {
+            // ignore, will use polling
+            console.warn("SSE not available, using polling", err)
+        }
+
+        // Fallback polling every 1s if SSE not connected
+        let pollId: number | null = null
+        const startPolling = () => {
+            if (pollId != null) return
+            const fetchEstado = async () => {
+                try {
+                    const res = await fetch("http://localhost:3000/estado", { cache: "no-store" })
+                    if (!res.ok) throw new Error("HTTP " + res.status)
+                    const json = await res.json()
+                    if (!mounted.current) return
+                    applyPayload(json)
+                } catch (err) {
+                    setConnected(false)
+                }
+            }
+            fetchEstado()
+            pollId = window.setInterval(fetchEstado, 1000)
+        }
+
+        // if SSE fails to open in 2s, start polling
+        const fallbackTimer = window.setTimeout(() => {
+            if (!esRef.current || esRef.current.readyState !== 1) startPolling()
+        }, 2000)
+
         return () => {
             mounted.current = false
-            clearInterval(id)
+            if (esRef.current) {
+                esRef.current.close()
+                esRef.current = null
+            }
+            if (pollId) clearInterval(pollId)
+            clearTimeout(fallbackTimer)
         }
     }, [])
 
@@ -116,7 +147,7 @@ export default function MPU6050Dashboard() {
             </Card>
 
             <footer className="mt-4 text-sm text-muted-foreground text-center">
-                Actualiza automáticamente cada segundo · Endpoint: <code>/estado</code>
+                Actualiza en tiempo real vía SSE · Endpoint: <code>/stream</code>
             </footer>
         </div>
     )
