@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { useEffect, useRef, useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts"
+import { Activity, Thermometer, AlertTriangle, Clock, Calendar, Gauge } from "lucide-react"
 
 interface HistoryItem {
     t: string
@@ -12,6 +13,8 @@ interface CardProps {
     title: string
     value: number | string
     unit?: string
+    icon?: React.ElementType
+    iconBg?: string
 }
 
 export default function PaySafeDashboard() {
@@ -134,67 +137,181 @@ export default function PaySafeDashboard() {
     const formattedDay = serverDay ? `${serverDay.weekday ?? ""} ${serverDay.day ?? ""}` : ""
 
     return (
-        <div className="min-h-screen min-h-[100dvh] pt-16 bg-gray-50 text-gray-900">
-            <div className="max-w-6xl mx-auto p-6">
-                <header className="flex items-center justify-between mb-6">
-                    <div>
-                        <h1 className="text-2xl font-semibold">PaySafe — Dashboard</h1>
-                        <p className="text-sm text-muted-foreground">Lecturas y hora del servidor</p>
+        <div className="min-h-screen bg-gray-900">
+            {/* Hero Section */}
+            <section className="container mx-auto px-4 py-28 bg-gray-900">
+                <div className="max-w-4xl mx-auto text-center">
+                    <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                        <Activity className="w-4 h-4" />
+                        Monitoreo en Tiempo Real
                     </div>
 
-                    <div className="flex items-center gap-6">
-                        <div className="text-right">
-                            <div className="text-xs text-muted-foreground">Servidor</div>
-                            <div className="font-mono text-lg">{formattedTime}</div>
-                            <div className="text-sm text-muted-foreground">{formattedDay}</div>
-                        </div>
+                    <h1 className="text-7xl font-bold text-white mb-6">
+                        PaySafe Dashboard
+                    </h1>
 
-                        <Badge variant={connected ? "default" : "destructive"}>
-                            {connected ? "Conectado" : "Desconectado"}
+                    <p className="text-2xl text-gray-300 mb-4 leading-relaxed">
+                        Monitorea tu <span className="text-red-500 font-semibold">conducción en tiempo real</span>
+                    </p>
+
+                    <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
+                        Visualiza los datos del sensor MPU6050 instalado en tu vehículo. Cada lectura te ayuda a mejorar tu estilo de conducción.
+                    </p>
+
+                    {/* Status Badge */}
+                    <div className="flex items-center justify-center gap-4 mb-8">
+                        <Badge 
+                            variant={connected ? "default" : "destructive"}
+                            className={`px-6 py-3 text-base ${connected ? 'bg-red-600' : 'bg-gray-600'}`}
+                        >
+                            <div className={`w-2 h-2 rounded-full mr-2 ${connected ? 'bg-white animate-pulse' : 'bg-gray-300'}`}></div>
+                            {connected ? "Sensor Conectado" : "Sensor Desconectado"}
                         </Badge>
                     </div>
-                </header>
 
-                <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <AccelCard title="Aceleración (AT)" value={dato.at} unit="g" />
-                    <AccelCard title="Temperatura" value={dato.T} unit="°C" />
-                    <AccelCard title="Movimientos bruscos" value={suddenMovements} />
-                </section>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Historial (últimas {history.length} muestras)</CardTitle>
-                        <CardDescription>Gráfico de aceleración total (AT)</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="w-full h-64">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={history}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="t" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Line type="monotone" dataKey="at" stroke="#6366f1" dot={false} isAnimationActive={false} />
-                                </LineChart>
-                            </ResponsiveContainer>
+                    {/* Server Time */}
+                    <div className="grid grid-cols-2 gap-8 mt-12 max-w-md mx-auto">
+                        <div className="text-center bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <Clock className="w-8 h-8 text-red-500 mx-auto mb-3" />
+                            <p className="text-sm text-gray-400 mb-1">Hora del Servidor</p>
+                            <p className="text-2xl font-bold text-white font-mono">{formattedTime}</p>
                         </div>
-                    </CardContent>
-                </Card>
-            </div>
+                        <div className="text-center bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <Calendar className="w-8 h-8 text-red-500 mx-auto mb-3" />
+                            <p className="text-sm text-gray-400 mb-1">Fecha</p>
+                            <p className="text-xl font-bold text-white">{formattedDay || "Cargando..."}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Métricas en Tiempo Real */}
+            <section className="bg-gray-800 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-bold text-white mb-4">
+                                Lecturas del Sensor
+                            </h2>
+                            <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
+                            <p className="text-gray-300 max-w-2xl mx-auto">
+                                Datos recopilados en tiempo real desde el sensor MPU6050
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-8">
+                            <MetricCard 
+                                title="Aceleración Total" 
+                                value={dato.at.toFixed(3)} 
+                                unit="g"
+                                icon={Gauge}
+                                iconBg="bg-red-600"
+                            />
+                            <MetricCard 
+                                title="Temperatura" 
+                                value={dato.T.toFixed(1)} 
+                                unit="°C"
+                                icon={Thermometer}
+                                iconBg="bg-gray-700"
+                            />
+                            <MetricCard 
+                                title="Movimientos Bruscos" 
+                                value={suddenMovements}
+                                icon={AlertTriangle}
+                                iconBg="bg-red-600"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Gráfica de Historial */}
+            <section className="bg-gray-900 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-bold text-white mb-4">
+                                Historial de Aceleración
+                            </h2>
+                            <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
+                            <p className="text-gray-300 max-w-2xl mx-auto">
+                                Últimas {history.length} lecturas del sensor en tiempo real
+                            </p>
+                        </div>
+
+                        <Card className="bg-gray-800 border-gray-700">
+                            <CardHeader>
+                                <CardTitle className="text-white text-2xl">Gráfico de Aceleración Total (AT)</CardTitle>
+                            </CardHeader>
+                            <CardContent className="pt-6">
+                                <div className="h-[400px]">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <LineChart data={history}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                            <XAxis 
+                                                dataKey="t" 
+                                                stroke="#9CA3AF"
+                                                style={{ fontSize: '12px' }}
+                                            />
+                                            <YAxis 
+                                                stroke="#9CA3AF"
+                                                style={{ fontSize: '12px' }}
+                                                label={{ value: 'Aceleración (g)', angle: -90, position: 'insideLeft', fill: '#9CA3AF' }}
+                                            />
+                                            <Tooltip 
+                                                contentStyle={{ 
+                                                    backgroundColor: '#1F2937', 
+                                                    border: '1px solid #374151',
+                                                    borderRadius: '8px',
+                                                    color: '#fff'
+                                                }}
+                                            />
+                                            <Legend 
+                                                wrapperStyle={{ color: '#fff' }}
+                                            />
+                                            <Line 
+                                                type="monotone" 
+                                                dataKey="at" 
+                                                stroke="#DC2626" 
+                                                strokeWidth={2}
+                                                name="Aceleración (g)"
+                                                dot={false}
+                                                isAnimationActive={false}
+                                            />
+                                        </LineChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </section>
+
+            {/* Footer Info */}
+            <section className="bg-gray-800 py-12 border-t border-gray-700">
+                <div className="container mx-auto px-4 text-center">
+                    <p className="text-gray-400 text-sm">
+                        Datos actualizados en tiempo real desde el sensor MPU6050. © 2025 PaySafe - Banorte
+                    </p>
+                </div>
+            </section>
         </div>
     )
 }
 
-function AccelCard({ title, value, unit = "" }: CardProps) {
+function MetricCard({ title, value, unit = "", icon: Icon, iconBg }: CardProps & { icon: React.ElementType, iconBg: string }) {
     return (
-        <Card>
-            <CardHeader className="pb-2">
-                <CardDescription>{title}</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-semibold flex items-baseline">
-                    <span>{value}</span>
-                    {unit && <span className="ml-2 text-sm text-muted-foreground">{unit}</span>}
+        <Card className="bg-gray-700 border-gray-600 hover:border-red-500 transition-all">
+            <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                    <div className={`w-14 h-14 ${iconBg} rounded-lg flex items-center justify-center`}>
+                        <Icon className="w-8 h-8 text-white" />
+                    </div>
+                </div>
+                <h3 className="text-gray-400 text-sm font-medium mb-2">{title}</h3>
+                <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-bold text-white">{value}</span>
+                    {unit && <span className="text-lg text-gray-400">{unit}</span>}
                 </div>
             </CardContent>
         </Card>
