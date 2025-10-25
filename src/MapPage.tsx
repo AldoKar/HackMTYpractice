@@ -8,6 +8,7 @@ import {
 
 function MapPage() {
     return (
+
         <ResizablePanelGroup
             direction="horizontal"
             className="h-screen w-full"
