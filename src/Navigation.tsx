@@ -234,7 +234,7 @@ export function NavigationMenuDemo() {
                                                         href="/mapabanorte"
                                                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
                                                     >
-                                                        <div className="text-sm font-medium leading-none text-red-600">Mapa Interactivo Banorte</div>
+                                                        <div className="text-sm font-medium leading-none text-red-600">Panel Administrativo Banorte</div>
                                                         <p className="text-sm leading-snug text-muted-foreground">
                                                             Visualiza las rutas y eventos de todos los usuarios de Pay$afe.
                                                         </p>
