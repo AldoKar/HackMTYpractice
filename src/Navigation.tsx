@@ -126,13 +126,13 @@ export function NavigationMenuDemo() {
                                     </a>
                                 </NavigationMenuLink>
                             </li>
-                            <ListItem href="/introduccion" title="Introduccion">
+                            <ListItem href="/" title="Introduccion">
                                 Conoce como funciona PaySafe y comienza a usarlo.
                             </ListItem>
-                            <ListItem href="/introduccion" title="Proposito">
+                            <ListItem href="/" title="Proposito">
                                 Conoce el proposito detras de PaySafe y su impacto en la seguridad vial.
                             </ListItem>
-                            <ListItem href="/introduccion" title="Funcionamiento">
+                            <ListItem href="/" title="Funcionamiento">
                                 Conoce el funcionamiento de PaySafe y como nuestro dispositivo manda datos.
                             </ListItem>
                         </ul>

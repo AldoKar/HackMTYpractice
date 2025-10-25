@@ -33,6 +33,7 @@ function App() {
         <Route path="/dashboard" element={<MPU6050Dashboard />} />
         <Route path="/register" element={<SignupForm />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/beneficios" element={<div>404 Not Found</div>} />
       </Routes>
     </>
 
