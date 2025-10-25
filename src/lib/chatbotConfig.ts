@@ -50,6 +50,9 @@ Las gráficas te muestran:
 - Más de 10,000 conductores activos
 - Opera en Monterrey, México
 
+**Compra de PaySafe o dispositivo Paysafe:**
+-El dispositivo se puede solicitar en cualquier banco en cualquier sucursal Banorte
+
 ## Instrucciones de respuesta:
 - Respuestas MUY cortas (máximo 2-3 párrafos)
 - Usa emojis ocasionalmente: 🚗💰✨🎁
