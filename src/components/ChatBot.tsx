@@ -91,6 +91,11 @@ export function ChatBot() {
             const response = await result.response
             const text = response.text()
 
+            // Verificar que la respuesta no esté vacía
+            if (!text || text.trim() === '') {
+                throw new Error('La respuesta del modelo está vacía')
+            }
+
             const assistantMessage: Message = {
                 role: 'assistant',
                 content: text,
@@ -99,11 +104,13 @@ export function ChatBot() {
 
             setMessages(prev => [...prev, assistantMessage])
         } catch (error: any) {
-            console.error('Error al enviar mensaje:', error)
-            console.error('Detalles:', error?.message || 'Sin detalles')
+            console.error('Error completo:', error)
+            console.error('Mensaje de error:', error?.message)
+            console.error('Stack:', error?.stack)
+            
             const errorMessage: Message = {
                 role: 'assistant',
-                content: `Error: ${error?.message || 'No se pudo procesar el mensaje'}. Intenta de nuevo.`,
+                content: `Lo siento, hubo un problema: ${error?.message || 'Error desconocido'}. Por favor, intenta reformular tu pregunta.`,
                 timestamp: new Date()
             }
             setMessages(prev => [...prev, errorMessage])
