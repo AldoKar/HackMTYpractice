@@ -177,7 +177,7 @@ function MapPage() {
                             </MapContainer>
 
                             {/* Leyenda sobre el mapa */}
-                            <div className="absolute top-4 right-4 z-[1000] bg-gray-800/95 backdrop-blur p-4 rounded-lg border border-gray-700">
+                            <div className="absolute top-4 right-4 z-1000 bg-gray-800/95 backdrop-blur p-4 rounded-lg border border-gray-700">
                                 <h3 className="text-white font-semibold mb-3 text-sm">Eventos</h3>
                                 <div className="space-y-2 text-xs">
                                     <div className="flex items-center gap-2">

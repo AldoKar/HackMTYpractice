@@ -127,10 +127,10 @@ const BanorteColorPalette = () => {
             <div>
               <h3 className="text-lg font-semibold mb-3">Gradientes</h3>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-r from-banorte-yellow to-banorte-yellow-dark h-24 rounded-lg flex items-center justify-center text-gray-900 font-semibold">
+                <div className="bg-linear-to-r from-banorte-yellow to-banorte-yellow-dark h-24 rounded-lg flex items-center justify-center text-gray-900 font-semibold">
                   Gradiente Amarillo
                 </div>
-                <div className="bg-gradient-to-r from-banorte-blue to-banorte-blue-dark h-24 rounded-lg flex items-center justify-center text-white font-semibold">
+                <div className="bg-linear-to-r from-banorte-blue to-banorte-blue-dark h-24 rounded-lg flex items-center justify-center text-white font-semibold">
                   Gradiente Azul
                 </div>
               </div>

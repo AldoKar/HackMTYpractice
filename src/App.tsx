@@ -1,17 +1,5 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './LandingPage.tsx';
-import MPU6050Dashboard from './PaySafeDash.tsx';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
 import { NavigationMenuDemo } from './Navigation.tsx';
 import { SignupForm } from './components/signup-form.tsx';
 import { LoginForm } from './components/login-form.tsx';
