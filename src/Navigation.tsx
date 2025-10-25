@@ -181,12 +181,12 @@ export function NavigationMenuDemo() {
                                             <li>
                                                 <NavigationMenuLink asChild>
                                                     <Link 
-                                                        href="/mapa"
+                                                        href="/adminpage"
                                                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
                                                     >
                                                         <div className="text-sm font-medium leading-none">Administra tu Pay$afe</div>
                                                         <p className="text-sm leading-snug text-muted-foreground">
-                                                            Configura y gestiona tu Pay$afe.
+                                                            Configura y gestiona tu dispositivo Pay$afe.
                                                         </p>
                                                     </Link>
                                                 </NavigationMenuLink>

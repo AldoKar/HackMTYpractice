@@ -9,6 +9,7 @@ import BeneficiosPage from './BeneficiosPage.tsx';
 import MapPage from './MapPage.tsx';
 import { ChatBot } from './components/ChatBot.tsx';
 import PaySafeDashboard from './PaySafeDash.tsx';
+import AdminPage from './AdminPage.tsx';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/beneficios" element={<BeneficiosPage />} />
         <Route path="/mapa" element={<MapPage />} />
+        <Route path="/adminpage" element={<AdminPage />} />
       </Routes>
     </>
 
