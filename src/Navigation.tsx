@@ -153,31 +153,31 @@ export function NavigationMenuDemo() {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem className="hidden md:block">
-                    <NavigationMenuTrigger>Mapa</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>Mapa y datos</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
                             <li>
                                 <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Components</div>
+                                    <Link href="/mapa">
+                                        <div className="font-medium">Consulta tu mapa de rutas</div>
                                         <div className="text-muted-foreground">
-                                            Browse all components in the library.
+                                            Mapa interactivo de rutas y datos de conducción.
                                         </div>
                                     </Link>
                                 </NavigationMenuLink>
                                 <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Documentation</div>
+                                    <Link href="/mapa">
+                                        <div className="font-medium">Consulta tu estado esta ultima semana</div>
                                         <div className="text-muted-foreground">
-                                            Learn how to use the library.
+                                            Consulta tu estado de conducción y estadísticas.
                                         </div>
                                     </Link>
                                 </NavigationMenuLink>
                                 <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Blog</div>
+                                    <Link href="/mapa">
+                                        <div className="font-medium">Reporte</div>
                                         <div className="text-muted-foreground">
-                                            Read our latest blog posts.
+                                            Consulta tus reportes de conducción.
                                         </div>
                                     </Link>
                                 </NavigationMenuLink>
