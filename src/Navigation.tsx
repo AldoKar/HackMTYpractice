@@ -2,7 +2,11 @@
 
 import * as React from "react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "@/context/AuthContext"
+import { LogOut } from "lucide-react"
+import { toast } from "sonner"
 
 type NextLikeLinkProps = React.ComponentPropsWithoutRef<"a"> & { href: string }
 const Link = React.forwardRef<HTMLAnchorElement, NextLikeLinkProps>(
@@ -66,6 +70,7 @@ const components: { title: string; href: string; description: string }[] = [
 export function NavigationMenuDemo() {
     const safeCoins = 34 // temporal, reemplazar por contexto/backend si hace falta
     const navigate = useNavigate()
+    const { user, logout } = useAuth()
 
     const handleEstadisticasClick = (e: React.MouseEvent) => {
         e.preventDefault()
@@ -77,6 +82,17 @@ export function NavigationMenuDemo() {
                 element.scrollIntoView({ behavior: 'smooth', block: 'start' })
             }
         }, 100)
+    }
+
+    const handleLogout = async () => {
+        try {
+            await logout()
+            toast.success('Sesión cerrada exitosamente')
+            navigate('/login')
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error)
+            toast.error('Error al cerrar sesión')
+        }
     }
 
     return (
@@ -277,10 +293,22 @@ export function NavigationMenuDemo() {
                         </NavigationMenu>
                     </div>
 
-                    <div className="ml-4 flex items-center">
+                    <div className="ml-4 flex items-center gap-3">
                         <Badge variant="secondary" className="text-sm font-semibold">
                             SafeCoins: {safeCoins}
                         </Badge>
+                        
+                        {user && (
+                            <Button 
+                                onClick={handleLogout}
+                                variant="outline"
+                                size="sm"
+                                className="border-red-600 text-red-600 hover:bg-red-50 hover:text-red-700"
+                            >
+                                <LogOut className="w-4 h-4 mr-2" />
+                                Cerrar Sesión
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div >

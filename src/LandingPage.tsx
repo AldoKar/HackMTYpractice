@@ -82,9 +82,7 @@ export default function LandingPage() {
                                 <ChevronRight className="ml-2 w-5 h-5" />
                             </Button>
                         </Link>
-                        <Button size="lg" className="text-lg px-10 py-6 bg-gray-800 text-white hover:bg-gray-700 border-2 border-white font-semibold">
-                            Comprar Dispositivo
-                        </Button>
+                        
                     </div>
                 </div>
             </section>

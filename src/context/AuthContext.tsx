@@ -3,7 +3,15 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 
-const AuthContext = createContext<{ user: User | null }>({ user: null })
+interface AuthContextType {
+    user: User | null
+    logout: () => Promise<void>
+}
+
+const AuthContext = createContext<AuthContextType>({ 
+    user: null,
+    logout: async () => {}
+})
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null)
@@ -22,7 +30,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return () => subscription.unsubscribe()
     }, [])
 
-    return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    const logout = async () => {
+        await supabase.auth.signOut()
+        setUser(null)
+    }
+
+    return <AuthContext.Provider value={{ user, logout }}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)

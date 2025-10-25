@@ -11,11 +11,13 @@ import { ChatBot } from './components/ChatBot.tsx';
 import PaySafeDashboard from './PaySafeDash.tsx';
 import MapPageBanorte from './MapPageBanorte.tsx';
 import AdminPage from './AdminPage.tsx';
+import { useAuth } from './context/AuthContext';
 
 function App() {
 
   const location = useLocation();
-  const showNav = !['/login', '/register'].includes(location.pathname);
+  const { user } = useAuth();
+  const showNav = !['/login', '/register'].includes(location.pathname) && user !== null;
 
   return (
     <>
