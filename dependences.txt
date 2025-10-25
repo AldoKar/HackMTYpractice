@@ -14,3 +14,4 @@ cd ..
 npm install tailwindcss @tailwindcss/vite
 npm install gsap
 npm install --save-dev @types/node
+npx shadcn@latest add resizable
