@@ -1,13 +1,50 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Shield, DollarSign, Car, TrendingUp, Award, Gauge, Coins, ChevronRight } from "lucide-react";
+import { MapPin, Shield, DollarSign, Car, TrendingUp, Award, Gauge, Coins, ChevronRight, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import TextType from './TextType';
 import ScrollStack, { ScrollStackItem } from './ScrollStack';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function LandingPage() {
     const { user } = useAuth();
+    const [hasShownWelcome, setHasShownWelcome] = useState(() => {
+        // Verificar si ya se mostró el mensaje antes (guardado en localStorage)
+        return localStorage.getItem('paysafe-welcome-shown') === 'true';
+    });
+
+    // Mensaje de bienvenida inicial (toast) - solo en LandingPage y solo la primera vez
+    useEffect(() => {
+        if (!hasShownWelcome) {
+            const timer = setTimeout(() => {
+                toast(
+                    <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center shrink-0">
+                            <MessageCircle className="w-5 h-5 text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="font-semibold text-white text-base mb-1">¡Bienvenido a Pay$afe! 🚗✨</h3>
+                            <p className="text-gray-300 text-sm">Aquí estoy para ayudarte con cualquier duda o consulta. Haz clic en el botón rojo para chatear conmigo.</p>
+                        </div>
+                    </div>,
+                    {
+                        duration: 6000,
+                        style: {
+                            background: '#1F2937',
+                            border: '1px solid #374151',
+                            padding: '16px',
+                        }
+                    }
+                );
+                setHasShownWelcome(true);
+                localStorage.setItem('paysafe-welcome-shown', 'true');
+            }, 1500);
+            
+            return () => clearTimeout(timer);
+        }
+    }, [hasShownWelcome]);
 
     return (
         <div className="min-h-screen bg-gray-900">

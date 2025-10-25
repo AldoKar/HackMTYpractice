@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { Button } from './ui/button'
 import { MessageCircle, X, Send, Loader2, Minus } from 'lucide-react'
-import { toast } from 'sonner'
 import { SYSTEM_PROMPT, WELCOME_MESSAGE } from '@/lib/chatbotConfig'
 
 interface Message {
@@ -20,7 +19,6 @@ export function ChatBot() {
     const [isLoading, setIsLoading] = useState(false)
     const [size, setSize] = useState({ width: 400, height: 600 })
     const [position, setPosition] = useState(INITIAL_POSITION)
-    const [hasShownWelcome, setHasShownWelcome] = useState(false)
     
     const chatRef = useRef<HTMLDivElement>(null)
     const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -42,36 +40,6 @@ export function ChatBot() {
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
-
-    // Mensaje de bienvenida inicial (toast)
-    useEffect(() => {
-        if (!hasShownWelcome) {
-            const timer = setTimeout(() => {
-                toast(
-                    <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center shrink-0">
-                            <MessageCircle className="w-5 h-5 text-white" />
-                        </div>
-                        <div className="flex-1">
-                            <h3 className="font-semibold text-white text-base mb-1">¡Bienvenido a Pay$afe! 🚗✨</h3>
-                            <p className="text-gray-300 text-sm">Aquí estoy para ayudarte con cualquier duda o consulta. Haz clic en el botón rojo para chatear conmigo.</p>
-                        </div>
-                    </div>,
-                    {
-                        duration: 2500,
-                        style: {
-                            background: '#1F2937',
-                            border: '1px solid #374151',
-                            padding: '16px',
-                        }
-                    }
-                )
-                setHasShownWelcome(true)
-            }, 1000)
-            
-            return () => clearTimeout(timer)
-        }
-    }, [hasShownWelcome])
 
     // Mensaje de bienvenida en el chat
     useEffect(() => {
