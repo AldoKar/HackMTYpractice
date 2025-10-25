@@ -50,12 +50,6 @@ function MapPage() {
         currentStreak: 7
     };
 
-    const recentEvents = [
-        { id: 1, type: 'safe', location: 'Av. Constitución', score: 95, coins: 15 },
-        { id: 2, type: 'warning', location: 'Blvd. Morelos', score: 78, coins: 5 },
-        { id: 3, type: 'safe', location: 'Calzada del Valle', score: 98, coins: 20 },
-    ];
-
     // Datos para la gráfica
     const chartData = [
         { name: 'Lunes', score: 85, coins: 45 },
@@ -169,52 +163,9 @@ function MapPage() {
                 </div>
             </section>
 
-            {/* Eventos Recientes */}
-            <section className="bg-gray-900 py-20">
-                <div className="container mx-auto px-4">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h2 className="text-4xl font-bold text-white mb-4">
-                                Eventos Recientes
-                            </h2>
-                            <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-8">
-                            {recentEvents.map((event) => (
-                                <Card key={event.id} className="bg-gray-800 border-gray-700 hover:border-red-500 transition-all">
-                                    <CardContent className="p-6">
-                                        <div className="flex items-start justify-between mb-4">
-                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${event.type === 'safe' ? 'bg-white' : 'bg-gray-700'
-                                                }`}>
-                                                {event.type === 'safe' ? (
-                                                    <Award className="w-6 h-6 text-red-600" />
-                                                ) : (
-                                                    <AlertCircle className="w-6 h-6 text-white" />
-                                                )}
-                                            </div>
-                                            <Badge variant={event.type === 'safe' ? 'default' : 'secondary'} className={
-                                                event.type === 'safe' ? 'bg-red-600' : 'bg-white'
-                                            }>
-                                                {event.type === 'safe' ? 'Seguro' : 'Atención'}
-                                            </Badge>
-                                        </div>
-
-                                        <h3 className="text-white font-semibold mb-2">{event.location}</h3>
-                                        <div className="flex items-center justify-between text-sm">
-                                            <span className="text-gray-400">Score: {event.score}%</span>
-                                            <span className="text-white font-semibold">+{event.coins} SafeCoins</span>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* Estadísticas y Rendimiento */}
-            <section className="bg-gray-800 py-20">
+            <section className="bg-gray-900 py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-5xl mx-auto">
                         <div className="flex items-center justify-between gap-12">
@@ -281,7 +232,7 @@ function MapPage() {
             </section>
 
             {/* Gráfica de Rendimiento Semanal */}
-            <section id="grafica" className="bg-gray-900 py-20">
+            <section id="grafica" className="bg-gray-800 py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-6xl mx-auto">
                         <div className="text-center mb-12">

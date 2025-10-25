@@ -29,7 +29,7 @@ const signupSchema = z.object({
   path: ["confirmPassword"],
 })
 
-export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+export default function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

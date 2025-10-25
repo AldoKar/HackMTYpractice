@@ -15,7 +15,7 @@ const Link = React.forwardRef<HTMLAnchorElement, NextLikeLinkProps>(
     }
 )
 Link.displayName = "Link"
-
+//aulas 6 a las 9am
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -63,7 +63,7 @@ const components: { title: string; href: string; description: string }[] = [
     },
 ]
 
-export function NavigationMenuDemo() {
+export function NavigationMenuDemo({ isAdmin = false }: { isAdmin?: boolean }) {
     const safeCoins = 34 // temporal, reemplazar por contexto/backend si hace falta
     const navigate = useNavigate()
 
@@ -78,6 +78,17 @@ export function NavigationMenuDemo() {
             }
         }, 100)
     }
+
+    const handleLogout = () => {
+        try {
+            localStorage.removeItem('token')
+            sessionStorage.removeItem('token')
+        } catch { }
+        navigate('/login') // o '/' según tu ruta de login
+    }
+
+
+
 
     return (
         <nav className="w-full bg-background border-b sticky top-0 z-100">
@@ -173,9 +184,6 @@ export function NavigationMenuDemo() {
                                         </ul>
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
-
-
-
 
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger>Pay$afe</NavigationMenuTrigger>
@@ -282,9 +290,17 @@ export function NavigationMenuDemo() {
                             SafeCoins: {safeCoins}
                         </Badge>
                     </div>
+
+                    <button
+                        onClick={handleLogout}
+                        className="inline-flex items-center px-3 py-1.5 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors"
+                        title="Cerrar sesión"
+                    >
+                        Logout
+                    </button>
                 </div>
-            </div >
-        </nav >
+            </div>
+        </nav>
     )
 }
 
