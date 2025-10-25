@@ -17,6 +17,8 @@ import { SignupForm } from './components/signup-form.tsx';
 import { LoginForm } from './components/login-form.tsx';
 import { useLocation } from 'react-router-dom';
 import { Toaster } from "@/components/ui/sonner";
+import BeneficiosPage from './BeneficiosPage.tsx';
+import MapPage from './MapPage.tsx';
 
 function App() {
 
@@ -33,7 +35,8 @@ function App() {
         <Route path="/dashboard" element={<MPU6050Dashboard />} />
         <Route path="/register" element={<SignupForm />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/beneficios" element={<div>404 Not Found</div>} />
+        <Route path="/beneficios" element={<BeneficiosPage />} />
+        <Route path="/mapa" element={<MapPage />} />
       </Routes>
     </>
 
