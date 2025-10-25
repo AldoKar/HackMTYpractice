@@ -13,6 +13,7 @@ import MapPageBanorte from './MapPageBanorte.tsx';
 import AdminPage from './AdminPage.tsx';
 import { useAuth } from './context/AuthContext';
 import DashboardPage from './DashboardPage.tsx';
+import { ProtectedRoute } from './components/ProtectedRoute.tsx';
 
 function App() {
 
@@ -28,14 +29,16 @@ function App() {
 
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/paysafe" element={<PaySafeDashboard />} />
         <Route path="/register" element={<SignupForm />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/beneficios" element={<BeneficiosPage />} />
-        <Route path="/mapa" element={<MapPage />} />
-        <Route path="/mapabanorte" element={<MapPageBanorte />} />
-        <Route path="/adminpage" element={<AdminPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        
+        {/* Rutas Protegidas */}
+        <Route path="/paysafe" element={<ProtectedRoute><PaySafeDashboard /></ProtectedRoute>} />
+        <Route path="/beneficios" element={<ProtectedRoute><BeneficiosPage /></ProtectedRoute>} />
+        <Route path="/mapa" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
+        <Route path="/mapabanorte" element={<ProtectedRoute><MapPageBanorte /></ProtectedRoute>} />
+        <Route path="/adminpage" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
 
       </Routes>
     </>
