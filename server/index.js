@@ -72,6 +72,13 @@ function broadcastUpdate(payload) {
 app.post("/datos", (req, res) => {
     try {
         const body = req.body || {}
+        
+        // Mostrar datos recibidos del ESP32
+        console.log("\n=== DATOS RECIBIDOS DEL ESP32 ===");
+        console.log("JSON recibido:", JSON.stringify(body, null, 2));
+        console.log("Timestamp:", new Date().toISOString());
+        console.log("==============================\n");
+
         const { at: at_in, T: T_in, fecha, hora, timestamp } = body
 
         // Si no hay at ni ejes, rechaza
@@ -150,5 +157,8 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Servidor escuchando en puerto ${PORT}`)
+    console.log("\n=== SERVIDOR PAYSAFE INICIADO ===");
+    console.log(`Escuchando en puerto ${PORT}`);
+    console.log("Esperando datos del ESP32...");
+    console.log("==============================\n");
 })

@@ -142,23 +142,26 @@ export default function PaySafeDashboard() {
                         <p className="text-sm text-muted-foreground">Lecturas y hora del servidor</p>
                     </div>
 
-                    <div className="flex items-center gap-6">
-                        <div className="text-right">
-                            <div className="text-xs text-muted-foreground">Servidor</div>
-                            <div className="font-mono text-lg">{formattedTime}</div>
-                            <div className="text-sm text-muted-foreground">{formattedDay}</div>
-                        </div>
-
-                        <Badge variant={connected ? "default" : "destructive"}>
-                            {connected ? "Conectado" : "Desconectado"}
-                        </Badge>
-                    </div>
+                    <Badge variant={connected ? "default" : "destructive"}>
+                        {connected ? "Conectado" : "Desconectado"}
+                    </Badge>
                 </header>
 
-                <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                     <AccelCard title="Aceleración (AT)" value={dato.at} unit="g" />
                     <AccelCard title="Temperatura" value={dato.T} unit="°C" />
                     <AccelCard title="Movimientos bruscos" value={suddenMovements} />
+                    <Card>
+                        <CardHeader className="pb-2">
+                            <CardDescription>Estado del Servidor</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-2">
+                                <div className="font-mono text-2xl">{formattedTime}</div>
+                                <div className="text-sm text-muted-foreground">{formattedDay}</div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </section>
 
                 <Card>
