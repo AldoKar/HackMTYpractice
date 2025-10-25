@@ -112,7 +112,9 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 
     isUpdatingRef.current = true;
 
-    const { scrollTop, containerHeight, scrollContainer } = getScrollData();
+    const { scrollTop, containerHeight } = getScrollData();
+    
+    // Cache these calculations outside the loop - OPTIMIZATION
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
 
@@ -135,9 +137,11 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       if (!card) return;
 
       const cardTop = getElementOffset(card);
+      
+      // Use pre-calculated values - OPTIMIZATION
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
-      const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
+      const pinStart = triggerStart;
       const pinEnd = effectivePinEnd;
 
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
@@ -179,27 +183,27 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       };
 
       const lastTransform = lastTransformsRef.current.get(i);
+      
+      // Optimized threshold detection - reduce unnecessary updates
       const hasChanged =
         !lastTransform ||
-        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1 ||
-        Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
-        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1 ||
-        Math.abs(lastTransform.blur - newTransform.blur) > 0.1;
+        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.5 ||
+        Math.abs(lastTransform.scale - newTransform.scale) > 0.005 ||
+        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.5 ||
+        Math.abs(lastTransform.blur - newTransform.blur) > 0.5;
 
       if (hasChanged) {
         const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
         const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : 'none';
 
-        // Force GPU acceleration and prevent rendering issues
-        requestAnimationFrame(() => {
-          card.style.transform = transform;
-          card.style.webkitTransform = transform;
-          card.style.filter = filter;
-          card.style.webkitFilter = filter;
-          card.style.opacity = '1';
-          card.style.backfaceVisibility = 'hidden';
-          card.style.webkitBackfaceVisibility = 'hidden';
-        });
+        // Apply directly without requestAnimationFrame to prevent trails and improve performance
+        card.style.transform = transform;
+        card.style.webkitTransform = transform;
+        card.style.filter = filter;
+        card.style.webkitFilter = filter;
+        card.style.opacity = '1';
+        card.style.backfaceVisibility = 'hidden';
+        card.style.webkitBackfaceVisibility = 'hidden';
 
         lastTransformsRef.current.set(i, newTransform);
       }
@@ -361,7 +365,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         willChange: 'scroll-position'
       }}
     >
-      <div className="scroll-stack-inner pt-[20vh] px-20 pb-[50rem] min-h-screen">
+      <div className="scroll-stack-inner pt-[20vh] px-20 pb-200 min-h-screen">
         {children}
         {/* Spacer so the last pin can release cleanly */}
         <div className="scroll-stack-end w-full h-px" />

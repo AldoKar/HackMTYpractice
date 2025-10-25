@@ -14,7 +14,7 @@ export default function LandingPage() {
             {/* Hero Section */}
             <section className="container mx-auto px-4 py-20 md:py-28">
                 <div className="max-w-4xl mx-auto text-center">
-                    <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <div className="inline-flex items-center gap-2 bg-banorte-red/10 text-banorte-red px-4 py-2 rounded-full text-sm font-medium mb-6">
                         <Award className="w-4 h-4" />
                         Conduce Seguro, Gana Recompensas
                     </div>
@@ -29,18 +29,18 @@ export default function LandingPage() {
                     </h1>
                     
                     <p className="text-xl md:text-2xl text-gray-600 mb-4 leading-relaxed">
-                        El primer dispositivo inteligente que <span className="text-blue-600 font-semibold">te paga por manejar bien</span>
+                        El primer dispositivo inteligente que <span className="text-banorte-red font-semibold">te paga por manejar bien</span>
                     </p>
                     
                     <p className="text-lg text-gray-500 mb-10 max-w-2xl mx-auto">
                         Transforma tu forma de conducir en ingresos reales. PaySafe monitorea tu comportamiento al volante 
-                        y te recompensa con <span className="font-semibold text-yellow-600">SafeCoins</span> que puedes canjear por dinero, 
+                        y te recompensa con <span className="font-semibold text-banorte-red">SafeCoins</span> que puedes canjear por dinero, 
                         descuentos en gasolina, seguros más baratos y beneficios exclusivos de Banorte.
                     </p>
                     
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <Link to={user ? "/dashboard" : "/register"}>
-                            <Button size="lg" className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700">
+                            <Button size="lg" className="text-lg px-8 py-6 bg-banorte-red hover:bg-banorte-red-dark text-white font-semibold">
                                 {user ? "Ir al Dashboard" : "Comenzar Ahora"}
                                 <ChevronRight className="ml-2 w-5 h-5" />
                             </Button>
@@ -53,7 +53,7 @@ export default function LandingPage() {
                     {/* Stats */}
                     <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-blue-600">$250+</p>
+                            <p className="text-3xl font-bold text-banorte-red">$250+</p>
                             <p className="text-sm text-gray-600 mt-1">Ahorro promedio/mes</p>
                         </div>
                         <div className="text-center">
@@ -61,7 +61,7 @@ export default function LandingPage() {
                             <p className="text-sm text-gray-600 mt-1">Satisfacción usuarios</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-yellow-600">50k+</p>
+                            <p className="text-3xl font-bold text-banorte-red">50k+</p>
                             <p className="text-sm text-gray-600 mt-1">Conductores activos</p>
                         </div>
                     </div>
@@ -76,19 +76,19 @@ export default function LandingPage() {
                             <h2 className="text-4xl font-bold text-gray-900 mb-4">
                                 ¿Qué es PaySafe?
                             </h2>
-                            <div className="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+                            <div className="w-20 h-1 bg-banorte-red mx-auto mb-6"></div>
                         </div>
                         
                         <div className="grid md:grid-cols-2 gap-12 items-center">
                             <div>
                                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                                    PaySafe es un <span className="font-semibold text-blue-600">dispositivo inteligente MPU6050</span> que 
+                                    PaySafe es un <span className="font-semibold text-banorte-red">dispositivo inteligente MPU6050</span> que 
                                     se conecta fácilmente a tu vehículo y analiza tu forma de conducir en tiempo real.
                                 </p>
                                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
                                     A través de sensores de movimiento avanzados, detecta aceleraciones bruscas, frenadas repentinas 
                                     y giros agresivos. Mientras más suave y segura sea tu conducción, 
-                                    <span className="font-semibold text-yellow-600"> más SafeCoins ganas</span>.
+                                    <span className="font-semibold text-banorte-red"> más SafeCoins ganas</span>.
                                 </p>
                                 <p className="text-lg text-gray-700 leading-relaxed">
                                     Tus SafeCoins se pueden canjear por dinero real, descuentos en gasolina, seguros de auto más económicos, 
@@ -99,7 +99,7 @@ export default function LandingPage() {
                             <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl">
                                 <div className="space-y-6">
                                     <div className="flex items-start gap-4">
-                                        <div className="bg-blue-600 text-white p-3 rounded-lg">
+                                        <div className="bg-banorte-red text-white p-3 rounded-lg">
                                             <Car className="w-6 h-6" />
                                         </div>
                                         <div>
@@ -119,7 +119,7 @@ export default function LandingPage() {
                                     </div>
                                     
                                     <div className="flex items-start gap-4">
-                                        <div className="bg-yellow-600 text-white p-3 rounded-lg">
+                                        <div className="bg-banorte-red text-white p-3 rounded-lg">
                                             <Coins className="w-6 h-6" />
                                         </div>
                                         <div>
@@ -139,13 +139,13 @@ export default function LandingPage() {
                 <h2 className="text-4xl font-bold text-center text-gray-900 mb-4">
                     ¿Cómo Funciona?
                 </h2>
-                <div className="w-20 h-1 bg-blue-600 mx-auto mb-16"></div>
+                <div className="w-20 h-1 bg-banorte-red mx-auto mb-16"></div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    <Card className="border-2 hover:border-blue-300 transition-all hover:shadow-xl">
+                    <Card className="border-2 hover:border-banorte-red/30 transition-all hover:shadow-xl">
                         <CardHeader className="text-center">
-                            <div className="mx-auto bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                                <Shield className="w-8 h-8 text-blue-600" />
+                            <div className="mx-auto bg-banorte-red/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                                <Shield className="w-8 h-8 text-banorte-red" />
                             </div>
                             <CardTitle className="text-xl">1. Detección Inteligente</CardTitle>
                             <CardDescription className="text-base mt-3">
@@ -168,10 +168,10 @@ export default function LandingPage() {
                         </CardHeader>
                     </Card>
                     
-                    <Card className="border-2 hover:border-yellow-300 transition-all hover:shadow-xl">
+                    <Card className="border-2 hover:border-banorte-red/30 transition-all hover:shadow-xl">
                         <CardHeader className="text-center">
-                            <div className="mx-auto bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                                <DollarSign className="w-8 h-8 text-yellow-600" />
+                            <div className="mx-auto bg-banorte-red/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                                <DollarSign className="w-8 h-8 text-banorte-red" />
                             </div>
                             <CardTitle className="text-xl">3. Gana Recompensas</CardTitle>
                             <CardDescription className="text-base mt-3">
@@ -189,7 +189,7 @@ export default function LandingPage() {
                     <h2 className="text-4xl font-bold text-center text-gray-900 mb-4">
                         Tu Seguridad Visualizada
                     </h2>
-                    <div className="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+                    <div className="w-20 h-1 bg-banorte-red mx-auto mb-6"></div>
                     <p className="text-center text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
                         Observa en tiempo real cada evento detectado en un mapa interactivo. 
                         Identifica zonas de riesgo y mejora tu comportamiento al volante.
@@ -200,7 +200,7 @@ export default function LandingPage() {
                             <div className="h-96 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
                                 <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
                                 <div className="text-center z-10">
-                                    <MapPin className="w-20 h-20 text-blue-400 mx-auto mb-6 animate-pulse" />
+                                    <MapPin className="w-20 h-20 text-banorte-red/70 mx-auto mb-6 animate-pulse" />
                                     <p className="text-xl font-semibold text-gray-700 mb-2">Mapa Interactivo en Tiempo Real</p>
                                     <p className="text-gray-500 max-w-md mx-auto">
                                         Visualiza tus rutas, eventos de frenado, aceleración y ubicaciones donde ganaste más SafeCoins
@@ -209,8 +209,8 @@ export default function LandingPage() {
                                         <div className="bg-red-100 px-4 py-2 rounded-full">
                                             <span className="text-red-600 font-medium">● Frenadas bruscas</span>
                                         </div>
-                                        <div className="bg-yellow-100 px-4 py-2 rounded-full">
-                                            <span className="text-yellow-600 font-medium">● Aceleraciones</span>
+                                        <div className="bg-banorte-red/10 px-4 py-2 rounded-full">
+                                            <span className="text-banorte-red-dark font-medium">● Aceleraciones</span>
                                         </div>
                                         <div className="bg-green-100 px-4 py-2 rounded-full">
                                             <span className="text-green-600 font-medium">● Conducción segura</span>
@@ -229,7 +229,7 @@ export default function LandingPage() {
                     <h2 className="text-4xl font-bold text-center text-gray-900 mb-4">
                         Beneficios Exclusivos
                     </h2>
-                    <div className="w-20 h-1 bg-blue-600 mx-auto mb-8"></div>
+                    <div className="w-20 h-1 bg-banorte-red mx-auto mb-8"></div>
                 </div>
                 
                 <ScrollStack 
@@ -241,27 +241,27 @@ export default function LandingPage() {
                     scaleEndPosition="25%"
                     baseScale={0.92}
                 >
-                    <ScrollStackItem itemClassName="bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 max-w-5xl mx-auto opacity-100">
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-red-50 to-red-100 border-2 border-banorte-red/30 max-w-5xl mx-auto opacity-100">
                         <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
-                            <div className="w-20 h-20 bg-yellow-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <div className="w-20 h-20 bg-banorte-red rounded-full flex items-center justify-center mb-6 shadow-lg">
                                 <Coins className="w-10 h-10 text-white" />
                             </div>
                             <h3 className="text-3xl font-bold text-gray-900 mb-4">Cupones de Gasolina</h3>
                             <p className="text-lg text-gray-700 max-w-2xl">
-                                Canjea tus SafeCoins por descuentos de hasta <span className="font-bold text-yellow-600">20%</span> en estaciones de servicio afiliadas. 
+                                Canjea tus SafeCoins por descuentos de hasta <span className="font-bold text-banorte-red-dark">20%</span> en estaciones de servicio afiliadas. 
                                 Cada vez que llenas tu tanque, recuperas parte de tu inversión en seguridad.
                             </p>
                         </div>
                     </ScrollStackItem>
                     
-                    <ScrollStackItem itemClassName="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 max-w-5xl mx-auto opacity-100">
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-banorte-gray/30 max-w-5xl mx-auto opacity-100">
                         <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
-                            <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <div className="w-20 h-20 bg-banorte-red rounded-full flex items-center justify-center mb-6 shadow-lg">
                                 <Shield className="w-10 h-10 text-white" />
                             </div>
                             <h3 className="text-3xl font-bold text-gray-900 mb-4">Seguro de Auto Económico</h3>
                             <p className="text-lg text-gray-700 max-w-2xl">
-                                Los conductores seguros obtienen hasta <span className="font-bold text-blue-600">30% de descuento</span> en pólizas de seguro automotriz. 
+                                Los conductores seguros obtienen hasta <span className="font-bold text-banorte-red-dark">30% de descuento</span> en pólizas de seguro automotriz. 
                                 Tu historial de conducción responsable se traduce en ahorros reales.
                             </p>
                         </div>
@@ -322,7 +322,7 @@ export default function LandingPage() {
             </section>
 
             {/* CTA Final */}
-            <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+            <section className="bg-gradient-to-r from-banorte-red to-banorte-red-dark text-white py-20">
                 <div className="container mx-auto px-4 text-center">
                     <h2 className="text-4xl md:text-5xl font-bold mb-6">
                         ¿Listo para ganar mientras conduces?
@@ -336,7 +336,7 @@ export default function LandingPage() {
                     
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <Link to={user ? "/dashboard" : "/register"}>
-                            <Button size="lg" variant="secondary" className="text-lg px-10 py-6 bg-white text-blue-600 hover:bg-gray-100">
+                            <Button size="lg" variant="secondary" className="text-lg px-10 py-6 bg-white text-banorte-red hover:bg-gray-100 font-semibold">
                                 {user ? "Ver Mi Dashboard" : "Crear Cuenta Gratis"}
                                 <ChevronRight className="ml-2 w-5 h-5" />
                             </Button>
