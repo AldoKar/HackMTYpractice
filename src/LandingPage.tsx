@@ -53,7 +53,7 @@ export default function LandingPage() {
                     {/* Stats */}
                     <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-cyan-400">$250+</p>
+                            <p className="text-3xl font-bold text-white">$250+</p>
                             <p className="text-sm text-gray-400 mt-1">Ahorro promedio/mes</p>
                         </div>
                         <div className="text-center">
@@ -61,7 +61,7 @@ export default function LandingPage() {
                             <p className="text-sm text-gray-400 mt-1">Satisfacción usuarios</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-cyan-400">50k+</p>
+                            <p className="text-3xl font-bold text-white">50k+</p>
                             <p className="text-sm text-gray-400 mt-1">Conductores activos</p>
                         </div>
                     </div>
@@ -109,7 +109,7 @@ export default function LandingPage() {
                                     </div>
                                     
                                     <div className="flex items-start gap-4">
-                                        <div className="bg-cyan-600 text-white p-3 rounded-lg">
+                                        <div className="bg-gray-600 text-white p-3 rounded-lg">
                                             <Gauge className="w-6 h-6" />
                                         </div>
                                         <div>
