@@ -39,21 +39,21 @@ const BeneficiosPage = () => {
     return (
         <div className="min-h-screen bg-gray-900">
             {/* Hero Section */}
-            <section className="container mx-auto px-4 py-28 bg-gradient-to-b from-gray-800 to-gray-900">
+            <section className="container mx-auto px-4 py-28 bg-gray-900">
                 <div className="max-w-4xl mx-auto text-center">
                     <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
                         <Award className="w-4 h-4" />
                         Recompensas Exclusivas
                     </div>
-                    
+
                     <h1 className="text-7xl font-bold text-white mb-6">
                         Beneficios PaySafe
                     </h1>
-                    
+
                     <p className="text-2xl text-gray-300 mb-4 leading-relaxed">
                         Reclama recompensas exclusivas por tu <span className="text-red-500 font-semibold">conducción segura</span>
                     </p>
-                    
+
                     <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
                         Canjea tus SafeCoins por experiencias increíbles, descuentos en servicios y beneficios financieros exclusivos de Banorte.
                     </p>
@@ -92,17 +92,16 @@ const BeneficiosPage = () => {
                                     Cupones de Gasolina
                                 </h2>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                    Canjea tus SafeCoins por descuentos de hasta <span className="font-semibold text-red-500">20%</span> en estaciones de servicio afiliadas. 
+                                    Canjea tus SafeCoins por descuentos de hasta <span className="font-semibold text-red-500">20%</span> en estaciones de servicio afiliadas.
                                     Cada vez que llenas tu tanque, recuperas parte de tu inversión en seguridad.
                                 </p>
-                                <Button 
+                                <Button
                                     onClick={() => handleClaim('gasolina', 100)}
                                     disabled={claimed.includes('gasolina')}
-                                    className={`text-lg px-8 py-6 ${
-                                        claimed.includes('gasolina')
-                                            ? 'bg-gray-600 cursor-not-allowed'
-                                            : 'bg-red-600 hover:bg-red-700'
-                                    }`}
+                                    className={`text-lg px-8 py-6 ${claimed.includes('gasolina')
+                                        ? 'bg-gray-600 cursor-not-allowed'
+                                        : 'bg-red-600 hover:bg-red-700'
+                                        }`}
                                 >
                                     {claimed.includes('gasolina') ? '✓ Reclamado' : 'Reclamar Ahora'}
                                     {!claimed.includes('gasolina') && <ChevronRight className="ml-2 w-5 h-5" />}
@@ -132,17 +131,16 @@ const BeneficiosPage = () => {
                                     Entradas a Concierto de Luis Miguel
                                 </h2>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                    Accede a entradas gratuitas para el concierto de Luis Miguel. ¡Experiencias inolvidables que nunca olvidarás! 
+                                    Accede a entradas gratuitas para el concierto de Luis Miguel. ¡Experiencias inolvidables que nunca olvidarás!
                                     La música y el entretenimiento también son parte de tus recompensas.
                                 </p>
-                                <Button 
+                                <Button
                                     onClick={() => handleClaim('luis-miguel', 500)}
                                     disabled={claimed.includes('luis-miguel')}
-                                    className={`text-lg px-8 py-6 ${
-                                        claimed.includes('luis-miguel')
-                                            ? 'bg-gray-600 cursor-not-allowed'
-                                            : 'bg-red-600 hover:bg-red-700'
-                                    }`}
+                                    className={`text-lg px-8 py-6 ${claimed.includes('luis-miguel')
+                                        ? 'bg-gray-600 cursor-not-allowed'
+                                        : 'bg-red-600 hover:bg-red-700'
+                                        }`}
                                 >
                                     {claimed.includes('luis-miguel') ? '✓ Reclamado' : 'Reclamar Ahora'}
                                     {!claimed.includes('luis-miguel') && <ChevronRight className="ml-2 w-5 h-5" />}
@@ -166,17 +164,16 @@ const BeneficiosPage = () => {
                                     Entradas de Cine
                                 </h2>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                    Reclama entradas para las mejores películas en cartelera sin gastar dinero extra. 
+                                    Reclama entradas para las mejores películas en cartelera sin gastar dinero extra.
                                     Disfruta del séptimo arte mientras tus SafeCoins trabajan para ti.
                                 </p>
-                                <Button 
+                                <Button
                                     onClick={() => handleClaim('cine', 50)}
                                     disabled={claimed.includes('cine')}
-                                    className={`text-lg px-8 py-6 ${
-                                        claimed.includes('cine')
-                                            ? 'bg-gray-600 cursor-not-allowed'
-                                            : 'bg-red-600 hover:bg-red-700'
-                                    }`}
+                                    className={`text-lg px-8 py-6 ${claimed.includes('cine')
+                                        ? 'bg-gray-600 cursor-not-allowed'
+                                        : 'bg-red-600 hover:bg-red-700'
+                                        }`}
                                 >
                                     {claimed.includes('cine') ? '✓ Reclamado' : 'Reclamar Ahora'}
                                     {!claimed.includes('cine') && <ChevronRight className="ml-2 w-5 h-5" />}
@@ -206,17 +203,16 @@ const BeneficiosPage = () => {
                                     Seguro de Auto Económico
                                 </h2>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                    Obtén hasta <span className="font-semibold text-red-500">30% de descuento</span> en pólizas de seguro automotriz por tu conducción responsable. 
+                                    Obtén hasta <span className="font-semibold text-red-500">30% de descuento</span> en pólizas de seguro automotriz por tu conducción responsable.
                                     Tu historial de seguridad se traduce en ahorros reales cada mes.
                                 </p>
-                                <Button 
+                                <Button
                                     onClick={() => handleClaim('seguro-auto', 200)}
                                     disabled={claimed.includes('seguro-auto')}
-                                    className={`text-lg px-8 py-6 ${
-                                        claimed.includes('seguro-auto')
-                                            ? 'bg-gray-600 cursor-not-allowed'
-                                            : 'bg-red-600 hover:bg-red-700'
-                                    }`}
+                                    className={`text-lg px-8 py-6 ${claimed.includes('seguro-auto')
+                                        ? 'bg-gray-600 cursor-not-allowed'
+                                        : 'bg-red-600 hover:bg-red-700'
+                                        }`}
                                 >
                                     {claimed.includes('seguro-auto') ? '✓ Reclamado' : 'Reclamar Ahora'}
                                     {!claimed.includes('seguro-auto') && <ChevronRight className="ml-2 w-5 h-5" />}
@@ -240,17 +236,16 @@ const BeneficiosPage = () => {
                                     Fondos de Inversión
                                 </h2>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                    Convierte tus SafeCoins en inversiones y haz crecer tu dinero automáticamente. 
+                                    Convierte tus SafeCoins en inversiones y haz crecer tu dinero automáticamente.
                                     Accede a fondos exclusivos con rendimientos garantizados de Banorte.
                                 </p>
-                                <Button 
+                                <Button
                                     onClick={() => handleClaim('fondo-inversion', 300)}
                                     disabled={claimed.includes('fondo-inversion')}
-                                    className={`text-lg px-8 py-6 ${
-                                        claimed.includes('fondo-inversion')
-                                            ? 'bg-gray-600 cursor-not-allowed'
-                                            : 'bg-red-600 hover:bg-red-700'
-                                    }`}
+                                    className={`text-lg px-8 py-6 ${claimed.includes('fondo-inversion')
+                                        ? 'bg-gray-600 cursor-not-allowed'
+                                        : 'bg-red-600 hover:bg-red-700'
+                                        }`}
                                 >
                                     {claimed.includes('fondo-inversion') ? '✓ Reclamado' : 'Reclamar Ahora'}
                                     {!claimed.includes('fondo-inversion') && <ChevronRight className="ml-2 w-5 h-5" />}
@@ -280,17 +275,16 @@ const BeneficiosPage = () => {
                                     Créditos Banorte
                                 </h2>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                    Mejora tu Score Banorte automáticamente y accede a tasas preferenciales en créditos automotrices. 
+                                    Mejora tu Score Banorte automáticamente y accede a tasas preferenciales en créditos automotrices.
                                     Conducir bien mejora tu perfil crediticio y te abre mejores oportunidades financieras.
                                 </p>
-                                <Button 
+                                <Button
                                     onClick={() => handleClaim('credito-banorte', 150)}
                                     disabled={claimed.includes('credito-banorte')}
-                                    className={`text-lg px-8 py-6 ${
-                                        claimed.includes('credito-banorte')
-                                            ? 'bg-gray-600 cursor-not-allowed'
-                                            : 'bg-red-600 hover:bg-red-700'
-                                    }`}
+                                    className={`text-lg px-8 py-6 ${claimed.includes('credito-banorte')
+                                        ? 'bg-gray-600 cursor-not-allowed'
+                                        : 'bg-red-600 hover:bg-red-700'
+                                        }`}
                                 >
                                     {claimed.includes('credito-banorte') ? '✓ Reclamado' : 'Reclamar Ahora'}
                                     {!claimed.includes('credito-banorte') && <ChevronRight className="ml-2 w-5 h-5" />}

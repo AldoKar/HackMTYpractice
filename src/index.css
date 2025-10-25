@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
-@theme {
-  /* Colores corporativos de Banorte */
-  --color-banorte-red: #ed1c24;
-  --color-banorte-red-light: #f45b61;
-  --color-banorte-red-dark: #c4161c;
-  --color-banorte-white: #ffffff;
+//@theme {
+  //* Colores corporativos de Banorte */
+  //--color-banorte-red: #ed1c24;
+  //--color-banorte-red-light: #f45b61;
+  //--color-banorte-red-dark: #c4161c;
+  /* --color-banorte-white: #ffffff;
   --color-banorte-gray: #58595b;
   --color-banorte-gray-light: #d1d3d4;
-}
+} */
 
 
 @custom-variant dark (&:is(.dark *));

@@ -145,40 +145,6 @@ export function NavigationMenuDemo() {
                                 </NavigationMenuItem>
 
                                 <NavigationMenuItem>
-                                    <NavigationMenuTrigger>Leaderboard</NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <ul className="grid w-[300px] gap-4">
-                                            <li>
-                                                <NavigationMenuLink asChild>
-                                                    <Link href="#">
-                                                        <div className="font-medium">Racha</div>
-                                                        <div className="text-muted-foreground">
-                                                            Consulta tu racha actual y compite con otros usuarios.
-                                                        </div>
-                                                    </Link>
-                                                </NavigationMenuLink>
-                                                <NavigationMenuLink asChild>
-                                                    <Link href="#">
-                                                        <div className="font-medium">Primeros lugares</div>
-                                                        <div className="text-muted-foreground">
-                                                            Consulta los primeros lugares de la competencia.
-                                                        </div>
-                                                    </Link>
-                                                </NavigationMenuLink>
-                                                <NavigationMenuLink asChild>
-                                                    <Link href="#">
-                                                        <div className="font-medium">Insignias</div>
-                                                        <div className="text-muted-foreground">
-                                                            Consulta tus insignias y logros.
-                                                        </div>
-                                                    </Link>
-                                                </NavigationMenuLink>
-                                            </li>
-                                        </ul>
-                                    </NavigationMenuContent>
-                                </NavigationMenuItem>
-
-                                <NavigationMenuItem>
                                     <NavigationMenuTrigger>Simulador</NavigationMenuTrigger>
                                     <NavigationMenuContent>
                                         <ul className="grid w-[300px] gap-4">

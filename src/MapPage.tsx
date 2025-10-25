@@ -31,21 +31,21 @@ function MapPage() {
     return (
         <div className="min-h-screen bg-gray-900">
             {/* Hero Section */}
-            <section className="container mx-auto px-4 py-28 bg-gradient-to-b from-gray-800 to-gray-900">
+            <section className="container mx-auto px-4 py-28 bg-gray-900">
                 <div className="max-w-4xl mx-auto text-center">
                     <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
                         <MapPin className="w-4 h-4" />
                         Visualiza tu Conducción
                     </div>
-                    
+
                     <h1 className="text-7xl font-bold text-white mb-6">
                         Mapa Interactivo
                     </h1>
-                    
+
                     <p className="text-2xl text-gray-300 mb-4 leading-relaxed">
                         Observa tus rutas y eventos de <span className="text-red-500 font-semibold">conducción en tiempo real</span>
                     </p>
-                    
+
                     <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
                         Visualiza cada frenada, aceleración y ubicación donde ganaste SafeCoins. Mejora tu comportamiento al volante con datos precisos.
                     </p>
@@ -82,7 +82,7 @@ function MapPage() {
                             </h2>
                             <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
                             <p className="text-gray-300 max-w-2xl mx-auto">
-                                Cada punto en el mapa representa un evento detectado por PaySafe. 
+                                Cada punto en el mapa representa un evento detectado por PaySafe.
                                 Identifica patrones y mejora tu conducción.
                             </p>
                         </div>
@@ -99,7 +99,7 @@ function MapPage() {
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                                     url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                                 />
-                                
+
                                 {/* Marcadores de ejemplo */}
                                 <Marker position={[25.6866, -100.3161]}>
                                     <Popup>
@@ -158,9 +158,8 @@ function MapPage() {
                                 <Card key={event.id} className="bg-gray-800 border-gray-700 hover:border-red-500 transition-all">
                                     <CardContent className="p-6">
                                         <div className="flex items-start justify-between mb-4">
-                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                                                event.type === 'safe' ? 'bg-white' : 'bg-gray-700'
-                                            }`}>
+                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${event.type === 'safe' ? 'bg-white' : 'bg-gray-700'
+                                                }`}>
                                                 {event.type === 'safe' ? (
                                                     <Award className="w-6 h-6 text-red-600" />
                                                 ) : (
@@ -173,7 +172,7 @@ function MapPage() {
                                                 {event.type === 'safe' ? 'Seguro' : 'Atención'}
                                             </Badge>
                                         </div>
-                                        
+
                                         <h3 className="text-white font-semibold mb-2">{event.location}</h3>
                                         <div className="flex items-center justify-between text-sm">
                                             <span className="text-gray-400">Score: {event.score}%</span>
@@ -197,7 +196,7 @@ function MapPage() {
                                     Rendimiento del Viaje
                                 </h2>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                    Analiza tu comportamiento al volante con métricas detalladas. Cada viaje mejora tu score 
+                                    Analiza tu comportamiento al volante con métricas detalladas. Cada viaje mejora tu score
                                     y te acerca a más <span className="font-semibold text-red-500">SafeCoins</span>.
                                 </p>
                                 <div className="space-y-4">
@@ -230,7 +229,7 @@ function MapPage() {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div className="bg-gray-700 w-64 h-64 rounded-2xl flex items-center justify-center shadow-2xl">
                                 <div className="text-center">
                                     <p className="text-6xl font-bold text-white mb-2">{stats.averageScore}</p>
