@@ -23,7 +23,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-function MapPage() {
+function MapPageBanorte() {
     const [routeAnalysis, setRouteAnalysis] = useState<RouteRiskAnalysis | null>(null);
     const [smartCityReport, setSmartCityReport] = useState<SmartCityReport | null>(null);
     const [isAnalyzingRoute, setIsAnalyzingRoute] = useState(false);
@@ -682,4 +682,4 @@ function MapPage() {
     );
 }
 
-export default MapPage;
+export default MapPageBanorte;

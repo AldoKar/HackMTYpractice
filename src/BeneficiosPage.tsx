@@ -158,35 +158,16 @@ const BeneficiosPage = () => {
           Canjea tus SafeCoins por experiencias increíbles, descuentos en servicios
           y beneficios financieros exclusivos de Banorte.
         </p>
-
-        {/* Estadísticas */}
-        <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Coins className="w-8 h-8 text-white" />
-              <p className="text-3xl font-bold text-white">{userCoins}</p>
-            </div>
-            <p className="text-sm text-gray-400 mt-1">SafeCoins disponibles</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-white">{benefits.length}</p>
-            <p className="text-sm text-gray-400 mt-1">Beneficios activos</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-white">{claimed.length}</p>
-            <p className="text-sm text-gray-400 mt-1">Reclamados</p>
-          </div>
-        </div>
       </section>
+
 
       {/* 💎 Lista de beneficios */}
       {benefits.map(({ id, title, description, cost, icon: Icon, bgColor, iconBg }, i) => (
         <section key={id} className={`${bgColor} py-20`}>
           <div className="container mx-auto px-4">
             <div
-              className={`max-w-5xl mx-auto flex items-center justify-between gap-12 ${
-                i % 2 !== 0 ? "flex-row-reverse" : ""
-              }`}
+              className={`max-w-5xl mx-auto flex items-center justify-between gap-12 ${i % 2 !== 0 ? "flex-row-reverse" : ""
+                }`}
             >
               <div className={`w-64 h-64 rounded-2xl flex items-center justify-center shadow-2xl ${iconBg}`}>
                 <Icon className="w-32 h-32 text-white" />
@@ -205,11 +186,10 @@ const BeneficiosPage = () => {
                 <Button
                   onClick={() => handleClaim(id, cost)}
                   disabled={claimed.includes(id)}
-                  className={`text-lg px-8 py-6 ${
-                    claimed.includes(id)
-                      ? "bg-gray-600 cursor-not-allowed"
-                      : "bg-red-600 hover:bg-red-700"
-                  }`}
+                  className={`text-lg px-8 py-6 ${claimed.includes(id)
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-red-600 hover:bg-red-700"
+                    }`}
                 >
                   {claimed.includes(id) ? "✓ Reclamado" : "Reclamar Ahora"}
                   {!claimed.includes(id) && <ChevronRight className="ml-2 w-5 h-5" />}
@@ -220,17 +200,8 @@ const BeneficiosPage = () => {
         </section>
       ))}
 
-      {/* Footer */}
-      <section className="bg-gray-800 py-12 border-t border-gray-700">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400 text-sm">
-            Beneficios sujetos a disponibilidad. Consulta términos y condiciones. © 2025 PaySafe - Banorte
-          </p>
-        </div>
-      </section>
     </div>
   );
 };
 
 export default BeneficiosPage;
-    

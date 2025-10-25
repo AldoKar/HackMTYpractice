@@ -145,7 +145,7 @@ export function NavigationMenuDemo() {
                                         <ul className="grid w-[400px] gap-3 p-4">
                                             <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link 
+                                                    <Link
                                                         href="/mapa"
                                                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
                                                     >
@@ -158,8 +158,8 @@ export function NavigationMenuDemo() {
                                             </li>
                                             <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link 
-                                                        href="/mapa#grafica" 
+                                                    <Link
+                                                        href="/mapa#grafica"
                                                         onClick={handleEstadisticasClick}
                                                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
                                                     >
@@ -174,13 +174,16 @@ export function NavigationMenuDemo() {
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
 
+
+
+
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger>Pay$afe</NavigationMenuTrigger>
                                     <NavigationMenuContent>
                                         <ul className="grid w-[400px] gap-3 p-4">
                                             <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link 
+                                                    <Link
                                                         href="/mapa"
                                                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
                                                     >
@@ -193,7 +196,7 @@ export function NavigationMenuDemo() {
                                             </li>
                                             <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link 
+                                                    <Link
                                                         href="/mapa"
                                                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
                                                     >
@@ -206,13 +209,62 @@ export function NavigationMenuDemo() {
                                             </li>
                                             <li>
                                                 <NavigationMenuLink asChild>
-                                                    <Link 
+                                                    <Link
                                                         href="/paysafe"
                                                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
                                                     >
                                                         <div className="text-sm font-medium leading-none">Pruebas de Pay$afe</div>
                                                         <p className="text-sm leading-snug text-muted-foreground">
                                                             Visualiza tus pruebas de Pay$afe.
+                                                        </p>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger className="text-red-600">Mapa Banorte</NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[400px] gap-3 p-4">
+                                            <li>
+                                                <NavigationMenuLink asChild>
+                                                    <Link
+                                                        href="/mapabanorte"
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none text-red-600">Mapa Interactivo Banorte</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
+                                                            Visualiza las rutas y eventos de todos los usuarios de Pay$afe.
+                                                        </p>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
+                                            <li>
+                                                <NavigationMenuLink asChild>
+                                                    <Link
+                                                        href="/mapabanorte"
+                                                        onClick={handleEstadisticasClick}
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none text-red-600">Estadísticas Banorte</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
+                                                            Consulta gráficas, estadisticas y reportes de todos los usuarios de Pay$afe.
+                                                        </p>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
+                                            <li>
+                                                <NavigationMenuLink asChild>
+                                                    <Link
+                                                        href="/mapabanorte"
+                                                        onClick={handleEstadisticasClick}
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none text-red-600">Pay$afe assistant Banorte</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
+                                                            Consulta gráficas, estadisticas y reportes de todos los usuarios de Pay$afe.
                                                         </p>
                                                     </Link>
                                                 </NavigationMenuLink>
@@ -245,7 +297,7 @@ function ListItem({
     return (
         <li {...props}>
             <NavigationMenuLink asChild>
-                <Link 
+                <Link
                     href={href}
                     className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
                 >
