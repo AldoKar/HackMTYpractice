@@ -106,7 +106,7 @@ export function NavigationMenuDemo() {
 
     return (
         <NavigationMenu viewport={isMobile} className="max-w-4xl mx-auto p-4 bg-background" >
-            <NavigationMenuList className="flex-wrap justify-between w-full">
+            <NavigationMenuList className="flex-wrap justify-start w-full">
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>Home</NavigationMenuTrigger>
                     <NavigationMenuContent>
@@ -222,43 +222,6 @@ export function NavigationMenuDemo() {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
 
-
-
-                <NavigationMenuItem className="hidden md:block">
-                    <NavigationMenuTrigger>SafeCoins</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[300px] gap-4">
-                            <li>
-                                <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Administra tus SafeCoins</div>
-                                        <div className="text-muted-foreground">
-                                            Administra tus SafeCoins de manera eficiente.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                                <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Market</div>
-                                        <div className="text-muted-foreground">
-                                            Explora el mercado de SafeCoins.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                                <NavigationMenuLink asChild>
-                                    <Link href="#">
-                                        <div className="font-medium">Score Banorte</div>
-                                        <div className="text-muted-foreground">
-                                            Consulta tu Score Banorte y mejora tus beneficios.
-                                        </div>
-                                    </Link>
-                                </NavigationMenuLink>
-                            </li>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-
-
                 <NavigationMenuItem className="hidden md:block">
                     <NavigationMenuTrigger>Simulador</NavigationMenuTrigger>
                     <NavigationMenuContent>
@@ -286,12 +249,40 @@ export function NavigationMenuDemo() {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
 
-
-
-
-
-
             </NavigationMenuList>
+            <NavigationMenuItem className="hidden md:block text-align-right">
+                <NavigationMenuTrigger>Tus Safecoins: 34</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                    <ul className="grid w-[300px] gap-4">
+                        <li>
+                            <NavigationMenuLink asChild>
+                                <Link href="#">
+                                    <div className="font-medium">Administra tus SafeCoins</div>
+                                    <div className="text-muted-foreground">
+                                        Administra tus SafeCoins de manera eficiente.
+                                    </div>
+                                </Link>
+                            </NavigationMenuLink>
+                            <NavigationMenuLink asChild>
+                                <Link href="#">
+                                    <div className="font-medium">Market</div>
+                                    <div className="text-muted-foreground">
+                                        Explora el mercado de SafeCoins.
+                                    </div>
+                                </Link>
+                            </NavigationMenuLink>
+                            <NavigationMenuLink asChild>
+                                <Link href="#">
+                                    <div className="font-medium">Score Banorte</div>
+                                    <div className="text-muted-foreground">
+                                        Consulta tu Score Banorte y mejora tus beneficios.
+                                    </div>
+                                </Link>
+                            </NavigationMenuLink>
+                        </li>
+                    </ul>
+                </NavigationMenuContent>
+            </NavigationMenuItem>
         </NavigationMenu>
     )
 }
