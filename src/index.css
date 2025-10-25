@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+  /* Colores corporativos de Banorte */
+  --color-banorte-red: #ed1c24;
+  --color-banorte-red-light: #f45b61;
+  --color-banorte-red-dark: #c4161c;
+  --color-banorte-white: #ffffff;
+  --color-banorte-gray: #58595b;
+  --color-banorte-gray-light: #d1d3d4;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -14,14 +23,6 @@
   --radius-lg: var(--radius);
 
   --radius-xl: calc(var(--radius) + 4px);
-
-  /* Colores corporativos de Banorte */
-  --color-banorte-red: #ED1C24;
-  --color-banorte-red-light: #F45B61;
-  --color-banorte-red-dark: #C4161C;
-  --color-banorte-white: #FFFFFF;
-  --color-banorte-gray: #58595B;
-  --color-banorte-gray-light: #D1D3D4;
 
   --color-background: var(--background);
 

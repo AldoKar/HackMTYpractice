@@ -10,16 +10,16 @@ export default function LandingPage() {
     const { user } = useAuth();
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-50">
+        <div className="min-h-screen bg-gray-900">
             {/* Hero Section */}
-            <section className="container mx-auto px-4 py-20 md:py-28">
+            <section className="container mx-auto px-4 py-20 md:py-28 bg-gradient-to-b from-gray-800 to-gray-900">
                 <div className="max-w-4xl mx-auto text-center">
-                    <div className="inline-flex items-center gap-2 bg-banorte-red/10 text-banorte-red px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
                         <Award className="w-4 h-4" />
                         Conduce Seguro, Gana Recompensas
                     </div>
                     
-                    <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
+                    <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
                         <TextType 
                             text="PaySafe"
                             typingSpeed={175}
@@ -28,19 +28,19 @@ export default function LandingPage() {
                         />
                     </h1>
                     
-                    <p className="text-xl md:text-2xl text-gray-600 mb-4 leading-relaxed">
-                        El primer dispositivo inteligente que <span className="text-banorte-red font-semibold">te paga por manejar bien</span>
+                    <p className="text-xl md:text-2xl text-gray-300 mb-4 leading-relaxed">
+                        El primer dispositivo inteligente que <span className="text-red-500 font-semibold">te paga por manejar bien</span>
                     </p>
                     
-                    <p className="text-lg text-gray-500 mb-10 max-w-2xl mx-auto">
+                    <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
                         Transforma tu forma de conducir en ingresos reales. PaySafe monitorea tu comportamiento al volante 
-                        y te recompensa con <span className="font-semibold text-banorte-red">SafeCoins</span> que puedes canjear por dinero, 
+                        y te recompensa con <span className="font-semibold text-red-600">SafeCoins</span> que puedes canjear por dinero, 
                         descuentos en gasolina, seguros más baratos y beneficios exclusivos de Banorte.
                     </p>
                     
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <Link to={user ? "/dashboard" : "/register"}>
-                            <Button size="lg" className="text-lg px-8 py-6 bg-banorte-red hover:bg-banorte-red-dark text-white font-semibold">
+                            <Button size="lg" className="text-lg px-8 py-6 bg-red-600 hover:bg-red-700 text-white font-semibold">
                                 {user ? "Ir al Dashboard" : "Comenzar Ahora"}
                                 <ChevronRight className="ml-2 w-5 h-5" />
                             </Button>
@@ -53,58 +53,58 @@ export default function LandingPage() {
                     {/* Stats */}
                     <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-banorte-red">$250+</p>
-                            <p className="text-sm text-gray-600 mt-1">Ahorro promedio/mes</p>
+                            <p className="text-3xl font-bold text-red-500">$250+</p>
+                            <p className="text-sm text-gray-400 mt-1">Ahorro promedio/mes</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-green-600">98%</p>
-                            <p className="text-sm text-gray-600 mt-1">Satisfacción usuarios</p>
+                            <p className="text-3xl font-bold text-green-500">98%</p>
+                            <p className="text-sm text-gray-400 mt-1">Satisfacción usuarios</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-banorte-red">50k+</p>
-                            <p className="text-sm text-gray-600 mt-1">Conductores activos</p>
+                            <p className="text-3xl font-bold text-red-500">50k+</p>
+                            <p className="text-sm text-gray-400 mt-1">Conductores activos</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Introducción - Qué es PaySafe */}
-            <section className="bg-white py-20">
+            <section className="bg-gray-800 py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-4xl mx-auto">
                         <div className="text-center mb-12">
-                            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                            <h2 className="text-4xl font-bold text-white mb-4">
                                 ¿Qué es PaySafe?
                             </h2>
-                            <div className="w-20 h-1 bg-banorte-red mx-auto mb-6"></div>
+                            <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
                         </div>
                         
                         <div className="grid md:grid-cols-2 gap-12 items-center">
                             <div>
-                                <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                                    PaySafe es un <span className="font-semibold text-banorte-red">dispositivo inteligente MPU6050</span> que 
+                                <p className="text-lg text-gray-300 leading-relaxed mb-6">
+                                    PaySafe es un <span className="font-semibold text-red-600">dispositivo inteligente MPU6050</span> que 
                                     se conecta fácilmente a tu vehículo y analiza tu forma de conducir en tiempo real.
                                 </p>
-                                <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                                <p className="text-lg text-gray-300 leading-relaxed mb-6">
                                     A través de sensores de movimiento avanzados, detecta aceleraciones bruscas, frenadas repentinas 
                                     y giros agresivos. Mientras más suave y segura sea tu conducción, 
-                                    <span className="font-semibold text-banorte-red"> más SafeCoins ganas</span>.
+                                    <span className="font-semibold text-red-600"> más SafeCoins ganas</span>.
                                 </p>
-                                <p className="text-lg text-gray-700 leading-relaxed">
+                                <p className="text-lg text-gray-300 leading-relaxed">
                                     Tus SafeCoins se pueden canjear por dinero real, descuentos en gasolina, seguros de auto más económicos, 
                                     entradas a eventos, y acceso a productos financieros exclusivos de Banorte.
                                 </p>
                             </div>
                             
-                            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl">
+                            <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-8 rounded-2xl">
                                 <div className="space-y-6">
                                     <div className="flex items-start gap-4">
-                                        <div className="bg-banorte-red text-white p-3 rounded-lg">
+                                        <div className="bg-red-600 text-white p-3 rounded-lg">
                                             <Car className="w-6 h-6" />
                                         </div>
                                         <div>
-                                            <h3 className="font-semibold text-gray-900 mb-1">Instalación Simple</h3>
-                                            <p className="text-gray-600">Conecta el dispositivo en 5 minutos sin herramientas</p>
+                                            <h3 className="font-semibold text-white mb-1">Instalación Simple</h3>
+                                            <p className="text-gray-300">Conecta el dispositivo en 5 minutos sin herramientas</p>
                                         </div>
                                     </div>
                                     
@@ -113,18 +113,18 @@ export default function LandingPage() {
                                             <Gauge className="w-6 h-6" />
                                         </div>
                                         <div>
-                                            <h3 className="font-semibold text-gray-900 mb-1">Monitoreo 24/7</h3>
-                                            <p className="text-gray-600">Análisis continuo de tu comportamiento al volante</p>
+                                            <h3 className="font-semibold text-white mb-1">Monitoreo 24/7</h3>
+                                            <p className="text-gray-300">Análisis continuo de tu comportamiento al volante</p>
                                         </div>
                                     </div>
                                     
                                     <div className="flex items-start gap-4">
-                                        <div className="bg-banorte-red text-white p-3 rounded-lg">
+                                        <div className="bg-red-600 text-white p-3 rounded-lg">
                                             <Coins className="w-6 h-6" />
                                         </div>
                                         <div>
-                                            <h3 className="font-semibold text-gray-900 mb-1">Recompensas Automáticas</h3>
-                                            <p className="text-gray-600">Gana SafeCoins por cada viaje seguro</p>
+                                            <h3 className="font-semibold text-white mb-1">Recompensas Automáticas</h3>
+                                            <p className="text-gray-300">Gana SafeCoins por cada viaje seguro</p>
                                         </div>
                                     </div>
                                 </div>
@@ -135,46 +135,46 @@ export default function LandingPage() {
             </section>
 
             {/* Cómo Funciona - Paso a Paso */}
-            <section className="container mx-auto px-4 py-20">
-                <h2 className="text-4xl font-bold text-center text-gray-900 mb-4">
+            <section className="container mx-auto px-4 py-20 bg-gray-900">
+                <h2 className="text-4xl font-bold text-center text-white mb-4">
                     ¿Cómo Funciona?
                 </h2>
-                <div className="w-20 h-1 bg-banorte-red mx-auto mb-16"></div>
+                <div className="w-20 h-1 bg-red-600 mx-auto mb-16"></div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    <Card className="border-2 hover:border-banorte-red/30 transition-all hover:shadow-xl">
+                    <Card className="border-2 border-red-600/50 hover:border-red-600 transition-all hover:shadow-xl bg-gray-800/50 backdrop-blur">
                         <CardHeader className="text-center">
-                            <div className="mx-auto bg-banorte-red/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                                <Shield className="w-8 h-8 text-banorte-red" />
+                            <div className="mx-auto bg-red-600 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                                <Shield className="w-8 h-8 text-white" />
                             </div>
-                            <CardTitle className="text-xl">1. Detección Inteligente</CardTitle>
-                            <CardDescription className="text-base mt-3">
+                            <CardTitle className="text-xl text-white">1. Detección Inteligente</CardTitle>
+                            <CardDescription className="text-base mt-3 text-gray-300">
                                 El sensor MPU6050 integrado monitorea en tiempo real cada movimiento de tu vehículo: 
                                 aceleraciones, frenadas y giros. Identifica patrones de conducción segura vs conducción agresiva.
                             </CardDescription>
                         </CardHeader>
                     </Card>
                     
-                    <Card className="border-2 hover:border-green-300 transition-all hover:shadow-xl">
+                    <Card className="border-2 border-gray-600 hover:border-gray-400 transition-all hover:shadow-xl bg-gray-800/50 backdrop-blur">
                         <CardHeader className="text-center">
-                            <div className="mx-auto bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                                <TrendingUp className="w-8 h-8 text-green-600" />
+                            <div className="mx-auto bg-gray-500 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                                <TrendingUp className="w-8 h-8 text-white" />
                             </div>
-                            <CardTitle className="text-xl">2. Análisis y Puntuación</CardTitle>
-                            <CardDescription className="text-base mt-3">
+                            <CardTitle className="text-xl text-white">2. Análisis y Puntuación</CardTitle>
+                            <CardDescription className="text-base mt-3 text-gray-300">
                                 Cada viaje recibe un score de seguridad basado en suavidad de manejo, velocidad adecuada 
                                 y prevención de riesgos. Tu comportamiento se traduce en SafeCoins automáticamente.
                             </CardDescription>
                         </CardHeader>
                     </Card>
                     
-                    <Card className="border-2 hover:border-banorte-red/30 transition-all hover:shadow-xl">
+                    <Card className="border-2 border-red-600/50 hover:border-red-600 transition-all hover:shadow-xl bg-gray-800/50 backdrop-blur">
                         <CardHeader className="text-center">
-                            <div className="mx-auto bg-banorte-red/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                                <DollarSign className="w-8 h-8 text-banorte-red" />
+                            <div className="mx-auto bg-red-600 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                                <DollarSign className="w-8 h-8 text-white" />
                             </div>
-                            <CardTitle className="text-xl">3. Gana Recompensas</CardTitle>
-                            <CardDescription className="text-base mt-3">
+                            <CardTitle className="text-xl text-white">3. Gana Recompensas</CardTitle>
+                            <CardDescription className="text-base mt-3 text-gray-300">
                                 Acumula SafeCoins por kilómetro recorrido de forma segura. Canjéalos por dinero real, 
                                 cupones de gasolina, descuentos en seguros o beneficios exclusivos de Banorte.
                             </CardDescription>
@@ -184,36 +184,36 @@ export default function LandingPage() {
             </section>
 
             {/* Visualización en Tiempo Real */}
-            <section className="bg-gray-50 py-20">
+            <section className="bg-gradient-to-b from-gray-800 to-gray-700 py-20">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-4xl font-bold text-center text-gray-900 mb-4">
+                    <h2 className="text-4xl font-bold text-center text-white mb-4">
                         Tu Seguridad Visualizada
                     </h2>
-                    <div className="w-20 h-1 bg-banorte-red mx-auto mb-6"></div>
-                    <p className="text-center text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+                    <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
+                    <p className="text-center text-lg text-gray-300 mb-12 max-w-2xl mx-auto">
                         Observa en tiempo real cada evento detectado en un mapa interactivo. 
                         Identifica zonas de riesgo y mejora tu comportamiento al volante.
                     </p>
                     
                     <Card className="max-w-5xl mx-auto shadow-2xl">
                         <CardContent className="p-0">
-                            <div className="h-96 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
+                            <div className="h-96 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative overflow-hidden">
                                 <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
                                 <div className="text-center z-10">
-                                    <MapPin className="w-20 h-20 text-banorte-red/70 mx-auto mb-6 animate-pulse" />
-                                    <p className="text-xl font-semibold text-gray-700 mb-2">Mapa Interactivo en Tiempo Real</p>
-                                    <p className="text-gray-500 max-w-md mx-auto">
+                                    <MapPin className="w-20 h-20 text-red-500/70 mx-auto mb-6 animate-pulse" />
+                                    <p className="text-xl font-semibold text-white mb-2">Mapa Interactivo en Tiempo Real</p>
+                                    <p className="text-gray-300 max-w-md mx-auto">
                                         Visualiza tus rutas, eventos de frenado, aceleración y ubicaciones donde ganaste más SafeCoins
                                     </p>
-                                    <div className="mt-6 flex gap-4 justify-center">
-                                        <div className="bg-red-100 px-4 py-2 rounded-full">
-                                            <span className="text-red-600 font-medium">● Frenadas bruscas</span>
+                                    <div className="mt-6 flex gap-4 justify-center flex-wrap">
+                                        <div className="bg-red-600 px-4 py-2 rounded-full border-2 border-red-500">
+                                            <span className="text-white font-medium">● Frenadas bruscas</span>
                                         </div>
-                                        <div className="bg-banorte-red/10 px-4 py-2 rounded-full">
-                                            <span className="text-banorte-red-dark font-medium">● Aceleraciones</span>
+                                        <div className="bg-gray-700 px-4 py-2 rounded-full border-2 border-gray-600">
+                                            <span className="text-white font-medium">● Aceleraciones</span>
                                         </div>
-                                        <div className="bg-green-100 px-4 py-2 rounded-full">
-                                            <span className="text-green-600 font-medium">● Conducción segura</span>
+                                        <div className="bg-white px-4 py-2 rounded-full border-2 border-gray-300">
+                                            <span className="text-gray-900 font-medium">● Conducción segura</span>
                                         </div>
                                     </div>
                                 </div>
@@ -224,12 +224,12 @@ export default function LandingPage() {
             </section>
 
             {/* Beneficios Exclusivos - ScrollStack */}
-            <section className="relative bg-white">
-                <div className="sticky top-0 py-20 bg-white z-10">
-                    <h2 className="text-4xl font-bold text-center text-gray-900 mb-4">
+            <section className="relative bg-gradient-to-b from-gray-900 to-gray-800">
+                <div className="sticky top-0 py-20 bg-gray-900/95 backdrop-blur-sm z-10">
+                    <h2 className="text-4xl font-bold text-center text-white mb-4">
                         Beneficios Exclusivos
                     </h2>
-                    <div className="w-20 h-1 bg-banorte-red mx-auto mb-8"></div>
+                    <div className="w-20 h-1 bg-red-600 mx-auto mb-8"></div>
                 </div>
                 
                 <ScrollStack 
@@ -241,35 +241,35 @@ export default function LandingPage() {
                     scaleEndPosition="25%"
                     baseScale={0.92}
                 >
-                    <ScrollStackItem itemClassName="bg-gradient-to-br from-red-50 to-red-100 border-2 border-banorte-red/30 max-w-5xl mx-auto opacity-100">
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-red-600 to-red-700 border-2 border-red-500 max-w-5xl mx-auto opacity-100">
                         <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
-                            <div className="w-20 h-20 bg-banorte-red rounded-full flex items-center justify-center mb-6 shadow-lg">
-                                <Coins className="w-10 h-10 text-white" />
+                            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-lg">
+                                <Coins className="w-10 h-10 text-red-600" />
                             </div>
-                            <h3 className="text-3xl font-bold text-gray-900 mb-4">Cupones de Gasolina</h3>
-                            <p className="text-lg text-gray-700 max-w-2xl">
-                                Canjea tus SafeCoins por descuentos de hasta <span className="font-bold text-banorte-red-dark">20%</span> en estaciones de servicio afiliadas. 
+                            <h3 className="text-3xl font-bold text-white mb-4">Cupones de Gasolina</h3>
+                            <p className="text-lg text-red-50 max-w-2xl">
+                                Canjea tus SafeCoins por descuentos de hasta <span className="font-bold text-white">20%</span> en estaciones de servicio afiliadas. 
                                 Cada vez que llenas tu tanque, recuperas parte de tu inversión en seguridad.
                             </p>
                         </div>
                     </ScrollStackItem>
                     
-                    <ScrollStackItem itemClassName="bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-banorte-gray/30 max-w-5xl mx-auto opacity-100">
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-gray-300 max-w-5xl mx-auto opacity-100">
                         <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
-                            <div className="w-20 h-20 bg-banorte-red rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
                                 <Shield className="w-10 h-10 text-white" />
                             </div>
                             <h3 className="text-3xl font-bold text-gray-900 mb-4">Seguro de Auto Económico</h3>
                             <p className="text-lg text-gray-700 max-w-2xl">
-                                Los conductores seguros obtienen hasta <span className="font-bold text-banorte-red-dark">30% de descuento</span> en pólizas de seguro automotriz. 
+                                Los conductores seguros obtienen hasta <span className="font-bold text-red-600">30% de descuento</span> en pólizas de seguro automotriz. 
                                 Tu historial de conducción responsable se traduce en ahorros reales.
                             </p>
                         </div>
                     </ScrollStackItem>
                     
-                    <ScrollStackItem itemClassName="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 max-w-5xl mx-auto opacity-100">
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 max-w-5xl mx-auto opacity-100">
                         <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
-                            <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
                                 <Award className="w-10 h-10 text-white" />
                             </div>
                             <h3 className="text-3xl font-bold text-gray-900 mb-4">Eventos Exclusivos</h3>
@@ -280,22 +280,22 @@ export default function LandingPage() {
                         </div>
                     </ScrollStackItem>
                     
-                    <ScrollStackItem itemClassName="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 max-w-5xl mx-auto opacity-100">
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-red-600 to-red-700 border-2 border-red-500 max-w-5xl mx-auto opacity-100">
                         <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
-                            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
-                                <TrendingUp className="w-10 h-10 text-white" />
+                            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-lg">
+                                <TrendingUp className="w-10 h-10 text-red-600" />
                             </div>
-                            <h3 className="text-3xl font-bold text-gray-900 mb-4">Créditos Banorte</h3>
-                            <p className="text-lg text-gray-700 max-w-2xl">
+                            <h3 className="text-3xl font-bold text-white mb-4">Créditos Banorte</h3>
+                            <p className="text-lg text-red-50 max-w-2xl">
                                 Mejora tu Score Banorte automáticamente y accede a tasas preferenciales en créditos automotrices. 
                                 Conducir bien mejora tu perfil crediticio.
                             </p>
                         </div>
                     </ScrollStackItem>
                     
-                    <ScrollStackItem itemClassName="bg-gradient-to-br from-indigo-50 to-indigo-100 border-2 border-indigo-200 max-w-5xl mx-auto opacity-100">
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-gray-300 max-w-5xl mx-auto opacity-100">
                         <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
-                            <div className="w-20 h-20 bg-indigo-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
                                 <DollarSign className="w-10 h-10 text-white" />
                             </div>
                             <h3 className="text-3xl font-bold text-gray-900 mb-4">Fondos de Inversión</h3>
@@ -306,9 +306,9 @@ export default function LandingPage() {
                         </div>
                     </ScrollStackItem>
                     
-                    <ScrollStackItem itemClassName="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 max-w-5xl mx-auto opacity-100">
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 max-w-5xl mx-auto opacity-100">
                         <div className="flex flex-col items-center justify-center h-full text-center px-8" style={{ opacity: 1, backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
-                            <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
                                 <Gauge className="w-10 h-10 text-white" />
                             </div>
                             <h3 className="text-3xl font-bold text-gray-900 mb-4">Competencias y Ranking</h3>
@@ -322,7 +322,7 @@ export default function LandingPage() {
             </section>
 
             {/* CTA Final */}
-            <section className="bg-gradient-to-r from-banorte-red to-banorte-red-dark text-white py-20">
+            <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-20">
                 <div className="container mx-auto px-4 text-center">
                     <h2 className="text-4xl md:text-5xl font-bold mb-6">
                         ¿Listo para ganar mientras conduces?
@@ -336,12 +336,12 @@ export default function LandingPage() {
                     
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <Link to={user ? "/dashboard" : "/register"}>
-                            <Button size="lg" variant="secondary" className="text-lg px-10 py-6 bg-white text-banorte-red hover:bg-gray-100 font-semibold">
+                            <Button size="lg" variant="secondary" className="text-lg px-10 py-6 bg-white text-red-600 hover:bg-gray-100 font-semibold">
                                 {user ? "Ver Mi Dashboard" : "Crear Cuenta Gratis"}
                                 <ChevronRight className="ml-2 w-5 h-5" />
                             </Button>
                         </Link>
-                        <Button size="lg" variant="outline" className="text-lg px-10 py-6 border-white text-white hover:bg-white/10">
+                        <Button size="lg" className="text-lg px-10 py-6 bg-gray-800 text-white hover:bg-gray-700 border-2 border-white font-semibold">
                             Comprar Dispositivo
                         </Button>
                     </div>
