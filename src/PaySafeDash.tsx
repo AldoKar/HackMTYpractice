@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import React, { useEffect, useRef, useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
 
 interface HistoryItem {
     t: string
@@ -19,6 +19,11 @@ export default function PaySafeDashboard() {
     const [connected, setConnected] = useState(false)
     const [history, setHistory] = useState<HistoryItem[]>([])
     const [suddenMovements, setSuddenMovements] = useState(0)
+
+    // Time state coming from server
+    const [serverTime, setServerTime] = useState<{ hour: number; minute: number; second: number } | null>(null)
+    const [serverDay, setServerDay] = useState<{ day: string; weekday: string } | null>(null)
+
     const mounted = useRef(true)
     const esRef = useRef<EventSource | null>(null)
 
@@ -34,9 +39,12 @@ export default function PaySafeDashboard() {
             const lng = Number(json.lng ?? json.raw?.lng ?? 0) || 0
             const lastUpdate = Number(json.lastUpdate ?? json.raw?.lastUpdate ?? Date.now())
 
+            // update main values
             setDato({ lat, lng, at: accel, T: temp })
             setConnected(Date.now() - lastUpdate < 5000)
+
             if (accel > 2) setSuddenMovements((p) => p + 1)
+
             setHistory((h) => {
                 const next = [
                     ...h,
@@ -44,11 +52,22 @@ export default function PaySafeDashboard() {
                 ]
                 return next.slice(-60)
             })
+
+            // update server time/day if available
+            if (json.time && typeof json.time === "object") {
+                const { hour, minute, second } = json.time
+                setServerTime({ hour: Number(hour), minute: Number(minute), second: Number(second) })
+            }
+            if (json.day || json.weekday) {
+                setServerDay({ day: json.day ?? "", weekday: json.weekday ?? "" })
+            }
         }
 
         // Try SSE connection first
         try {
-            const url = `${window.location.protocol}//${window.location.hostname}:3000/stream`
+            const host = window.location.hostname || "localhost"
+            const port = 3000
+            const url = `${window.location.protocol}//${host}:${port}/stream`
             const es = new EventSource(url)
             esRef.current = es
 
@@ -61,17 +80,18 @@ export default function PaySafeDashboard() {
                     // ignore non-json messages
                 }
             }
-            es.onerror = (e) => {
-                console.warn("SSE error, falling back to polling", e)
-                es.close()
-                esRef.current = null
+            es.onerror = () => {
+                // fallback to polling
+                if (esRef.current) {
+                    esRef.current.close()
+                    esRef.current = null
+                }
             }
         } catch (err) {
-            // ignore, will use polling
-            console.warn("SSE not available, using polling", err)
+            // SSE not available
         }
 
-        // Fallback polling every 1s if SSE not connected
+        // Polling fallback
         let pollId: number | null = null
         const startPolling = () => {
             if (pollId != null) return
@@ -90,7 +110,7 @@ export default function PaySafeDashboard() {
             pollId = window.setInterval(fetchEstado, 1000)
         }
 
-        // if SSE fails to open in 2s, start polling
+        // if SSE not ready in 2s, start polling
         const fallbackTimer = window.setTimeout(() => {
             if (!esRef.current || esRef.current.readyState !== 1) startPolling()
         }, 2000)
@@ -106,54 +126,61 @@ export default function PaySafeDashboard() {
         }
     }, [])
 
+    // format time helpers
+    const pad2 = (n: number) => String(n).padStart(2, "0")
+    const formattedTime = serverTime
+        ? `${pad2(serverTime.hour)}:${pad2(serverTime.minute)}:${pad2(serverTime.second)}`
+        : "--:--:--"
+    const formattedDay = serverDay ? `${serverDay.weekday ?? ""} ${serverDay.day ?? ""}` : ""
+
     return (
-        <div className="max-w-5xl mx-auto p-6 bg-gray-900">
-            <header className="flex items-center justify-between mb-6 bg-gray-900">
-                <div>
-                    <h1 className="text-2xl font-semibold text-white">Pay$afe — Dashboard</h1>
-                    <p className="text-sm text-muted-foreground text-white">Lecturas de aceleración y temperatura de tu Pay$afe en tiempo real</p>
-                </div>
-                <div className="text-right">
-                    <Badge variant={connected ? "default" : "destructive"}>
-                        {connected ? "Conectado" : "Desconectado"}
-                    </Badge>
-                </div>
-            </header>
-
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <AccelCard title="Aceleración (AT)" value={dato.at} unit="g" />
-                <AccelCard title="Temperatura" value={dato.T} unit="°C" />
-                <AccelCard title="Movimientos bruscos" value={suddenMovements} />
-            </section>
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <AccelCard title="Latitud GPS" value={60} unit="°" />
-                <AccelCard title="Longitud GPS" value={70} unit="°" />
-                <AccelCard title="Tiempo actual" value={suddenMovements} />
-            </section>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>Historial (últimas {history.length} muestras)</CardTitle>
-                    <CardDescription>Gráfico de aceleración total (AT)</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="w-full h-64">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={history} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="t" minTickGap={20} />
-                                <YAxis />
-                                <Tooltip />
-                                <Line type="monotone" dataKey="at" stroke="#8884d8" dot={false} isAnimationActive={false} />
-                            </LineChart>
-                        </ResponsiveContainer>
+        <div className="min-h-screen min-h-[100dvh] pt-16 bg-gray-50 text-gray-900">
+            <div className="max-w-6xl mx-auto p-6">
+                <header className="flex items-center justify-between mb-6">
+                    <div>
+                        <h1 className="text-2xl font-semibold">PaySafe — Dashboard</h1>
+                        <p className="text-sm text-muted-foreground">Lecturas y hora del servidor</p>
                     </div>
-                </CardContent>
-            </Card>
 
-            <footer className="mt-4 text-sm text-muted-foreground text-center">
-                Actualiza en tiempo real vía SSE · Endpoint: <code>/stream</code>
-            </footer>
+                    <div className="flex items-center gap-6">
+                        <div className="text-right">
+                            <div className="text-xs text-muted-foreground">Servidor</div>
+                            <div className="font-mono text-lg">{formattedTime}</div>
+                            <div className="text-sm text-muted-foreground">{formattedDay}</div>
+                        </div>
+
+                        <Badge variant={connected ? "default" : "destructive"}>
+                            {connected ? "Conectado" : "Desconectado"}
+                        </Badge>
+                    </div>
+                </header>
+
+                <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <AccelCard title="Aceleración (AT)" value={dato.at} unit="g" />
+                    <AccelCard title="Temperatura" value={dato.T} unit="°C" />
+                    <AccelCard title="Movimientos bruscos" value={suddenMovements} />
+                </section>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Historial (últimas {history.length} muestras)</CardTitle>
+                        <CardDescription>Gráfico de aceleración total (AT)</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="w-full h-64">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={history}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="t" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Line type="monotone" dataKey="at" stroke="#6366f1" dot={false} isAnimationActive={false} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     )
 }
