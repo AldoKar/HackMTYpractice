@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // CODIGO RELOJ SEPARADO
 // Date and time functions using a DS3231 RTC connected via I2C and Wire lib
 #include "RTClib.h"
@@ -621,6 +622,8 @@ void serialOn() {
 }
 
 //ULtimo
+=======
+>>>>>>> 5bdeee756c29cda9b332cffcb2e6729317219dd2
 //PaySafe - Sistema completo con envío de datos
 #include <Wire.h>
 #include "RTClib.h"
@@ -700,7 +703,11 @@ void setup() {
   
   if (rtc.lostPower()) {
     Serial.println("RTC perdio energia, ajustando...");
+<<<<<<< HEAD
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+=======
+    rtc.adjust(DateTime(F(_DATE), F(TIME_)));
+>>>>>>> 5bdeee756c29cda9b332cffcb2e6729317219dd2
   }
   
   Serial.println("RTC inicializado OK");
