@@ -16,3 +16,6 @@ npm install gsap
 npm install --save-dev @types/node
 npm install lenis
 npx shadcn@latest add resizable
+npm install tailwindcss postcss autoprefixer
+npm install @tailwindcss/postcss
+npm install -D @types/node
