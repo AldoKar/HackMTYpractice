@@ -23,3 +23,4 @@ npm install -D @types/node
 npm install react-leaflet@next
 npm install react@rc react-dom@rc leaflet
 npm install -D @types/leaflet
+npm install @google/generative-ai

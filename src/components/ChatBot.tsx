@@ -1,0 +1,364 @@
+import { useState, useRef, useEffect } from 'react'
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import { Button } from './ui/button'
+import { MessageCircle, X, Send, Loader2, Minus } from 'lucide-react'
+import { toast } from 'sonner'
+import { SYSTEM_PROMPT, WELCOME_MESSAGE } from '@/lib/chatbotConfig'
+
+interface Message {
+    role: 'user' | 'assistant'
+    content: string
+    timestamp: Date
+}
+
+const INITIAL_POSITION = { x: window.innerWidth - 420, y: 100 }
+
+export function ChatBot() {
+    const [isOpen, setIsOpen] = useState(false)
+    const [messages, setMessages] = useState<Message[]>([])
+    const [input, setInput] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const [size, setSize] = useState({ width: 400, height: 600 })
+    const [position, setPosition] = useState(INITIAL_POSITION)
+    const [hasShownWelcome, setHasShownWelcome] = useState(false)
+    
+    const chatRef = useRef<HTMLDivElement>(null)
+    const messagesEndRef = useRef<HTMLDivElement>(null)
+    const resizeRef = useRef<{ isResizing: boolean; direction: string }>({
+        isResizing: false,
+        direction: ''
+    })
+    const dragRef = useRef<{ isDragging: boolean; startX: number; startY: number }>({
+        isDragging: false,
+        startX: 0,
+        startY: 0
+    })
+
+    // Inicializar Gemini
+    const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEIMINI_API_KEY || '')
+    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+
+    // Auto-scroll al final de los mensajes
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages])
+
+    // Mensaje de bienvenida inicial (toast)
+    useEffect(() => {
+        if (!hasShownWelcome) {
+            const timer = setTimeout(() => {
+                toast('¡Bienvenido a Pay$afe!', {
+                    description: 'Aquí estoy para ayudarte con cualquier duda o consulta.',
+                    duration: 5000,
+                })
+                setHasShownWelcome(true)
+            }, 1000)
+            
+            return () => clearTimeout(timer)
+        }
+    }, [hasShownWelcome])
+
+    // Mensaje de bienvenida en el chat
+    useEffect(() => {
+        if (messages.length === 0) {
+            setMessages([{
+                role: 'assistant',
+                content: WELCOME_MESSAGE,
+                timestamp: new Date()
+            }])
+        }
+    }, [])
+
+    const handleSendMessage = async () => {
+        if (!input.trim() || isLoading) return
+
+        const userMessage: Message = {
+            role: 'user',
+            content: input,
+            timestamp: new Date()
+        }
+
+        setMessages(prev => [...prev, userMessage])
+        const currentInput = input
+        setInput('')
+        setIsLoading(true)
+
+        try {
+            // Construir el historial con el prompt del sistema incluido
+            const chatHistory = [
+                {
+                    role: 'user',
+                    parts: [{ text: SYSTEM_PROMPT }]
+                },
+                {
+                    role: 'model',
+                    parts: [{ text: 'Entendido. Actuaré como asistente virtual de Pay$afe siguiendo todas las instrucciones proporcionadas. Estoy listo para ayudar a los usuarios.' }]
+                },
+                ...messages.slice(0, -1).map(msg => ({
+                    role: msg.role === 'user' ? 'user' : 'model',
+                    parts: [{ text: msg.content }]
+                }))
+            ]
+
+            const chat = model.startChat({
+                history: chatHistory,
+                generationConfig: {
+                    maxOutputTokens: 1000,
+                    temperature: 0.7,
+                }
+            })
+
+            const result = await chat.sendMessage(currentInput)
+            const response = await result.response
+            const text = response.text()
+
+            const assistantMessage: Message = {
+                role: 'assistant',
+                content: text,
+                timestamp: new Date()
+            }
+
+            setMessages(prev => [...prev, assistantMessage])
+        } catch (error) {
+            console.error('Error al enviar mensaje:', error)
+            const errorMessage: Message = {
+                role: 'assistant',
+                content: 'Lo siento, hubo un error al procesar tu mensaje. Por favor, intenta de nuevo.',
+                timestamp: new Date()
+            }
+            setMessages(prev => [...prev, errorMessage])
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            handleSendMessage()
+        }
+    }
+
+    // Manejo de drag (arrastrar ventana)
+    const handleDragStart = (e: React.MouseEvent) => {
+        // Solo permitir drag desde el header
+        const target = e.target as HTMLElement
+        if (target.closest('.chat-header')) {
+            dragRef.current = {
+                isDragging: true,
+                startX: e.clientX - position.x,
+                startY: e.clientY - position.y
+            }
+
+            const handleDragMove = (moveEvent: MouseEvent) => {
+                if (!dragRef.current.isDragging) return
+
+                const newX = moveEvent.clientX - dragRef.current.startX
+                const newY = moveEvent.clientY - dragRef.current.startY
+
+                // Mantener la ventana dentro de los límites de la pantalla
+                const maxX = window.innerWidth - size.width
+                const maxY = window.innerHeight - size.height
+
+                setPosition({
+                    x: Math.max(0, Math.min(maxX, newX)),
+                    y: Math.max(0, Math.min(maxY, newY))
+                })
+            }
+
+            const handleDragEnd = () => {
+                dragRef.current.isDragging = false
+                document.removeEventListener('mousemove', handleDragMove)
+                document.removeEventListener('mouseup', handleDragEnd)
+            }
+
+            document.addEventListener('mousemove', handleDragMove)
+            document.addEventListener('mouseup', handleDragEnd)
+        }
+    }
+
+    // Cerrar y volver a posición original
+    const handleClose = () => {
+        setIsOpen(false)
+        setPosition(INITIAL_POSITION)
+    }
+
+    // Minimizar y volver a posición original
+    const handleMinimize = () => {
+        setIsOpen(false)
+        setPosition(INITIAL_POSITION)
+    }
+
+    // Manejo de resize
+    const handleMouseDown = (e: React.MouseEvent, direction: string) => {
+        e.preventDefault()
+        resizeRef.current = { isResizing: true, direction }
+        
+        const handleMouseMove = (moveEvent: MouseEvent) => {
+            if (!resizeRef.current.isResizing) return
+
+            const { direction } = resizeRef.current
+            const deltaX = moveEvent.movementX
+            const deltaY = moveEvent.movementY
+
+            setSize(prev => {
+                const newSize = { ...prev }
+
+                if (direction.includes('e')) {
+                    newSize.width = Math.max(300, Math.min(800, prev.width + deltaX))
+                }
+                if (direction.includes('w')) {
+                    const newWidth = Math.max(300, Math.min(800, prev.width - deltaX))
+                    if (newWidth !== prev.width) {
+                        setPosition(p => ({ ...p, x: p.x + deltaX }))
+                        newSize.width = newWidth
+                    }
+                }
+                if (direction.includes('s')) {
+                    newSize.height = Math.max(400, Math.min(800, prev.height + deltaY))
+                }
+                if (direction.includes('n')) {
+                    const newHeight = Math.max(400, Math.min(800, prev.height - deltaY))
+                    if (newHeight !== prev.height) {
+                        setPosition(p => ({ ...p, y: p.y + deltaY }))
+                        newSize.height = newHeight
+                    }
+                }
+
+                return newSize
+            })
+        }
+
+        const handleMouseUp = () => {
+            resizeRef.current.isResizing = false
+            document.removeEventListener('mousemove', handleMouseMove)
+            document.removeEventListener('mouseup', handleMouseUp)
+        }
+
+        document.addEventListener('mousemove', handleMouseMove)
+        document.addEventListener('mouseup', handleMouseUp)
+    }
+
+    return (
+        <>
+            {/* Botón flotante */}
+            {!isOpen && (
+                <button
+                    onClick={() => setIsOpen(true)}
+                    className="fixed bottom-6 right-6 w-16 h-16 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg flex items-center justify-center z-50 transition-all hover:scale-110"
+                >
+                    <MessageCircle className="w-8 h-8" />
+                </button>
+            )}
+
+            {/* Ventana del chat */}
+            {isOpen && (
+                <div
+                    ref={chatRef}
+                    className="fixed bg-gray-900 rounded-lg shadow-2xl overflow-hidden z-50 border border-gray-700"
+                    style={{
+                        width: `${size.width}px`,
+                        height: `${size.height}px`,
+                        left: `${position.x}px`,
+                        top: `${position.y}px`
+                    }}
+                >
+                    {/* Bordes de resize */}
+                    <div className="absolute top-0 left-0 w-1 h-full cursor-w-resize" onMouseDown={(e) => handleMouseDown(e, 'w')} />
+                    <div className="absolute top-0 right-0 w-1 h-full cursor-e-resize" onMouseDown={(e) => handleMouseDown(e, 'e')} />
+                    <div className="absolute top-0 left-0 w-full h-1 cursor-n-resize" onMouseDown={(e) => handleMouseDown(e, 'n')} />
+                    <div className="absolute bottom-0 left-0 w-full h-1 cursor-s-resize" onMouseDown={(e) => handleMouseDown(e, 's')} />
+                    <div className="absolute top-0 left-0 w-3 h-3 cursor-nw-resize" onMouseDown={(e) => handleMouseDown(e, 'nw')} />
+                    <div className="absolute top-0 right-0 w-3 h-3 cursor-ne-resize" onMouseDown={(e) => handleMouseDown(e, 'ne')} />
+                    <div className="absolute bottom-0 left-0 w-3 h-3 cursor-sw-resize" onMouseDown={(e) => handleMouseDown(e, 'sw')} />
+                    <div className="absolute bottom-0 right-0 w-3 h-3 cursor-se-resize" onMouseDown={(e) => handleMouseDown(e, 'se')} />
+
+                    {/* Header */}
+                    <div 
+                        className="chat-header bg-gray-800 p-4 flex items-center justify-between border-b border-gray-700 cursor-move select-none"
+                        onMouseDown={handleDragStart}
+                    >
+                        <div className="flex items-center gap-2">
+                            <MessageCircle className="w-5 h-5 text-red-600" />
+                            <h3 className="font-semibold text-white">Pay$afe Assistant</h3>
+                        </div>
+                        <div className="flex gap-1">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={handleMinimize}
+                                className="text-gray-400 hover:text-white hover:bg-gray-700"
+                            >
+                                <Minus className="w-5 h-5" />
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={handleClose}
+                                className="text-gray-400 hover:text-white hover:bg-gray-700"
+                            >
+                                <X className="w-5 h-5" />
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Mensajes */}
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ height: `${size.height - 140}px` }}>
+                        {messages.map((message, index) => (
+                            <div
+                                key={index}
+                                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                            >
+                                <div
+                                    className={`max-w-[80%] rounded-lg p-3 ${
+                                        message.role === 'user'
+                                            ? 'bg-red-600 text-white'
+                                            : 'bg-gray-800 text-white border border-gray-700'
+                                    }`}
+                                >
+                                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                                    <p className="text-xs opacity-70 mt-1">
+                                        {message.timestamp.toLocaleTimeString('es-MX', {
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        })}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                        {isLoading && (
+                            <div className="flex justify-start">
+                                <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
+                                    <Loader2 className="w-5 h-5 animate-spin text-red-600" />
+                                </div>
+                            </div>
+                        )}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    {/* Input */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-800 border-t border-gray-700">
+                        <div className="flex gap-2">
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                                placeholder="Escribe tu mensaje..."
+                                className="flex-1 bg-gray-900 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+                                disabled={isLoading}
+                            />
+                            <Button
+                                onClick={handleSendMessage}
+                                disabled={isLoading || !input.trim()}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                                <Send className="w-5 h-5" />
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    )
+}

@@ -19,6 +19,7 @@ import { useLocation } from 'react-router-dom';
 import { Toaster } from "@/components/ui/sonner";
 import BeneficiosPage from './BeneficiosPage.tsx';
 import MapPage from './MapPage.tsx';
+import { ChatBot } from './components/ChatBot.tsx';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
     <>
       {showNav && <NavigationMenuDemo />}
       <Toaster />
+      <ChatBot />
 
       <Routes>
         <Route path="/" element={<LandingPage />} />
