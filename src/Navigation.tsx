@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Badge } from "@/components/ui/badge"
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 type NextLikeLinkProps = React.ComponentPropsWithoutRef<"a"> & { href: string }
@@ -24,7 +23,6 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 
 const components: { title: string; href: string; description: string }[] = [
