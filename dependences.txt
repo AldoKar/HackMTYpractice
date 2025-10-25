@@ -19,3 +19,8 @@ npx shadcn@latest add resizable
 npm install tailwindcss postcss autoprefixer
 npm install @tailwindcss/postcss
 npm install -D @types/node
+
+
+//npm install react@rc react-dom@rc leaflet
+//npm install react-leaflet@next
+//npm install -D @types/leaflet
