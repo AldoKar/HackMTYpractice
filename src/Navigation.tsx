@@ -186,6 +186,14 @@ export function NavigationMenuDemo() {
                                                         </div>
                                                     </Link>
                                                 </NavigationMenuLink>
+                                                <NavigationMenuLink asChild>
+                                                    <Link href="/paysafe">
+                                                        <div className="font-medium">Pruebas de Pay$afe</div>
+                                                        <div className="text-muted-foreground">
+                                                            Visualiza tus pruebas de Pay$afe.
+                                                        </div>
+                                                    </Link>
+                                                </NavigationMenuLink>
                                             </li>
                                         </ul>
                                     </NavigationMenuContent>

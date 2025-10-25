@@ -14,7 +14,7 @@ interface CardProps {
     unit?: string
 }
 
-export default function MPU6050Dashboard() {
+export default function PaySafeDashboard() {
     const [dato, setDato] = useState({ lat: 0, lng: 0, at: 0, T: 0 })
     const [connected, setConnected] = useState(false)
     const [history, setHistory] = useState<HistoryItem[]>([])
@@ -107,11 +107,11 @@ export default function MPU6050Dashboard() {
     }, [])
 
     return (
-        <div className="max-w-5xl mx-auto p-6">
-            <header className="flex items-center justify-between mb-6">
+        <div className="max-w-5xl mx-auto p-6 bg-gray-900">
+            <header className="flex items-center justify-between mb-6 bg-gray-900">
                 <div>
-                    <h1 className="text-2xl font-semibold">MPU6050 — Dashboard</h1>
-                    <p className="text-sm text-muted-foreground">Lecturas de aceleración y temperatura en tiempo real</p>
+                    <h1 className="text-2xl font-semibold text-white">Pay$afe — Dashboard</h1>
+                    <p className="text-sm text-muted-foreground text-white">Lecturas de aceleración y temperatura de tu Pay$afe en tiempo real</p>
                 </div>
                 <div className="text-right">
                     <Badge variant={connected ? "default" : "destructive"}>
@@ -124,6 +124,11 @@ export default function MPU6050Dashboard() {
                 <AccelCard title="Aceleración (AT)" value={dato.at} unit="g" />
                 <AccelCard title="Temperatura" value={dato.T} unit="°C" />
                 <AccelCard title="Movimientos bruscos" value={suddenMovements} />
+            </section>
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <AccelCard title="Latitud GPS" value={60} unit="°" />
+                <AccelCard title="Longitud GPS" value={70} unit="°" />
+                <AccelCard title="Tiempo actual" value={suddenMovements} />
             </section>
 
             <Card>
