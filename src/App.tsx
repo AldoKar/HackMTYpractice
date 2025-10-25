@@ -12,6 +12,7 @@ import PaySafeDashboard from './PaySafeDash.tsx';
 import MapPageBanorte from './MapPageBanorte.tsx';
 import AdminPage from './AdminPage.tsx';
 import { useAuth } from './context/AuthContext';
+import DashboardPage from './DashboardPage.tsx';
 
 function App() {
 
@@ -34,6 +35,8 @@ function App() {
         <Route path="/mapa" element={<MapPage />} />
         <Route path="/mapabanorte" element={<MapPageBanorte />} />
         <Route path="/adminpage" element={<AdminPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+
       </Routes>
     </>
 

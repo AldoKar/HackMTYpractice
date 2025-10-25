@@ -110,6 +110,26 @@ export function NavigationMenuDemo() {
                             <NavigationMenuList className="flex items-center gap-2">
 
                                 <NavigationMenuItem>
+                                    <NavigationMenuTrigger>Dashboard</NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid gap-2 w-[500px] grid-cols-[.75fr_1fr]">
+                                            <li>
+                                                <NavigationMenuLink asChild>
+                                                    <Link
+                                                        href="/dashboard"
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none">Dashboard</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
+                                                            Consulta un breve resumen de la actividad reciente y estadísticas clave.
+                                                        </p>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
                                     <NavigationMenuTrigger>Home</NavigationMenuTrigger>
                                     <NavigationMenuContent>
                                         <ul className="grid gap-2 w-[500px] grid-cols-[.75fr_1fr]">
