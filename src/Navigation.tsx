@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react"
 
 type NextLikeLinkProps = React.ComponentPropsWithoutRef<"a"> & { href: string }
 const Link = React.forwardRef<HTMLAnchorElement, NextLikeLinkProps>(
@@ -60,7 +59,6 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 
 const components: { title: string; href: string; description: string }[] = [
