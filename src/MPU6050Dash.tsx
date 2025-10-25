@@ -87,13 +87,13 @@ export default function MPU6050Dashboard() {
                 </div>
             </header>
 
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <section className="grid grid-cols-3 gap-4 mb-6">
                 <AccelCard title="Acc X" value={dato.ax} unit="g" />
                 <AccelCard title="Acc Y" value={dato.ay} unit="g" />
                 <AccelCard title="Acc Z" value={dato.az} unit="g" />
             </section>
 
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <section className="grid grid-cols-3 gap-4 mb-6">
                 <AccelCard title="Movimientos Bruscos" value={suddenMovements} unit="" />
                 <AccelCard title="Latitud" value={dato.lat.toFixed(6)} unit="°" />
                 <AccelCard title="Longitud" value={dato.lng.toFixed(6)} unit="°" />

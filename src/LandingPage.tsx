@@ -12,14 +12,14 @@ export default function LandingPage() {
     return (
         <div className="min-h-screen bg-gray-900">
             {/* Hero Section */}
-            <section className="container mx-auto px-4 py-20 md:py-28 bg-gradient-to-b from-gray-800 to-gray-900">
+            <section className="container mx-auto px-4 py-28 bg-gradient-to-b from-gray-800 to-gray-900">
                 <div className="max-w-4xl mx-auto text-center">
                     <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
                         <Award className="w-4 h-4" />
                         Conduce Seguro, Gana Recompensas
                     </div>
                     
-                    <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+                    <h1 className="text-7xl font-bold text-white mb-6">
                         <TextType 
                             text="PaySafe"
                             typingSpeed={175}
@@ -28,7 +28,7 @@ export default function LandingPage() {
                         />
                     </h1>
                     
-                    <p className="text-xl md:text-2xl text-gray-300 mb-4 leading-relaxed">
+                    <p className="text-2xl text-gray-300 mb-4 leading-relaxed">
                         El primer dispositivo inteligente que <span className="text-red-500 font-semibold">te paga por manejar bien</span>
                     </p>
                     
@@ -38,7 +38,7 @@ export default function LandingPage() {
                         descuentos en gasolina, seguros más baratos y beneficios exclusivos de Banorte.
                     </p>
                     
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <div className="flex gap-4 justify-center items-center">
                         <Link to={user ? "/dashboard" : "/register"}>
                             <Button size="lg" className="text-lg px-8 py-6 bg-red-600 hover:bg-red-700 text-white font-semibold">
                                 {user ? "Ir al Dashboard" : "Comenzar Ahora"}
@@ -53,15 +53,15 @@ export default function LandingPage() {
                     {/* Stats */}
                     <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-red-500">$250+</p>
+                            <p className="text-3xl font-bold text-cyan-400">$250+</p>
                             <p className="text-sm text-gray-400 mt-1">Ahorro promedio/mes</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-green-500">98%</p>
+                            <p className="text-3xl font-bold text-white">98%</p>
                             <p className="text-sm text-gray-400 mt-1">Satisfacción usuarios</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-3xl font-bold text-red-500">50k+</p>
+                            <p className="text-3xl font-bold text-cyan-400">50k+</p>
                             <p className="text-sm text-gray-400 mt-1">Conductores activos</p>
                         </div>
                     </div>
@@ -79,7 +79,7 @@ export default function LandingPage() {
                             <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
                         </div>
                         
-                        <div className="grid md:grid-cols-2 gap-12 items-center">
+                        <div className="grid grid-cols-2 gap-12 items-center">
                             <div>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
                                     PaySafe es un <span className="font-semibold text-red-600">dispositivo inteligente MPU6050</span> que 
@@ -99,7 +99,7 @@ export default function LandingPage() {
                             <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-8 rounded-2xl">
                                 <div className="space-y-6">
                                     <div className="flex items-start gap-4">
-                                        <div className="bg-red-600 text-white p-3 rounded-lg">
+                                        <div className="bg-gray-600 text-white p-3 rounded-lg">
                                             <Car className="w-6 h-6" />
                                         </div>
                                         <div>
@@ -109,7 +109,7 @@ export default function LandingPage() {
                                     </div>
                                     
                                     <div className="flex items-start gap-4">
-                                        <div className="bg-green-600 text-white p-3 rounded-lg">
+                                        <div className="bg-cyan-600 text-white p-3 rounded-lg">
                                             <Gauge className="w-6 h-6" />
                                         </div>
                                         <div>
@@ -119,7 +119,7 @@ export default function LandingPage() {
                                     </div>
                                     
                                     <div className="flex items-start gap-4">
-                                        <div className="bg-red-600 text-white p-3 rounded-lg">
+                                        <div className="bg-gray-600 text-white p-3 rounded-lg">
                                             <Coins className="w-6 h-6" />
                                         </div>
                                         <div>
@@ -141,7 +141,7 @@ export default function LandingPage() {
                 </h2>
                 <div className="w-20 h-1 bg-red-600 mx-auto mb-16"></div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div className="grid grid-cols-3 gap-8 max-w-6xl mx-auto">
                     <Card className="border-2 border-red-600/50 hover:border-red-600 transition-all hover:shadow-xl bg-gray-800/50 backdrop-blur">
                         <CardHeader className="text-center">
                             <div className="mx-auto bg-red-600 w-16 h-16 rounded-full flex items-center justify-center mb-4">
@@ -324,7 +324,7 @@ export default function LandingPage() {
             {/* CTA Final */}
             <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-20">
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                    <h2 className="text-5xl font-bold mb-6">
                         ¿Listo para ganar mientras conduces?
                     </h2>
                     <p className="text-xl mb-4 max-w-2xl mx-auto opacity-90">
@@ -334,7 +334,7 @@ export default function LandingPage() {
                         Instala PaySafe hoy y comienza a acumular SafeCoins desde tu primer viaje.
                     </p>
                     
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <div className="flex gap-4 justify-center items-center">
                         <Link to={user ? "/dashboard" : "/register"}>
                             <Button size="lg" variant="secondary" className="text-lg px-10 py-6 bg-white text-red-600 hover:bg-gray-100 font-semibold">
                                 {user ? "Ver Mi Dashboard" : "Crear Cuenta Gratis"}
@@ -366,7 +366,7 @@ export default function LandingPage() {
             {/* Footer */}
             <footer className="bg-gray-900 text-white py-12">
                 <div className="container mx-auto px-4">
-                    <div className="grid md:grid-cols-4 gap-8 mb-8">
+                    <div className="grid grid-cols-4 gap-8 mb-8">
                         <div>
                             <h3 className="text-xl font-bold mb-4">PaySafe</h3>
                             <p className="text-gray-400 text-sm">
@@ -405,9 +405,9 @@ export default function LandingPage() {
                         </div>
                     </div>
                     
-                    <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                    <div className="border-t border-gray-800 pt-8 flex justify-between items-center">
                         <p className="text-gray-400 text-sm">© 2025 PaySafe. Todos los derechos reservados.</p>
-                        <div className="flex gap-6 mt-4 md:mt-0">
+                        <div className="flex gap-6">
                             <a href="#" className="text-gray-400 hover:text-white transition-colors">
                                 <span className="sr-only">Twitter</span>
                                 Twitter

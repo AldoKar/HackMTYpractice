@@ -57,7 +57,7 @@ const BanorteColorPalette = () => {
           Guía de colores corporativos para PaySafe
         </p>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-6">
           {colors.map((color, index) => (
             <div
               key={index}

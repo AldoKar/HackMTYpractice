@@ -83,14 +83,14 @@ export function NavigationMenuDemo() {
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger>Home</NavigationMenuTrigger>
                                     <NavigationMenuContent>
-                                        <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                                        <ul className="grid gap-2 w-[500px] grid-cols-[.75fr_1fr]">
                                             <li className="row-span-3">
                                                 <NavigationMenuLink asChild>
                                                     <Link
                                                         href="/"
-                                                        className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-4 no-underline outline-hidden transition-all duration-200 select-none focus:shadow-md md:p-6"
+                                                        className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden transition-all duration-200 select-none focus:shadow-md"
                                                     >
-                                                        <div className="mb-2 text-lg font-medium sm:mt-4">
+                                                        <div className="mb-2 text-lg font-medium mt-4">
                                                             PaySafe
                                                         </div>
                                                         <p className="text-muted-foreground text-sm leading-tight">
@@ -116,7 +116,7 @@ export function NavigationMenuDemo() {
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger>Beneficios Banorte</NavigationMenuTrigger>
                                     <NavigationMenuContent>
-                                        <ul className="grid gap-2 sm:w-[400px] md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                                        <ul className="grid gap-2 w-[600px] grid-cols-2">
                                             {components.map((component) => (
                                                 <ListItem key={component.title} title={component.title} href={component.href}>
                                                     {component.description}
