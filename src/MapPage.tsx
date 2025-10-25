@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { MapPin, Navigation, TrendingUp, AlertCircle, Award, Activity, BarChart3, Brain, Route, Map as MapIcon, Building2, Loader2, ChevronRight } from 'lucide-react';
+import { MapPin, TrendingUp, AlertCircle, Award, BarChart3, Brain, Route, Map as MapIcon, Building2, Loader2, ChevronRight } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

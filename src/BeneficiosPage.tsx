@@ -12,7 +12,6 @@ import {
   DollarSign,
   Car,
   Award,
-  Coins,
   ChevronRight,
 } from "lucide-react";
 
