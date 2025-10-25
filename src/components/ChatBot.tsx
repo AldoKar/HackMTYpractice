@@ -84,7 +84,7 @@ export function ChatBot() {
         setIsLoading(true)
 
         try {
-            // Construir el historial de conversación (excluyendo el mensaje que acabamos de agregar)
+            // Construir el historial de conversación
             const conversationHistory = messages
                 .filter(msg => msg.content !== WELCOME_MESSAGE) // Excluir mensaje de bienvenida
                 .map(msg => ({
@@ -92,20 +92,19 @@ export function ChatBot() {
                     parts: [{ text: msg.content }]
                 }))
 
-            // Agregar el prompt del sistema al inicio del mensaje del usuario solo en el primer mensaje
-            const messageToSend = conversationHistory.length === 0 
-                ? `${SYSTEM_PROMPT}\n\nUsuario: ${currentInput}` 
-                : currentInput
-
             const chat = model.startChat({
                 history: conversationHistory,
                 generationConfig: {
-                    maxOutputTokens: 1000,
+                    maxOutputTokens: 300, // Respuestas más cortas (antes era 1000)
                     temperature: 0.7,
+                },
+                systemInstruction: {
+                    role: 'system',
+                    parts: [{ text: SYSTEM_PROMPT + '\n\nIMPORTANTE: Mantén tus respuestas breves y concisas (máximo 2-3 párrafos cortos). Ve directo al punto.' }]
                 }
             })
 
-            const result = await chat.sendMessage(messageToSend)
+            const result = await chat.sendMessage(currentInput)
             const response = await result.response
             const text = response.text()
 
@@ -139,9 +138,15 @@ export function ChatBot() {
 
     // Manejo de drag (arrastrar ventana)
     const handleDragStart = (e: React.MouseEvent) => {
-        // Solo permitir drag desde el header
+        // No permitir drag si se está haciendo resize o si se clickea un botón
         const target = e.target as HTMLElement
+        if (target.closest('button') || resizeRef.current.isResizing) {
+            return
+        }
+        
+        // Solo permitir drag desde el header
         if (target.closest('.chat-header')) {
+            e.preventDefault()
             dragRef.current = {
                 isDragging: true,
                 startX: e.clientX - position.x,
@@ -190,41 +195,53 @@ export function ChatBot() {
     // Manejo de resize
     const handleMouseDown = (e: React.MouseEvent, direction: string) => {
         e.preventDefault()
+        e.stopPropagation() // Evitar que se active el drag
+        
+        const startX = e.clientX
+        const startY = e.clientY
+        const startWidth = size.width
+        const startHeight = size.height
+        const startPosX = position.x
+        const startPosY = position.y
+        
         resizeRef.current = { isResizing: true, direction }
         
         const handleMouseMove = (moveEvent: MouseEvent) => {
             if (!resizeRef.current.isResizing) return
 
             const { direction } = resizeRef.current
-            const deltaX = moveEvent.movementX
-            const deltaY = moveEvent.movementY
+            const deltaX = moveEvent.clientX - startX
+            const deltaY = moveEvent.clientY - startY
 
-            setSize(prev => {
-                const newSize = { ...prev }
+            let newWidth = startWidth
+            let newHeight = startHeight
+            let newX = startPosX
+            let newY = startPosY
 
-                if (direction.includes('e')) {
-                    newSize.width = Math.max(300, Math.min(800, prev.width + deltaX))
-                }
-                if (direction.includes('w')) {
-                    const newWidth = Math.max(300, Math.min(800, prev.width - deltaX))
-                    if (newWidth !== prev.width) {
-                        setPosition(p => ({ ...p, x: p.x + deltaX }))
-                        newSize.width = newWidth
-                    }
-                }
-                if (direction.includes('s')) {
-                    newSize.height = Math.max(400, Math.min(800, prev.height + deltaY))
-                }
-                if (direction.includes('n')) {
-                    const newHeight = Math.max(400, Math.min(800, prev.height - deltaY))
-                    if (newHeight !== prev.height) {
-                        setPosition(p => ({ ...p, y: p.y + deltaY }))
-                        newSize.height = newHeight
-                    }
-                }
+            // Resize horizontal
+            if (direction.includes('e')) {
+                newWidth = Math.max(300, Math.min(800, startWidth + deltaX))
+            }
+            if (direction.includes('w')) {
+                newWidth = Math.max(300, Math.min(800, startWidth - deltaX))
+                newX = startPosX + (startWidth - newWidth)
+            }
 
-                return newSize
-            })
+            // Resize vertical
+            if (direction.includes('s')) {
+                newHeight = Math.max(400, Math.min(800, startHeight + deltaY))
+            }
+            if (direction.includes('n')) {
+                newHeight = Math.max(400, Math.min(800, startHeight - deltaY))
+                newY = startPosY + (startHeight - newHeight)
+            }
+
+            // Asegurar que la ventana no se salga de la pantalla
+            newX = Math.max(0, Math.min(window.innerWidth - newWidth, newX))
+            newY = Math.max(0, Math.min(window.innerHeight - newHeight, newY))
+
+            setSize({ width: newWidth, height: newHeight })
+            setPosition({ x: newX, y: newY })
         }
 
         const handleMouseUp = () => {
@@ -253,7 +270,7 @@ export function ChatBot() {
             {isOpen && (
                 <div
                     ref={chatRef}
-                    className="fixed bg-gray-900 rounded-lg shadow-2xl overflow-hidden z-50 border border-gray-700"
+                    className="fixed bg-gray-900 rounded-lg shadow-2xl z-50 border border-gray-700 flex flex-col"
                     style={{
                         width: `${size.width}px`,
                         height: `${size.height}px`,
@@ -261,19 +278,19 @@ export function ChatBot() {
                         top: `${position.y}px`
                     }}
                 >
-                    {/* Bordes de resize */}
-                    <div className="absolute top-0 left-0 w-1 h-full cursor-w-resize" onMouseDown={(e) => handleMouseDown(e, 'w')} />
-                    <div className="absolute top-0 right-0 w-1 h-full cursor-e-resize" onMouseDown={(e) => handleMouseDown(e, 'e')} />
-                    <div className="absolute top-0 left-0 w-full h-1 cursor-n-resize" onMouseDown={(e) => handleMouseDown(e, 'n')} />
-                    <div className="absolute bottom-0 left-0 w-full h-1 cursor-s-resize" onMouseDown={(e) => handleMouseDown(e, 's')} />
-                    <div className="absolute top-0 left-0 w-3 h-3 cursor-nw-resize" onMouseDown={(e) => handleMouseDown(e, 'nw')} />
-                    <div className="absolute top-0 right-0 w-3 h-3 cursor-ne-resize" onMouseDown={(e) => handleMouseDown(e, 'ne')} />
-                    <div className="absolute bottom-0 left-0 w-3 h-3 cursor-sw-resize" onMouseDown={(e) => handleMouseDown(e, 'sw')} />
-                    <div className="absolute bottom-0 right-0 w-3 h-3 cursor-se-resize" onMouseDown={(e) => handleMouseDown(e, 'se')} />
+                    {/* Bordes de resize - con z-index alto para estar por encima */}
+                    <div className="absolute top-0 left-0 w-2 h-full cursor-w-resize z-50 hover:bg-red-600/20" onMouseDown={(e) => handleMouseDown(e, 'w')} />
+                    <div className="absolute top-0 right-0 w-2 h-full cursor-e-resize z-50 hover:bg-red-600/20" onMouseDown={(e) => handleMouseDown(e, 'e')} />
+                    <div className="absolute top-0 left-0 w-full h-2 cursor-n-resize z-50 hover:bg-red-600/20" onMouseDown={(e) => handleMouseDown(e, 'n')} />
+                    <div className="absolute bottom-0 left-0 w-full h-2 cursor-s-resize z-50 hover:bg-red-600/20" onMouseDown={(e) => handleMouseDown(e, 's')} />
+                    <div className="absolute top-0 left-0 w-4 h-4 cursor-nw-resize z-50 hover:bg-red-600/30" onMouseDown={(e) => handleMouseDown(e, 'nw')} />
+                    <div className="absolute top-0 right-0 w-4 h-4 cursor-ne-resize z-50 hover:bg-red-600/30" onMouseDown={(e) => handleMouseDown(e, 'ne')} />
+                    <div className="absolute bottom-0 left-0 w-4 h-4 cursor-sw-resize z-50 hover:bg-red-600/30" onMouseDown={(e) => handleMouseDown(e, 'sw')} />
+                    <div className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize z-50 hover:bg-red-600/30" onMouseDown={(e) => handleMouseDown(e, 'se')} />
 
                     {/* Header */}
                     <div 
-                        className="chat-header bg-gray-800 p-4 flex items-center justify-between border-b border-gray-700 cursor-move select-none"
+                        className="chat-header bg-gray-800 p-4 flex items-center justify-between border-b border-gray-700 cursor-move select-none shrink-0"
                         onMouseDown={handleDragStart}
                     >
                         <div className="flex items-center gap-2">
@@ -301,7 +318,10 @@ export function ChatBot() {
                     </div>
 
                     {/* Mensajes */}
-                    <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ height: `${size.height - 140}px` }}>
+                    <div 
+                        className="overflow-y-scroll p-4 space-y-4 bg-gray-900 flex-1"
+                        onMouseDown={(e) => e.stopPropagation()}
+                    >
                         {messages.map((message, index) => (
                             <div
                                 key={index}
@@ -335,7 +355,7 @@ export function ChatBot() {
                     </div>
 
                     {/* Input */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-800 border-t border-gray-700">
+                    <div className="p-4 bg-gray-800 border-t border-gray-700 shrink-0">
                         <div className="flex gap-2">
                             <input
                                 type="text"
