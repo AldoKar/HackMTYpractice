@@ -1,93 +1,260 @@
-// ...existing code...
-import React from 'react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import {
-    ResizableHandle,
-    ResizablePanel,
-    ResizablePanelGroup,
-} from "@/components/ui/resizable"
-import { MapContainer, TileLayer } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapPin, Navigation, TrendingUp, AlertCircle, Award, Activity } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix para iconos de Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 function MapPage() {
+    // Datos de ejemplo
+    const stats = {
+        totalTrips: 145,
+        safeCoinsEarned: 1250,
+        averageScore: 92,
+        currentStreak: 7
+    };
+
+    const recentEvents = [
+        { id: 1, type: 'safe', location: 'Av. Constitución', score: 95, coins: 15 },
+        { id: 2, type: 'warning', location: 'Blvd. Morelos', score: 78, coins: 5 },
+        { id: 3, type: 'safe', location: 'Calzada del Valle', score: 98, coins: 20 },
+    ];
+
     return (
         <div className="min-h-screen bg-gray-900">
-            <div className="min-h-screen min-h-[100dvh] w-full bg-gray-50 text-gray-900">
+            {/* Hero Section */}
+            <section className="container mx-auto px-4 py-28 bg-gradient-to-b from-gray-800 to-gray-900">
+                <div className="max-w-4xl mx-auto text-center">
+                    <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                        <MapPin className="w-4 h-4" />
+                        Visualiza tu Conducción
+                    </div>
+                    
+                    <h1 className="text-7xl font-bold text-white mb-6">
+                        Mapa Interactivo
+                    </h1>
+                    
+                    <p className="text-2xl text-gray-300 mb-4 leading-relaxed">
+                        Observa tus rutas y eventos de <span className="text-red-500 font-semibold">conducción en tiempo real</span>
+                    </p>
+                    
+                    <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
+                        Visualiza cada frenada, aceleración y ubicación donde ganaste SafeCoins. Mejora tu comportamiento al volante con datos precisos.
+                    </p>
 
-
-                <main className="max-w-6xl mx-auto px-4 py-6 space-y-6">
-                    {/* MAP - visible primero, responsive height */}
-                    <section className="relative w-full rounded-lg overflow-hidden shadow-sm">
-                        <MapContainer
-                            center={[40.7128, -74.0060]}
-                            zoom={11}
-                            className="w-full h-[40vh] sm:h-[45vh] md:h-[55vh] lg:h-[60vh]"
-                        >
-                            <TileLayer
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &amp; CARTO'
-                                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                            />
-                        </MapContainer>
-
-                        {/* overlay controls / legend */}
-                        <div className="absolute top-4 right-4 z-20 flex flex-col gap-2">
-                            <button className="bg-white/90 text-sm px-3 py-1 rounded-lg shadow-sm hover:shadow-md">Center</button>
-                            <button className="bg-white/90 text-sm px-3 py-1 rounded-lg shadow-sm hover:shadow-md">Layers</button>
+                    {/* Stats */}
+                    <div className="grid grid-cols-4 gap-8 mt-16 max-w-3xl mx-auto">
+                        <div className="text-center">
+                            <p className="text-3xl font-bold text-white">{stats.totalTrips}</p>
+                            <p className="text-sm text-gray-400 mt-1">Viajes totales</p>
                         </div>
-                    </section>
+                        <div className="text-center">
+                            <p className="text-3xl font-bold text-white">{stats.safeCoinsEarned}</p>
+                            <p className="text-sm text-gray-400 mt-1">SafeCoins ganados</p>
+                        </div>
+                        <div className="text-center">
+                            <p className="text-3xl font-bold text-white">{stats.averageScore}%</p>
+                            <p className="text-sm text-gray-400 mt-1">Score promedio</p>
+                        </div>
+                        <div className="text-center">
+                            <p className="text-3xl font-bold text-white">{stats.currentStreak}</p>
+                            <p className="text-sm text-gray-400 mt-1">Días de racha</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                    {/* Resizable two-panel area: left = chart, right = text */}
-                    <section className="w-full h-[45vh] sm:h-[40vh] md:h-[35vh] lg:h-[30vh]">
-                        <ResizablePanelGroup direction="horizontal" className="h-full w-full bg-transparent">
-                            <ResizablePanel defaultSize={70} className="h-full">
-                                <div className="h-full w-full bg-white rounded-l-lg shadow-sm p-4 overflow-hidden flex flex-col">
-                                    <h2 className="text-lg font-medium mb-3">Rendimiento - Últimos viajes</h2>
-                                    <div className="flex-1 min-h-0">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <LineChart data={[{ name: 'Trip A', uv: 400 }, { name: 'Trip B', uv: 300 }, { name: 'Trip C', uv: 500 }]}>
-                                                <CartesianGrid strokeDasharray="3 3" opacity={0.6} />
-                                                <XAxis dataKey="name" />
-                                                <YAxis />
-                                                <Tooltip />
-                                                <Legend />
-                                                <Line type="monotone" dataKey="uv" stroke="#6366f1" strokeWidth={2} dot={{ r: 3 }} />
-                                            </LineChart>
-                                        </ResponsiveContainer>
+            {/* Mapa Principal */}
+            <section className="bg-gray-800 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-bold text-white mb-4">
+                                Tu Ruta en Tiempo Real
+                            </h2>
+                            <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
+                            <p className="text-gray-300 max-w-2xl mx-auto">
+                                Cada punto en el mapa representa un evento detectado por PaySafe. 
+                                Identifica patrones y mejora tu conducción.
+                            </p>
+                        </div>
+
+                        {/* Mapa */}
+                        <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-700">
+                            <MapContainer
+                                center={[25.6866, -100.3161]} // Monterrey, México
+                                zoom={13}
+                                className="w-full h-[600px]"
+                                scrollWheelZoom={true}
+                            >
+                                <TileLayer
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                                />
+                                
+                                {/* Marcadores de ejemplo */}
+                                <Marker position={[25.6866, -100.3161]}>
+                                    <Popup>
+                                        <div className="text-sm">
+                                            <strong>Conducción Segura</strong>
+                                            <p>+20 SafeCoins</p>
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                                <Marker position={[25.6800, -100.3100]}>
+                                    <Popup>
+                                        <div className="text-sm">
+                                            <strong>Frenada Suave</strong>
+                                            <p>+15 SafeCoins</p>
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                            </MapContainer>
+
+                            {/* Leyenda sobre el mapa */}
+                            <div className="absolute top-4 right-4 z-[1000] bg-gray-800/95 backdrop-blur p-4 rounded-lg border border-gray-700">
+                                <h3 className="text-white font-semibold mb-3 text-sm">Eventos</h3>
+                                <div className="space-y-2 text-xs">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-3 h-3 bg-red-600 rounded-full"></div>
+                                        <span className="text-white">Frenadas bruscas</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
+                                        <span className="text-white">Aceleraciones</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-3 h-3 bg-white rounded-full"></div>
+                                        <span className="text-white">Conducción segura</span>
                                     </div>
                                 </div>
-                            </ResizablePanel>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                            <ResizableHandle />
+            {/* Eventos Recientes */}
+            <section className="bg-gray-900 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-bold text-white mb-4">
+                                Eventos Recientes
+                            </h2>
+                            <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
+                        </div>
 
-                            <ResizablePanel defaultSize={30} className="h-full">
-                                <div className="h-full w-full bg-white rounded-r-lg shadow-sm p-6 overflow-auto flex items-center">
-                                    <div>
-                                        <h3 className="text-xl font-semibold mb-2">Resumen rápido</h3>
-                                        <p className="text-sm text-muted-foreground mb-3">
-                                            Métricas sintetizadas del viaje actual. Aquí puedes mostrar alertas, score de conducción,
-                                            consumo estimado o acciones recomendadas.
-                                        </p>
-                                        <ul className="space-y-2 text-sm">
-                                            <li className="flex items-center gap-2">
-                                                <span className="w-2 h-2 bg-green-400 rounded-full" /> Condición: Estable
-                                            </li>
-                                            <li className="flex items-center gap-2">
-                                                <span className="w-2 h-2 bg-amber-400 rounded-full" /> Consumo estimado: 6.8 L/100km
-                                            </li>
-                                            <li className="flex items-center gap-2">
-                                                <span className="w-2 h-2 bg-red-400 rounded-full" /> Alertas: 0
-                                            </li>
-                                        </ul>
+                        <div className="grid grid-cols-3 gap-8">
+                            {recentEvents.map((event) => (
+                                <Card key={event.id} className="bg-gray-800 border-gray-700 hover:border-red-500 transition-all">
+                                    <CardContent className="p-6">
+                                        <div className="flex items-start justify-between mb-4">
+                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                                                event.type === 'safe' ? 'bg-white' : 'bg-gray-700'
+                                            }`}>
+                                                {event.type === 'safe' ? (
+                                                    <Award className="w-6 h-6 text-red-600" />
+                                                ) : (
+                                                    <AlertCircle className="w-6 h-6 text-white" />
+                                                )}
+                                            </div>
+                                            <Badge variant={event.type === 'safe' ? 'default' : 'secondary'} className={
+                                                event.type === 'safe' ? 'bg-red-600' : 'bg-white'
+                                            }>
+                                                {event.type === 'safe' ? 'Seguro' : 'Atención'}
+                                            </Badge>
+                                        </div>
+                                        
+                                        <h3 className="text-white font-semibold mb-2">{event.location}</h3>
+                                        <div className="flex items-center justify-between text-sm">
+                                            <span className="text-gray-400">Score: {event.score}%</span>
+                                            <span className="text-white font-semibold">+{event.coins} SafeCoins</span>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Estadísticas y Rendimiento */}
+            <section className="bg-gray-800 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-5xl mx-auto">
+                        <div className="flex items-center justify-between gap-12">
+                            <div className="flex-1">
+                                <h2 className="text-4xl font-bold text-white mb-4">
+                                    Rendimiento del Viaje
+                                </h2>
+                                <p className="text-lg text-gray-300 leading-relaxed mb-6">
+                                    Analiza tu comportamiento al volante con métricas detalladas. Cada viaje mejora tu score 
+                                    y te acerca a más <span className="font-semibold text-red-500">SafeCoins</span>.
+                                </p>
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
+                                            <Navigation className="w-6 h-6 text-white" />
+                                        </div>
+                                        <div>
+                                            <p className="text-white font-semibold">Distancia recorrida</p>
+                                            <p className="text-gray-400 text-sm">87.5 km esta semana</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
+                                            <TrendingUp className="w-6 h-6 text-white" />
+                                        </div>
+                                        <div>
+                                            <p className="text-white font-semibold">Mejora continua</p>
+                                            <p className="text-gray-400 text-sm">+12% vs. semana anterior</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
+                                            <Activity className="w-6 h-6 text-white" />
+                                        </div>
+                                        <div>
+                                            <p className="text-white font-semibold">Eventos detectados</p>
+                                            <p className="text-gray-400 text-sm">3 frenadas, 2 aceleraciones</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </ResizablePanel>
-                        </ResizablePanelGroup>
-                    </section>
-                </main>
-            </div>
+                            </div>
+                            
+                            <div className="bg-gray-700 w-64 h-64 rounded-2xl flex items-center justify-center shadow-2xl">
+                                <div className="text-center">
+                                    <p className="text-6xl font-bold text-white mb-2">{stats.averageScore}</p>
+                                    <p className="text-gray-300 text-lg">Score Promedio</p>
+                                    <div className="mt-4">
+                                        <Badge className="bg-red-600 text-white">Excelente</Badge>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Footer Info */}
+            <section className="bg-gray-900 py-12 border-t border-gray-800">
+                <div className="container mx-auto px-4 text-center">
+                    <p className="text-gray-400 text-sm">
+                        Datos actualizados en tiempo real. © 2025 PaySafe - Banorte
+                    </p>
+                </div>
+            </section>
         </div>
-    )
+    );
 }
 
-export default MapPage
-// ...existing code...
+export default MapPage;
