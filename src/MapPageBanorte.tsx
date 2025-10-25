@@ -1,19 +1,9 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { MapPin, Navigation, TrendingUp, AlertCircle, Award, Activity, BarChart3, Brain, Route, Map as MapIcon, Building2, Loader2, ChevronRight } from 'lucide-react';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import { Building2 } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Card, CardContent } from "@/components/ui/card";
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import {
-    analyzeRoute,
-    generateSmartCityReport,
-    monterreyZones,
-    type RouteRiskAnalysis,
-    type SmartCityReport
-} from '@/lib/smartCityAnalyzer';
-import { useState, useRef, useEffect } from 'react'
 
 // Fix para iconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -24,25 +14,8 @@ L.Icon.Default.mergeOptions({
 });
 
 function MapPageBanorte() {
-    const [routeAnalysis, setRouteAnalysis] = useState<RouteRiskAnalysis | null>(null);
-    const [smartCityReport, setSmartCityReport] = useState<SmartCityReport | null>(null);
-    const [isAnalyzingRoute, setIsAnalyzingRoute] = useState(false);
-    const [isGeneratingReport, setIsGeneratingReport] = useState(false);
-    const [openDetails, setOpenDetails] = useState(false)
-    const detailsRef = useRef<HTMLDivElement | null>(null)
-
-
-    useEffect(() => {
-        function onDocClick(e: MouseEvent) {
-            if (!detailsRef.current) return
-            if (!detailsRef.current.contains(e.target as Node)) setOpenDetails(false)
-        }
-        document.addEventListener('mousedown', onDocClick)
-        return () => document.removeEventListener('mousedown', onDocClick)
-    }, [])
-
-
     // Datos de ejemplo
+<<<<<<< HEAD
     const stats = {
         totalTrips: 145,
         safeCoinsEarned: 1250,
@@ -92,47 +65,50 @@ function MapPageBanorte() {
         }
     };
 
+=======
+    const recentEvents = [
+        { id: 1, type: 'safe', location: 'Av. Constitución', score: 95, coins: 15 },
+        { id: 2, type: 'warning', location: 'Blvd. Morelos', score: 78, coins: 5 },
+        { id: 3, type: 'safe', location: 'Calzada del Valle', score: 98, coins: 20 },
+    ];
+
+>>>>>>> 0d42f70495cff4b3bcf35a95945feb3e30578bd4
     return (
-        <div className="min-h-screen bg-gray-900">
-            {/* Hero Section */}
-            <section className="container mx-auto px-4 py-28 bg-gray-900">
-                <div className="max-w-4xl mx-auto text-center">
-                    <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                        <MapPin className="w-4 h-4" />
-                        Visualiza tu Conducción
+        <div className="min-h-screen bg-gray-50">
+            {/* Header Administrativo Banorte */}
+            <section className="bg-gray-900 ">
+                <div className="container mx-auto px-6 py-8">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-md text-sm font-semibold mb-3">
+                                <Building2 className="w-4 h-4" />
+                                Panel Banorte Administrativo
+                            </div>
+                            <h1 className="text-5xl font-bold text-gray-200 mb-2">
+                                Gestión de Red Pay$afe
+                            </h1>
+                            <p className="text-xl text-gray-400">
+                                Monitoreo y análisis de dispositivos en <span className="text-red-600 font-semibold">tiempo real</span>
+                            </p>
+                        </div>
                     </div>
-
-                    <h1 className="text-7xl font-bold text-white mb-6">
-                        Mapa Interactivo
-                    </h1>
-
-                    <p className="text-2xl text-gray-300 mb-4 leading-relaxed">
-                        Observa tus rutas y eventos de <span className="text-red-500 font-semibold">conducción en tiempo real</span>
-                    </p>
-
-                    <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
-                        Visualiza cada frenada, aceleración y ubicación donde ganaste SafeCoins. Mejora tu comportamiento al volante con datos precisos.
-                    </p>
-
-
                 </div>
             </section>
 
-            {/* Mapa Principal */}
-            <section className="bg-gray-800 py-20">
-                <div className="container mx-auto px-4">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h2 className="text-4xl font-bold text-white mb-4">
-                                Tu Ruta en Tiempo Real
+            {/* Mapa con estilo administrativo */}
+            <section className="bg-gray-800 py-12">
+                <div className="container mx-auto px-6">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="mb-8">
+                            <h2 className="text-3xl font-bold text-gray-200 mb-2">
+                                Mapa de Cobertura - Monterrey
                             </h2>
-                            <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
-                            <p className="text-gray-300 max-w-2xl mx-auto">
-                                Cada punto en el mapa representa un evento detectado por PaySafe.
-                                Identifica patrones y mejora tu conducción.
+                            <p className="text-gray-400">
+                                Vista general de zonas monitoreadas y niveles de riesgo detectados
                             </p>
                         </div>
 
+<<<<<<< HEAD
                         {/* Mapa */}
                         <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-700">
                             <MapContainer
@@ -539,78 +515,39 @@ function MapPageBanorte() {
                             </CardHeader>
                             <CardContent>
                                 <div className="relative rounded-xl overflow-hidden">
+=======
+                        {/* Mapa con diseño administrativo */}
+                        <Card className="bg-white shadow-lg border-2 border-gray-200">
+                            <CardContent className="p-0">
+                                <div className="relative rounded-lg overflow-hidden z-0">
+>>>>>>> 0d42f70495cff4b3bcf35a95945feb3e30578bd4
                                     <MapContainer
                                         center={[25.6866, -100.3161]}
-                                        zoom={12}
+                                        zoom={13}
                                         className="w-full h-[500px]"
                                         scrollWheelZoom={true}
                                     >
                                         <TileLayer
                                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                                            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                         />
-
-                                        {/* Marcadores de zonas de riesgo */}
-                                        {monterreyZones.map((zone, idx) => {
-                                            // Color según nivel de riesgo
-                                            const color = zone.riskScore > 70 ? '#DC2626' :
-                                                zone.riskScore > 40 ? '#9CA3AF' : '#FFFFFF';
-
-                                            const customIcon = L.divIcon({
-                                                className: 'custom-marker',
-                                                html: `
-                                                    <div style="
-                                                        background: ${color};
-                                                        width: ${zone.riskScore > 70 ? '20px' : '16px'};
-                                                        height: ${zone.riskScore > 70 ? '20px' : '16px'};
-                                                        border-radius: 50%;
-                                                        border: 2px solid white;
-                                                        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-                                                    "></div>
-                                                `,
-                                                iconSize: [20, 20],
-                                                iconAnchor: [10, 10],
-                                            });
-
-                                            return (
-                                                <Marker
-                                                    key={idx}
-                                                    position={zone.location}
-                                                    icon={customIcon}
-                                                >
-                                                    <Popup>
-                                                        <div className="text-sm min-w-[200px]">
-                                                            <strong className="text-base">{zone.name}</strong>
-                                                            <div className="mt-2 space-y-1">
-                                                                <p><strong>Score de Riesgo:</strong> {zone.riskScore}/100</p>
-                                                                <p><strong>Frenadas bruscas:</strong> {zone.hardBrakes}</p>
-                                                                <p><strong>Aceleraciones:</strong> {zone.hardAccelerations}</p>
-                                                                <p><strong>Giros cerrados:</strong> {zone.sharpTurns}</p>
-                                                                <p><strong>Viajes totales:</strong> {zone.totalTrips}</p>
-                                                                <p><strong>Velocidad promedio:</strong> {zone.avgSpeed} km/h</p>
-                                                            </div>
-                                                        </div>
-                                                    </Popup>
-                                                </Marker>
-                                            );
-                                        })}
                                     </MapContainer>
 
-                                    {/* Leyenda de riesgo */}
-                                    <div className="absolute bottom-4 right-4 z-1000 bg-gray-800/95 backdrop-blur p-4 rounded-lg border border-gray-700">
-                                        <h3 className="text-white font-semibold mb-3 text-sm">Nivel de Riesgo</h3>
+                                    {/* Leyenda con estilo claro */}
+                                    <div className="absolute top-4 right-4 z-10 bg-white/95 backdrop-blur p-4 rounded-lg shadow-lg border-2 border-gray-200">
+                                        <h3 className="text-gray-900 font-bold mb-3 text-sm">Indicadores</h3>
                                         <div className="space-y-2 text-xs">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-4 h-4 bg-red-600 rounded-full border-2 border-white"></div>
-                                                <span className="text-white">Alto (&gt;70)</span>
+                                                <div className="w-3 h-3 bg-red-600 rounded-full border border-gray-300"></div>
+                                                <span className="text-gray-700 font-medium">Alta Prioridad</span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <div className="w-4 h-4 bg-gray-500 rounded-full border-2 border-white"></div>
-                                                <span className="text-white">Medio (40-70)</span>
+                                                <div className="w-3 h-3 bg-yellow-500 rounded-full border border-gray-300"></div>
+                                                <span className="text-gray-700 font-medium">Media Prioridad</span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <div className="w-4 h-4 bg-white rounded-full border-2 border-gray-300"></div>
-                                                <span className="text-white">Bajo (&lt;40)</span>
+                                                <div className="w-3 h-3 bg-green-500 rounded-full border border-gray-300"></div>
+                                                <span className="text-gray-700 font-medium">Bajo Riesgo</span>
                                             </div>
                                         </div>
                                     </div>
@@ -621,16 +558,71 @@ function MapPageBanorte() {
                 </div>
             </section>
 
-            {/* Footer Info */}
-            <section className="bg-gray-900 py-12 border-t border-gray-800">
-                <div className="container mx-auto px-4 text-center">
-                    <p className="text-gray-400 text-sm">
-                        Datos actualizados en tiempo real. © 2025 PaySafe - Banorte
-                    </p>
+            {/* Tabla de Eventos */}
+            <section className="bg-gray-900 py-12">
+                <div className="container mx-auto px-6">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="mb-8">
+                            <h2 className="text-3xl font-bold text-gray-200 mb-2">
+                                Registro de Eventos Recientes
+                            </h2>
+                            <p className="text-gray-400">
+                                Últimos eventos detectados en la red
+                            </p>
+                        </div>
+
+                        <div className="bg-gray-800 rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+                            <table className="w-full">
+                                <thead className="bg-red-600 text-gray-200">
+                                    <tr>
+                                        <th className="px-6 py-4 text-left text-sm font-semibold">ID</th>
+                                        <th className="px-6 py-4 text-left text-sm font-semibold">Ubicación</th>
+                                        <th className="px-6 py-4 text-left text-sm font-semibold">Tipo</th>
+                                        <th className="px-6 py-4 text-left text-sm font-semibold">Score</th>
+                                        <th className="px-6 py-4 text-left text-sm font-semibold">SafeCoins</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    {recentEvents.map((event) => (
+                                        <tr key={event.id} className="hover:bg-gray-50 transition-colors">
+                                            <td className="px-6 py-4 text-sm text-gray-200 font-medium">#{event.id}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-200">{event.location}</td>
+                                            <td className="px-6 py-4">
+                                                <Badge className={
+                                                    event.type === 'safe' 
+                                                        ? 'bg-green-100 text-green-800 border border-green-300' 
+                                                        : 'bg-yellow-100 text-yellow-800 border border-yellow-300'
+                                                }>
+                                                    {event.type === 'safe' ? '✓ Seguro' : '⚠ Atención'}
+                                                </Badge>
+                                            </td>
+                                            <td className="px-6 py-4 text-sm text-gray-200 font-semibold">{event.score}%</td>
+                                            <td className="px-6 py-4 text-sm font-bold text-gray-200">+{event.coins}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Resto de secciones omitidas por brevedad */}
+            <section className="bg-gray-800 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-6xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold text-gray-200 mb-4">
+                            Vista Administrativa Banorte
+                        </h2>
+                        <p className="text-gray-400 max-w-2xl mx-auto">
+                            Panel diseñado para supervisión y análisis de la red Pay$afe
+                        </p>
+                    </div>
                 </div>
             </section>
         </div>
     );
 }
+
 
 export default MapPageBanorte;

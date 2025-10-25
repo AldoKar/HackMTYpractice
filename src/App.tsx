@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'sonner'; // Asumiendo que usas shadcn/ui
@@ -15,9 +16,28 @@ import BeneficiosPage from './BeneficiosPage';
 import MapPage from './MapPage';
 import MapPageBanorte from './MapPageBanorte';
 import AdminPage from './AdminPage';
+=======
+import { Routes, Route } from 'react-router-dom';
+import LandingPage from './LandingPage.tsx';
+import { NavigationMenuDemo } from './Navigation.tsx';
+import { SignupForm } from './components/signup-form.tsx';
+import { LoginForm } from './components/login-form.tsx';
+import { useLocation } from 'react-router-dom';
+import { Toaster } from "@/components/ui/sonner";
+import BeneficiosPage from './BeneficiosPage.tsx';
+import MapPage from './MapPage.tsx';
+import { ChatBot } from './components/ChatBot.tsx';
+import PaySafeDashboard from './PaySafeDash.tsx';
+import MapPageBanorte from './MapPageBanorte.tsx';
+import AdminPage from './AdminPage.tsx';
+import { useAuth } from './context/AuthContext';
+import DashboardPage from './DashboardPage.tsx';
+import { ProtectedRoute } from './components/ProtectedRoute.tsx';
+>>>>>>> 0d42f70495cff4b3bcf35a95945feb3e30578bd4
 
 function App() {
   const location = useLocation();
+<<<<<<< HEAD
 
   // 2. Añadir tipos a los 'useState'
   const [user, setUser] = useState<User | null>(null);
@@ -59,6 +79,10 @@ function App() {
 
   // 3. Ocultar la barra de navegación en login/register
   const showNav = !['/login', '/register'].includes(location.pathname);
+=======
+  const { user } = useAuth();
+  const showNav = !['/login', '/register'].includes(location.pathname) && user !== null;
+>>>>>>> 0d42f70495cff4b3bcf35a95945feb3e30578bd4
 
   // No mostrar nada hasta que sepamos si el usuario está logueado o no
   if (loading) {
@@ -75,9 +99,9 @@ function App() {
 
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/paysafe" element={<PaySafeDashboard />} />
         <Route path="/register" element={<SignupForm />} />
         <Route path="/login" element={<LoginForm />} />
+<<<<<<< HEAD
         <Route path="/beneficios" element={<BeneficiosPage />} />
         <Route path="/mapa" element={<MapPage />} />
 
@@ -90,6 +114,17 @@ function App() {
         )}
 
         {/* Puedes añadir una ruta de "No autorizado" o redirigir al home si no es admin */}
+=======
+        
+        {/* Rutas Protegidas */}
+        <Route path="/paysafe" element={<ProtectedRoute><PaySafeDashboard /></ProtectedRoute>} />
+        <Route path="/beneficios" element={<ProtectedRoute><BeneficiosPage /></ProtectedRoute>} />
+        <Route path="/mapa" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
+        <Route path="/mapabanorte" element={<ProtectedRoute><MapPageBanorte /></ProtectedRoute>} />
+        <Route path="/adminpage" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+
+>>>>>>> 0d42f70495cff4b3bcf35a95945feb3e30578bd4
       </Routes>
     </>
   );

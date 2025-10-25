@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts"
-import { Activity, Thermometer, AlertTriangle, Clock, Calendar, Gauge } from "lucide-react"
+import { Activity, Thermometer, AlertTriangle, Clock, Calendar, Gauge, MapPin, Navigation } from "lucide-react"
 
 interface HistoryItem {
     t: string
@@ -199,13 +199,13 @@ export default function PaySafeDashboard() {
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                             <MetricCard 
                                 title="Aceleración Total" 
                                 value={dato.at.toFixed(3)} 
                                 unit="g"
                                 icon={Gauge}
-                                iconBg="bg-red-600"
+                                iconBg="bg-gray-700"
                             />
                             <MetricCard 
                                 title="Temperatura" 
@@ -218,7 +218,21 @@ export default function PaySafeDashboard() {
                                 title="Movimientos Bruscos" 
                                 value={suddenMovements}
                                 icon={AlertTriangle}
-                                iconBg="bg-red-600"
+                                iconBg="bg-gray-700"
+                            />
+                            <MetricCard 
+                                title="Latitud" 
+                                value={dato.lat.toFixed(6)} 
+                                unit="°"
+                                icon={MapPin}
+                                iconBg="bg-gray-700"
+                            />
+                            <MetricCard 
+                                title="Longitud" 
+                                value={dato.lng.toFixed(6)} 
+                                unit="°"
+                                icon={Navigation}
+                                iconBg="bg-gray-700"
                             />
                         </div>
                     </div>
@@ -284,15 +298,6 @@ export default function PaySafeDashboard() {
                             </CardContent>
                         </Card>
                     </div>
-                </div>
-            </section>
-
-            {/* Footer Info */}
-            <section className="bg-gray-800 py-12 border-t border-gray-700">
-                <div className="container mx-auto px-4 text-center">
-                    <p className="text-gray-400 text-sm">
-                        Datos actualizados en tiempo real desde el sensor MPU6050. © 2025 PaySafe - Banorte
-                    </p>
                 </div>
             </section>
         </div>

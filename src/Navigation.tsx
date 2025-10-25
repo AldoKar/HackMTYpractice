@@ -2,7 +2,11 @@
 
 import * as React from "react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "@/context/AuthContext"
+import { LogOut } from "lucide-react"
+import { toast } from "sonner"
 
 type NextLikeLinkProps = React.ComponentPropsWithoutRef<"a"> & { href: string }
 const Link = React.forwardRef<HTMLAnchorElement, NextLikeLinkProps>(
@@ -66,6 +70,7 @@ const components: { title: string; href: string; description: string }[] = [
 export function NavigationMenuDemo({ isAdmin = false }: { isAdmin?: boolean }) {
     const safeCoins = 34 // temporal, reemplazar por contexto/backend si hace falta
     const navigate = useNavigate()
+    const { user, logout } = useAuth()
 
     const handleEstadisticasClick = (e: React.MouseEvent) => {
         e.preventDefault()
@@ -90,6 +95,17 @@ export function NavigationMenuDemo({ isAdmin = false }: { isAdmin?: boolean }) {
 
 
 
+    const handleLogout = async () => {
+        try {
+            await logout()
+            toast.success('Sesión cerrada exitosamente')
+            navigate('/login')
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error)
+            toast.error('Error al cerrar sesión')
+        }
+    }
+
     return (
         <nav className="w-full bg-background border-b sticky top-0 z-100">
             <div className="max-w-6xl mx-auto px-4">
@@ -104,6 +120,26 @@ export function NavigationMenuDemo({ isAdmin = false }: { isAdmin?: boolean }) {
                         <NavigationMenu viewport={false}>
                             <NavigationMenuList className="flex items-center gap-2">
 
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>Dashboard</NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid gap-2 w-[500px] grid-cols-[.75fr_1fr]">
+                                            <li>
+                                                <NavigationMenuLink asChild>
+                                                    <Link
+                                                        href="/dashboard"
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none">Dashboard</div>
+                                                        <p className="text-sm leading-snug text-muted-foreground">
+                                                            Consulta un breve resumen de la actividad reciente y estadísticas clave.
+                                                        </p>
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger>Home</NavigationMenuTrigger>
                                     <NavigationMenuContent>
@@ -242,7 +278,7 @@ export function NavigationMenuDemo({ isAdmin = false }: { isAdmin?: boolean }) {
                                                         href="/mapabanorte"
                                                         className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
                                                     >
-                                                        <div className="text-sm font-medium leading-none text-red-600">Mapa Interactivo Banorte</div>
+                                                        <div className="text-sm font-medium leading-none text-red-600">Panel Administrativo Banorte</div>
                                                         <p className="text-sm leading-snug text-muted-foreground">
                                                             Visualiza las rutas y eventos de todos los usuarios de Pay$afe.
                                                         </p>
@@ -285,10 +321,22 @@ export function NavigationMenuDemo({ isAdmin = false }: { isAdmin?: boolean }) {
                         </NavigationMenu>
                     </div>
 
-                    <div className="ml-4 flex items-center">
+                    <div className="ml-4 flex items-center gap-3">
                         <Badge variant="secondary" className="text-sm font-semibold">
                             SafeCoins: {safeCoins}
                         </Badge>
+
+                        {user && (
+                            <Button
+                                onClick={handleLogout}
+                                variant="outline"
+                                size="sm"
+                                className="border-red-600 text-red-600 hover:bg-red-50 hover:text-red-700"
+                            >
+                                <LogOut className="w-4 h-4 mr-2" />
+                                Cerrar Sesión
+                            </Button>
+                        )}
                     </div>
 
                     <button
