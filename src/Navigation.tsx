@@ -84,26 +84,18 @@ export function NavigationMenuDemo({ isAdmin = false }: { isAdmin?: boolean }) {
         }, 100)
     }
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         try {
             localStorage.removeItem('token')
             sessionStorage.removeItem('token')
-        } catch { }
-        navigate('/login') // o '/' según tu ruta de login
-    }
 
-
-
-
-    const handleLogout = async () => {
-        try {
             await logout()
             toast.success('Sesión cerrada exitosamente')
-            navigate('/login')
         } catch (error) {
             console.error('Error al cerrar sesión:', error)
             toast.error('Error al cerrar sesión')
         }
+        navigate('/login') // o '/' según tu ruta de login
     }
 
     return (
