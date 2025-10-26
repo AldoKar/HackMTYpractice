@@ -1,15 +1,5 @@
 import express from "express"
 import cors from "cors"
-import { createClient } from "@supabase/supabase-js"
-import dotenv from "dotenv"
-
-// Cargar variables de entorno
-dotenv.config()
-
-const supabaseUrl = process.env.VITE_SUPABASE_URL
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 const app = express()
 app.use(express.json())
@@ -159,31 +149,7 @@ app.post("/datos", async (req, res) => {
         });
         console.log("=======================\n");
 
-        // Guardar en Supabase
-        if (user_id) {
-            try {
-                const { data, error } = await supabase.from("device_data").insert([
-                    {
-                        user_id: user_id,
-                        aceleracion: ultimoDato.at,
-                        temperatura: ultimoDato.T,
-                        latitud: ultimoDato.lat,
-                        longitud: ultimoDato.lng,
-                        timestamp: ultimoDato.timestamp,
-                    },
-                ]);
-
-                if (error) {
-                    console.error("❌ Error insertando en Supabase:", error);
-                } else {
-                    console.log("✅ Datos guardados en Supabase para user_id:", user_id);
-                }
-            } catch (e) {
-                console.error("❌ Excepción al insertar en Supabase:", e);
-            }
-        } else {
-            console.warn("⚠️ No se recibió user_id, no se guardó en Supabase");
-        }
+        // emitir a clientes SSE y responder
 
         // emitir a clientes SSE y responder
         broadcastUpdate(ultimoDato)
