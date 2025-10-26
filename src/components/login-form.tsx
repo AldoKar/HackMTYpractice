@@ -19,7 +19,7 @@ import { supabase } from "@/lib/supabase"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
 
-export function LoginForm({
+export default function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {

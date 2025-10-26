@@ -19,7 +19,7 @@ const Link = React.forwardRef<HTMLAnchorElement, NextLikeLinkProps>(
     }
 )
 Link.displayName = "Link"
-
+//aulas 6 a las 9am
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -67,7 +67,7 @@ const components: { title: string; href: string; description: string }[] = [
     },
 ]
 
-export function NavigationMenuDemo() {
+export function NavigationMenuDemo({ isAdmin = false }: { isAdmin?: boolean }) {
     const safeCoins = 34 // temporal, reemplazar por contexto/backend si hace falta
     const navigate = useNavigate()
     const { user, logout } = useAuth()
@@ -83,6 +83,17 @@ export function NavigationMenuDemo() {
             }
         }, 100)
     }
+
+    const handleLogout = () => {
+        try {
+            localStorage.removeItem('token')
+            sessionStorage.removeItem('token')
+        } catch { }
+        navigate('/login') // o '/' según tu ruta de login
+    }
+
+
+
 
     const handleLogout = async () => {
         try {
@@ -210,9 +221,6 @@ export function NavigationMenuDemo() {
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
 
-
-
-
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger>Pay$afe</NavigationMenuTrigger>
                                     <NavigationMenuContent>
@@ -317,9 +325,9 @@ export function NavigationMenuDemo() {
                         <Badge variant="secondary" className="text-sm font-semibold">
                             SafeCoins: {safeCoins}
                         </Badge>
-                        
+
                         {user && (
-                            <Button 
+                            <Button
                                 onClick={handleLogout}
                                 variant="outline"
                                 size="sm"
@@ -330,9 +338,17 @@ export function NavigationMenuDemo() {
                             </Button>
                         )}
                     </div>
+
+                    <button
+                        onClick={handleLogout}
+                        className="inline-flex items-center px-3 py-1.5 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors"
+                        title="Cerrar sesión"
+                    >
+                        Logout
+                    </button>
                 </div>
-            </div >
-        </nav >
+            </div>
+        </nav>
     )
 }
 
