@@ -13,11 +13,9 @@ import {
   Wifi,
   Bell,
   Shield,
-  Battery,
   Signal,
   Clock,
-  MapPin,
-  ChevronRight
+  MapPin
 } from "lucide-react";
 
 const AdminPage = () => {

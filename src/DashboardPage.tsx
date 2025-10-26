@@ -7,8 +7,6 @@ import {
   MapPin,
   Gift,
   CreditCard,
-  Shield,
-  TrendingUp,
   Activity,
 } from "lucide-react";
 

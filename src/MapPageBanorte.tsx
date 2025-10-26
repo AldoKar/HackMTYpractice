@@ -37,13 +37,6 @@ function MapPageBanorte() {
         }
     };
 
-    // Datos de ejemplo
-    const recentEvents = [
-        { id: 1, type: 'safe', location: 'Av. Constitución', score: 95, coins: 15 },
-        { id: 2, type: 'warning', location: 'Blvd. Morelos', score: 78, coins: 5 },
-        { id: 3, type: 'safe', location: 'Calzada del Valle', score: 98, coins: 20 },
-    ];
-
     const chartData = [
         { name: 'Lun', score: 85, coins: 12 },
         { name: 'Mar', score: 88, coins: 15 },

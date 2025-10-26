@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Shield, DollarSign, Car, TrendingUp, Award, Gauge, Coins, ChevronRight, MessageCircle } from "lucide-react";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Shield, DollarSign, Car, TrendingUp, Award, Gauge, Coins, ChevronRight, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import TextType from './TextType';

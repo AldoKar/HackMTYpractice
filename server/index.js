@@ -11,31 +11,6 @@ const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-const userEmail = body.user_email || body.email;
-
-if (!userEmail) {
-  console.warn("⚠️ No se recibió email del usuario");
-} else {
-  try {
-    const { error } = await supabase.from("device_data").insert([
-      {
-        user_email: userEmail,
-        at: ultimoDato.at,
-        T: ultimoDato.T,
-        lat: ultimoDato.lat,
-        lng: ultimoDato.lng,
-        timestamp: ultimoDato.timestamp,
-        raw: ultimoDato.raw,
-      },
-    ]);
-
-    if (error) console.error("Error insertando en Supabase:", error);
-    else console.log("✅ Datos guardados en Supabase para", userEmail);
-  } catch (e) {
-    console.error("Excepción al insertar en Supabase:", e);
-  }
-}
-
 const app = express()
 app.use(express.json())
 
@@ -105,8 +80,8 @@ function broadcastUpdate(payload) {
 
 // POST /datos
 // recibe JSON del ESP32, por ejemplo:
-// { "at":1.03, "T":25.2, "fecha":"2025-10-25", "hora":"00:48:30", "timestamp":1729825710 }
-app.post("/datos", (req, res) => {
+// { "at":1.03, "T":25.2, "user_id":"uuid", "fecha":"2025-10-25", "hora":"00:48:30", "timestamp":1729825710 }
+app.post("/datos", async (req, res) => {
     try {
         const body = req.body || {}
         
@@ -123,6 +98,7 @@ app.post("/datos", (req, res) => {
             lng: lng_in,
             latitud, // Nombre alternativo para lat
             longitud, // Nombre alternativo para lng 
+            user_id, // ID del usuario
             fecha, 
             hora, 
             timestamp 
@@ -178,9 +154,36 @@ app.post("/datos", (req, res) => {
             at: ultimoDato.at,
             T: ultimoDato.T,
             lat: ultimoDato.lat,
-            lng: ultimoDato.lng
+            lng: ultimoDato.lng,
+            user_id: user_id
         });
         console.log("=======================\n");
+
+        // Guardar en Supabase
+        if (user_id) {
+            try {
+                const { data, error } = await supabase.from("device_data").insert([
+                    {
+                        user_id: user_id,
+                        aceleracion: ultimoDato.at,
+                        temperatura: ultimoDato.T,
+                        latitud: ultimoDato.lat,
+                        longitud: ultimoDato.lng,
+                        timestamp: ultimoDato.timestamp,
+                    },
+                ]);
+
+                if (error) {
+                    console.error("❌ Error insertando en Supabase:", error);
+                } else {
+                    console.log("✅ Datos guardados en Supabase para user_id:", user_id);
+                }
+            } catch (e) {
+                console.error("❌ Excepción al insertar en Supabase:", e);
+            }
+        } else {
+            console.warn("⚠️ No se recibió user_id, no se guardó en Supabase");
+        }
 
         // emitir a clientes SSE y responder
         broadcastUpdate(ultimoDato)
