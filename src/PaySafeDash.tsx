@@ -47,8 +47,15 @@ export default function PaySafeDashboard() {
             const temp = Number(json.T ?? json.temp ?? json.raw?.T ?? json.raw?.temp ?? 0) || 0
             
             // Procesar coordenadas GPS
-            const lat = json.lat != null ? Number(json.lat) : (json.raw?.lat != null ? Number(json.raw.lat) : null)
-            const lng = json.lng != null ? Number(json.lng) : (json.raw?.lng != null ? Number(json.raw.lng) : null)
+            const lat = json.lat != null ? Number(json.lat) : 
+                       json.latitud != null ? Number(json.latitud) :
+                       json.raw?.lat != null ? Number(json.raw.lat) :
+                       json.raw?.latitud != null ? Number(json.raw.latitud) : null
+
+            const lng = json.lng != null ? Number(json.lng) :
+                       json.longitud != null ? Number(json.longitud) :
+                       json.raw?.lng != null ? Number(json.raw.lng) :
+                       json.raw?.longitud != null ? Number(json.raw.longitud) : null
             
             console.log('Valores procesados:', { accel, temp, lat, lng }); // Para debugging
             
@@ -247,21 +254,7 @@ export default function PaySafeDashboard() {
                                 title="Movimientos Bruscos" 
                                 value={suddenMovements}
                                 icon={AlertTriangle}
-                                iconBg="bg-gray-700"
-                            />
-                            <MetricCard 
-                                title="Latitud" 
-                                value={dato.lat.toFixed(6)} 
-                                unit="°"
-                                icon={MapPin}
-                                iconBg="bg-gray-700"
-                            />
-                            <MetricCard 
-                                title="Longitud" 
-                                value={dato.lng.toFixed(6)} 
-                                unit="°"
-                                icon={Navigation}
-                                iconBg="bg-gray-700"
+                                iconBg="bg-red-600"
                             />
                         </div>
                     </div>
