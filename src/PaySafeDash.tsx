@@ -2,9 +2,6 @@ import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts"
-<<<<<<< Updated upstream
-import { Activity, Thermometer, AlertTriangle, Clock, Calendar, Gauge, MapPin, Navigation } from "lucide-react"
-=======
 import { Activity, Thermometer, AlertTriangle, Clock, Calendar, Gauge, MapPin } from "lucide-react"
 
 interface SensorData {
@@ -13,7 +10,6 @@ interface SensorData {
     at: number
     T: number
 }
->>>>>>> Stashed changes
 
 interface HistoryItem {
     t: string
@@ -215,11 +211,7 @@ export default function PaySafeDashboard() {
                             </p>
                         </div>
 
-<<<<<<< Updated upstream
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-=======
                         <div className="grid grid-cols-2 gap-8 mb-8">
->>>>>>> Stashed changes
                             <MetricCard 
                                 title="Aceleración Total" 
                                 value={dato.at.toFixed(3)} 
