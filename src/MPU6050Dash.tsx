@@ -36,6 +36,7 @@ export default function MPU6050Dashboard() {
     const [connected, setConnected] = useState(false);
     const [history, setHistory] = useState<HistoryItem[]>([]);
     const [suddenMovements, setSuddenMovements] = useState(0);
+    const [safeCoins, setSafeCoins] = useState(0);
     const mounted = useRef(true);
 
     useEffect(() => {
@@ -56,8 +57,10 @@ export default function MPU6050Dashboard() {
                 const lastUpdate = Number(json.lastUpdate) || 0;
                 const at = Number(json.at) || 0;
                 const T = Number(json.T) || 0;
+                const balance = Number(json.balance) || 0;
 
                 setDato({ ax, ay, az, lat, lng, at, T });
+                setSafeCoins(balance);
                 // Considera conectado si el último update fue hace menos de 5 segundos
                 setConnected(Date.now() - lastUpdate < 5000);
 
@@ -108,7 +111,7 @@ export default function MPU6050Dashboard() {
             </section>
 
             <section className="grid grid-cols-3 gap-4 mb-6">
-                <AccelCard title="Movimientos Bruscos" value={suddenMovements} unit="" />
+                <AccelCard title="SafeCoins" value={safeCoins} unit="SC" />
                 <AccelCard title="Latitud" value={dato.lat.toFixed(6)} unit="°" />
                 <AccelCard title="Longitud" value={dato.lng.toFixed(6)} unit="°" />
             </section>

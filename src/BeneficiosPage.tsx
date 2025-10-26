@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useAuth } from "./context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useSafeCoins } from "./hooks/useSafeCoins";
 import {
   Ticket,
   Fuel,
@@ -19,7 +20,7 @@ const BeneficiosPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [claimed, setClaimed] = useState<string[]>([]);
-  const userCoins = 250; // 🔧 valor de ejemplo; puedes reemplazarlo por uno dinámico
+  const { balance: userCoins, spendCoins } = useSafeCoins();
 
   // Cargar beneficios reclamados guardados
   useEffect(() => {
@@ -32,8 +33,8 @@ const BeneficiosPage = () => {
     localStorage.setItem("claimedBenefits", JSON.stringify(claimed));
   }, [claimed]);
 
-  // ✅ Manejo del reclamo + redirección a Banorte
-  const handleClaim = (id: string, cost: number) => {
+  
+  const handleClaim = async (id: string, cost: number) => {
     if (!user) {
       navigate("/login");
       return;
@@ -44,13 +45,18 @@ const BeneficiosPage = () => {
     }
 
     if (!claimed.includes(id)) {
-      setClaimed([...claimed, id]);
-      toast.success(`¡Beneficio reclamado! Has usado ${cost} SafeCoins.`);
+      const success = await spendCoins(cost);
+      if (success) {
+        setClaimed([...claimed, id]);
+        toast.success(`¡Beneficio reclamado! Has usado ${cost} SafeCoins.`);
 
-      // 🔗 Redirige a Banorte después de 1.5 segundos
-      setTimeout(() => {
-        window.open("https://www.banorte.com", "_blank");
-      }, 1500);
+        
+        setTimeout(() => {
+          window.open("https://www.banorte.com", "_blank");
+        }, 1500);
+      } else {
+        toast.error("Error al procesar la transacción. Inténtalo de nuevo.");
+      }
     }
   };
 
@@ -117,7 +123,7 @@ const BeneficiosPage = () => {
     },
   ];
 
-  // 🚫 Si no hay sesión
+  // Si no hay sesión
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
@@ -139,7 +145,7 @@ const BeneficiosPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* 🌟 Hero Section */}
+      {/*Hero Section */}
       <section className="container mx-auto px-4 py-28 text-center">
         <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
           <Award className="w-4 h-4" />
@@ -160,7 +166,7 @@ const BeneficiosPage = () => {
       </section>
 
 
-      {/* 💎 Lista de beneficios */}
+      {/*Lista de beneficios */}
       {benefits.map(({ id, title, description, cost, icon: Icon, bgColor, iconBg }, i) => (
         <section key={id} className={`${bgColor} py-20`}>
           <div className="container mx-auto px-4">

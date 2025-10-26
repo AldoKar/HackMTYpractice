@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
 import { LogOut } from "lucide-react"
 import { toast } from "sonner"
+import { useSafeCoins } from "./hooks/useSafeCoins"
 
 type NextLikeLinkProps = React.ComponentPropsWithoutRef<"a"> & { href: string }
 const Link = React.forwardRef<HTMLAnchorElement, NextLikeLinkProps>(
@@ -68,9 +69,15 @@ const components: { title: string; href: string; description: string }[] = [
 ]
 
 export function NavigationMenuDemo() {
-    const safeCoins = 34 // temporal, reemplazar por contexto/backend si hace falta
     const navigate = useNavigate()
     const { user, logout } = useAuth()
+    const { balance: safeCoins, loading } = useSafeCoins()
+    
+    React.useEffect(() => {
+        if (!loading) {
+            console.log('💰 Balance actual de SafeCoins:', safeCoins)
+        }
+    }, [safeCoins, loading])
     
     // Verificar si el usuario es de Banorte
     const isBanorteUser = user?.email?.endsWith('@banorte.com.mx') ?? false
@@ -310,7 +317,7 @@ export function NavigationMenuDemo() {
 
                     <div className="ml-4 flex items-center gap-3">
                         <Badge variant="secondary" className="text-sm font-semibold">
-                            SafeCoins: {safeCoins}
+                            SafeCoins: {loading ? "..." : safeCoins.toFixed(2)} 
                         </Badge>
 
                         {user && (

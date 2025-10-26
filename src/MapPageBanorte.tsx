@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Circle, Popup } from 'react-leaflet';
-import { Building2 } from 'lucide-react';
+import { Building2, FileDown, Code2, FileText } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
@@ -142,6 +143,103 @@ function MapPageBanorte() {
     };
 
     const chartData = calculateChartData();
+
+    // Función para generar análisis de datos
+    const generateAnalysis = () => {
+        const totalDevices = devices.length;
+        const avgAcceleration = devices.reduce((sum, d) => sum + d.aceleracion, 0) / totalDevices;
+        const avgTemperature = devices.reduce((sum, d) => sum + d.temperatura, 0) / totalDevices;
+        const dangerousCount = devices.filter(d => d.aceleracion >= 2).length;
+        const warningCount = devices.filter(d => d.aceleracion >= 1.5 && d.aceleracion < 2).length;
+        const safeCount = devices.filter(d => d.aceleracion < 1.5).length;
+
+        const analysis = `Reporte de Análisis Pay$afe - ${new Date().toLocaleDateString()}
+
+RESUMEN DE DISPOSITIVOS
+----------------------
+Total de registros analizados: ${totalDevices}
+Usuario(s): ${selectedUser === "todos" ? "Todos los usuarios" : selectedUser}
+Período: ${selectedDay === "todos" ? "Todos los días" : selectedDay}
+Horario: ${selectedHour === "todos" ? "Todo el día" : selectedHour}
+
+MÉTRICAS CLAVE
+-------------
+Aceleración promedio: ${avgAcceleration.toFixed(2)} g
+Temperatura promedio: ${avgTemperature.toFixed(1)} °C
+
+DISTRIBUCIÓN DE RIESGO
+--------------------
+Zonas de alto riesgo: ${dangerousCount} (${((dangerousCount/totalDevices)*100).toFixed(1)}%)
+Zonas de precaución: ${warningCount} (${((warningCount/totalDevices)*100).toFixed(1)}%)
+Zonas seguras: ${safeCount} (${((safeCount/totalDevices)*100).toFixed(1)}%)
+
+ANÁLISIS DE TENDENCIAS
+--------------------
+${dangerousCount > warningCount + safeCount ? 
+    "⚠️ ALERTA: Se detecta un alto número de zonas de riesgo. Se recomienda atención inmediata." :
+    "✅ La mayoría de las zonas muestran niveles seguros de conducción."}
+
+RECOMENDACIONES
+-------------
+1. ${dangerousCount > 0 ? 
+    `Priorizar la atención en las ${dangerousCount} zonas de alto riesgo identificadas.` :
+    "Mantener el monitoreo continuo de todas las zonas."}
+2. ${warningCount > 0 ?
+    `Implementar medidas preventivas en las ${warningCount} zonas de precaución.` :
+    "Continuar con las buenas prácticas de conducción actuales."}
+3. Mantener el sistema de monitoreo Pay$afe activo 24/7.
+
+TENDENCIAS POR DÍA
+----------------
+${chartData.map(day => 
+    `${day.name}: ${day.registros} registros, Aceleración promedio: ${day.aceleracionPromedio}g`
+).join('\n')}
+
+Generado automáticamente por Pay$afe Analytics
+Copyright © ${new Date().getFullYear()} Banorte`;
+
+        return analysis;
+    };
+
+    // Función para descargar archivos
+    const handleDownload = (format: 'csv' | 'json' | 'analysis') => {
+        let content = '';
+        let filename = '';
+        let type = '';
+
+        switch (format) {
+            case 'csv':
+                content = 'Usuario,Latitud,Longitud,Aceleración,Temperatura,Día,Hora\n';
+                content += devices.map(d => 
+                    `${d.usuario},${d.lat},${d.lng},${d.aceleracion},${d.temperatura},${d.dia},${d.hora}`
+                ).join('\n');
+                filename = 'paysafe_data.csv';
+                type = 'text/csv';
+                break;
+
+            case 'json':
+                content = JSON.stringify(devices, null, 2);
+                filename = 'paysafe_data.json';
+                type = 'application/json';
+                break;
+
+            case 'analysis':
+                content = generateAnalysis();
+                filename = 'paysafe_analysis.txt';
+                type = 'text/plain';
+                break;
+        }
+
+        const blob = new Blob([content], { type });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -443,7 +541,78 @@ function MapPageBanorte() {
                 </div>
             </section>
 
+            {/* Sección de Descargas */}
+            <section className="bg-gray-900 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-bold text-white mb-4">
+                                Exportar Datos
+                            </h2>
+                            <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
+                            <p className="text-gray-300 max-w-2xl mx-auto">
+                                Descarga los datos en múltiples formatos para análisis detallado o integración con otros sistemas.
+                            </p>
+                        </div>
 
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                            <Card className="bg-gray-800 border-gray-700">
+                                <CardHeader>
+                                    <CardTitle className="text-white">CSV</CardTitle>
+                                </CardHeader>
+                                <CardContent className="text-gray-300">
+                                    <p>Ideal para análisis en Excel y hojas de cálculo.</p>
+                                </CardContent>
+                                <div className="p-6 pt-0">
+                                    <Button 
+                                        onClick={() => handleDownload('csv')}
+                                        className="w-full bg-green-600 hover:bg-green-700"
+                                    >
+                                        <FileDown className="w-4 h-4 mr-2" />
+                                        Descargar CSV
+                                    </Button>
+                                </div>
+                            </Card>
+
+                            <Card className="bg-gray-800 border-gray-700">
+                                <CardHeader>
+                                    <CardTitle className="text-white">JSON</CardTitle>
+                                </CardHeader>
+                                <CardContent className="text-gray-300">
+                                    <p>Perfecto para integración con otros sistemas y APIs.</p>
+                                </CardContent>
+                                <div className="p-6 pt-0">
+                                    <Button 
+                                        onClick={() => handleDownload('json')}
+                                        className="w-full bg-blue-600 hover:bg-blue-700"
+                                    >
+                                        <Code2 className="w-4 h-4 mr-2" />
+                                        Descargar JSON
+                                    </Button>
+                                </div>
+                            </Card>
+
+                            <Card className="bg-gray-800 border-gray-700">
+                                <CardHeader>
+                                    <CardTitle className="text-white">Análisis generado por IA</CardTitle>
+                                </CardHeader>
+                                <CardContent className="text-gray-300">
+                                    <p>Reporte detallado con insights y recomendaciones.</p>
+                                </CardContent>
+                                <div className="p-6 pt-0">
+                                    <Button 
+                                        onClick={() => handleDownload('analysis')}
+                                        className="w-full bg-purple-600 hover:bg-purple-700"
+                                    >
+                                        <FileText className="w-4 h-4 mr-2" />
+                                        Descargar Reporte
+                                    </Button>
+                                </div>
+                            </Card>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
         </div>
     );
