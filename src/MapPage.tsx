@@ -659,15 +659,6 @@ useEffect(() => {
                     </div>
                 </div>
             </section>
-
-            {/* Footer Info */}
-            <section className="bg-gray-900 py-12 border-t border-gray-800">
-                <div className="container mx-auto px-4 text-center">
-                    <p className="text-gray-400 text-sm">
-                        Datos actualizados en tiempo real. © 2025 PaySafe - Banorte
-                    </p>
-                </div>
-            </section>
         </div>
     );
 }
