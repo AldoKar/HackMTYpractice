@@ -19,29 +19,6 @@ const DashboardPage = () => {
   // Obtener el nombre del usuario desde user metadata
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Usuario";
 
-  const stats = [
-    {
-      title: "SafeCoins",
-      icon: <TrendingUp className="w-6 h-6 text-red-600" />,
-      color: "bg-gray-700",
-    },
-    {
-      title: "Rutas Seguras",
-      icon: <Shield className="w-6 h-6 text-green-400" />,
-      color: "bg-gray-700",
-    },
-    {
-      title: "Alertas Activas",
-      icon: <Activity className="w-6 h-6 text-yellow-400" />,
-      color: "bg-gray-700",
-    },
-    {
-      title: "Beneficios",
-      icon: <Gift className="w-6 h-6 text-purple-400" />,
-      color: "bg-gray-700",
-    },
-  ];
-
   const quickActions = [
     {
       title: "Ver Mapa",
@@ -79,9 +56,6 @@ const DashboardPage = () => {
               <h1 className="text-4xl font-bold mb-2">
                 ¡Bienvenid@, {userName}!
               </h1>
-              <p className="text-red-100 text-lg pt-2">
-                Revisa nuestros beneficios.
-              </p>
             </div>
           </div>
         </div>
@@ -89,33 +63,14 @@ const DashboardPage = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <Card key={index} className="bg-gray-800 border-gray-700 hover:shadow-lg hover:shadow-red-900/20 transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`${stat.color} p-3 rounded-lg`}>
-                    {stat.icon}
-                  </div>
-                  <div className="text-right">
-                    
-                  </div>
-                </div>
-                <h3 className="font-semibold text-white mb-1">{stat.title}</h3>
-                
-              </CardContent>
-            </Card>
-          ))}
-        </div>
 
         {/* Quick Actions */}
-        <div className="mb-8">
+        <div className="mb-8 pt-3">
           <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
             <Activity className="w-6 h-6 text-red-600" />
             Acciones Rápidas
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-3">
             {quickActions.map((action, index) => (
               <Card
                 key={index}

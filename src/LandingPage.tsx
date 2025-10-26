@@ -194,50 +194,10 @@ export default function LandingPage() {
                             </div>
                             <CardTitle className="text-xl text-white">3. Gana Recompensas</CardTitle>
                             <CardDescription className="text-base mt-3 text-gray-300">
-                                Acumula SafeCoins por kilómetro recorrido de forma segura. Canjéalos por dinero real,
+                                Acumula SafeCoins por kilómetro recorrido de forma segura. Canjéalos por
                                 cupones de gasolina, descuentos en seguros o beneficios exclusivos de Banorte.
                             </CardDescription>
                         </CardHeader>
-                    </Card>
-                </div>
-            </section>
-
-            {/* Visualización en Tiempo Real */}
-            <section className="bg-linear-to-b from-gray-800 to-gray-700 py-20">
-                <div className="container mx-auto px-4">
-                    <h2 className="text-4xl font-bold text-center text-white mb-4">
-                        Tu Seguridad Visualizada
-                    </h2>
-                    <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
-                    <p className="text-center text-lg text-gray-300 mb-12 max-w-2xl mx-auto">
-                        Observa en tiempo real cada evento detectado en un mapa interactivo.
-                        Identifica zonas de riesgo y mejora tu comportamiento al volante.
-                    </p>
-
-                    <Card className="max-w-5xl mx-auto shadow-2xl">
-                        <CardContent className="p-0">
-                            <div className="h-96 bg-linear-to-br from-gray-800 to-gray-900 flex items-center justify-center relative overflow-hidden">
-                                <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-                                <div className="text-center z-10">
-                                    <MapPin className="w-20 h-20 text-red-500/70 mx-auto mb-6 animate-pulse" />
-                                    <p className="text-xl font-semibold text-white mb-2">Mapa Interactivo en Tiempo Real</p>
-                                    <p className="text-gray-300 max-w-md mx-auto">
-                                        Visualiza tus rutas, eventos de frenado, aceleración y ubicaciones donde ganaste más SafeCoins
-                                    </p>
-                                    <div className="mt-6 flex gap-4 justify-center flex-wrap">
-                                        <div className="bg-red-600 px-4 py-2 rounded-full border-2 border-red-500">
-                                            <span className="text-white font-medium">● Frenadas bruscas</span>
-                                        </div>
-                                        <div className="bg-gray-700 px-4 py-2 rounded-full border-2 border-gray-600">
-                                            <span className="text-white font-medium">● Aceleraciones</span>
-                                        </div>
-                                        <div className="bg-white px-4 py-2 rounded-full border-2 border-gray-300">
-                                            <span className="text-gray-900 font-medium">● Conducción segura</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardContent>
                     </Card>
                 </div>
             </section>
@@ -360,9 +320,11 @@ export default function LandingPage() {
                                 <ChevronRight className="ml-2 w-5 h-5" />
                             </Button>
                         </Link>
-                        <Button size="lg" className="text-lg px-10 py-6 bg-gray-800 text-white hover:bg-gray-700 border-2 border-white font-semibold">
-                            Comprar Dispositivo
-                        </Button>
+                        <a href="https://www.banorte.com/" target="_blank" rel="noopener noreferrer">
+                            <Button size="lg" className="text-lg px-10 py-6 bg-gray-800 text-white hover:bg-gray-700 border-2 border-white font-semibold">
+                                Comprar Dispositivo
+                            </Button>
+                        </a>
                     </div>
 
                     <div className="mt-12 flex justify-center gap-12 text-sm opacity-75">
