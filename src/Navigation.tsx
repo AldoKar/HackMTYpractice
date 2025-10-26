@@ -67,7 +67,7 @@ const components: { title: string; href: string; description: string }[] = [
     },
 ]
 
-export function NavigationMenuDemo({ isAdmin = false }: { isAdmin?: boolean }) {
+export function NavigationMenuDemo() {
     const safeCoins = 34 // temporal, reemplazar por contexto/backend si hace falta
     const navigate = useNavigate()
     const { user, logout } = useAuth()
