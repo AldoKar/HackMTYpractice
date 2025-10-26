@@ -1,5 +1,6 @@
 import express from "express"
 import cors from "cors"
+<<<<<<< HEAD
 import { createClient } from "@supabase/supabase-js"
 import dotenv from "dotenv"
 import fs from "fs"
@@ -12,6 +13,8 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL
 const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
+=======
+>>>>>>> a82e80bacd2317ab08dfa5a0b23f619f018bd242
 
 const app = express()
 app.use(express.json())
@@ -202,6 +205,7 @@ app.post("/datos", async (req, res) => {
         });
         console.log("=======================\n");
 
+<<<<<<< HEAD
         // Guardar datos (Caché o Supabase según configuración)
         if (user_id) {
             const dataToSave = {
@@ -237,6 +241,9 @@ app.post("/datos", async (req, res) => {
         } else {
             console.warn("⚠️ No se recibió user_id, no se guardó");
         }
+=======
+        // emitir a clientes SSE y responder
+>>>>>>> a82e80bacd2317ab08dfa5a0b23f619f018bd242
 
         // emitir a clientes SSE y responder
         broadcastUpdate(ultimoDato)
