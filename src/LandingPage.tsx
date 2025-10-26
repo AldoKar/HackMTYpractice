@@ -66,13 +66,13 @@ export default function LandingPage() {
                     </h1>
 
                     <p className="text-2xl text-gray-300 mb-4 leading-relaxed">
-                        El primer dispositivo inteligente que <span className="text-red-500 font-semibold">te paga por manejar bien</span>
+                        El primer dispositivo inteligente que <span className="text-red-500 font-semibold">te recompensa por manejar bien</span>
                     </p>
 
                     <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
-                        Transforma tu forma de conducir en ingresos reales. Pay$afe monitorea tu comportamiento al volante
-                        y te recompensa con <span className="font-semibold text-red-600">SafeCoins</span> que puedes canjear por dinero,
-                        descuentos en gasolina, seguros más baratos y beneficios exclusivos de Banorte.
+                        Transforma tu forma de conducir en beneficios reales. Pay$afe monitorea tu comportamiento al volante
+                        y te recompensa con <span className="font-semibold text-red-600">SafeCoins</span> que puedes canjear por premios,
+                        descuentos en gasolina, seguros más baratos y beneficios exclusivos de <span className="font-semibold text-red-600">Banorte</span>.
                     </p>
 
                     <div className="flex gap-4 justify-center items-center">
@@ -101,7 +101,7 @@ export default function LandingPage() {
                         <div className="grid grid-cols-2 gap-12 items-center">
                             <div>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                    Pay$afe es un <span className="font-semibold text-red-600">dispositivo inteligente MPU6050</span> que
+                                    Pay$afe es un <span className="font-semibold text-red-600">dispositivo inteligente</span> que
                                     se conecta fácilmente a tu vehículo y analiza tu forma de conducir en tiempo real.
                                 </p>
                                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
@@ -110,8 +110,8 @@ export default function LandingPage() {
                                     <span className="font-semibold text-red-600"> más SafeCoins ganas</span>.
                                 </p>
                                 <p className="text-lg text-gray-300 leading-relaxed">
-                                    Tus SafeCoins se pueden canjear por dinero real, descuentos en gasolina, seguros de auto más económicos,
-                                    entradas a eventos, y acceso a productos financieros exclusivos de Banorte.
+                                    Tus SafeCoins se pueden canjear por descuentos en gasolina, seguros de auto más económicos,
+                                    entradas a eventos, y acceso a productos financieros exclusivos de <span className="font-semibold text-red-600">Banorte</span>.
                                 </p>
                             </div>
 

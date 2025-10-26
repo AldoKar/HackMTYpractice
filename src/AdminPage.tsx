@@ -196,21 +196,7 @@ const AdminPage = () => {
                   </Badge>
                 </div>
                 
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300 text-sm">Batería</span>
-                  <Badge className="bg-blue-600">
-                    <Battery className="w-3 h-3 mr-1" />
-                    95%
-                  </Badge>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300 text-sm">Señal</span>
-                  <Badge className="bg-green-600">
-                    <Signal className="w-3 h-3 mr-1" />
-                    Excelente
-                  </Badge>
-                </div>
+                
 
                 <div className="flex items-center justify-between">
                   <span className="text-gray-300 text-sm">Última Sync</span>
@@ -332,57 +318,11 @@ const AdminPage = () => {
             </Card>
           </div>
 
-          {/* Quick Actions */}
-          <Card className="bg-gray-800 border-gray-700 mt-8">
-            <CardHeader>
-              <CardTitle className="text-white">Acciones Rápidas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
-                <Button 
-                  variant="outline" 
-                  className="border-gray-600 text-gray-200 hover:bg-gray-200 justify-between bg-gray-600"
-                >
-                  <span className="flex items-center gap-2">
-                    <Settings className="w-4 h-4" />
-                    Configuración Avanzada
-                  </span>
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="border-gray-600 text-gray-200 hover:bg-gray-200 justify-between bg-gray-600"
-                >
-                  <span className="flex items-center gap-2">
-                    <Smartphone className="w-4 h-4" />
-                    Ver Dashboard
-                  </span>
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="border-gray-600 text-gray-200 hover:bg-gray-200 justify-between bg-gray-600"
-                >
-                  <span className="flex items-center gap-2">
-                    <Shield className="w-4 h-4" />
-                    Historial de Eventos
-                  </span>
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 px-6 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto text-center text-gray-400 text-sm">
-          <p>Pay$afe by Banorte - Dispositivo de seguridad vehicular</p>
-        </div>
-      </footer>
+      
     </div>
   );
 };

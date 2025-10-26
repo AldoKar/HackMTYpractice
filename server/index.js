@@ -1,5 +1,40 @@
 import express from "express"
 import cors from "cors"
+import { createClient } from "@supabase/supabase-js"
+import dotenv from "dotenv"
+
+// Cargar variables de entorno
+dotenv.config()
+
+const supabaseUrl = process.env.VITE_SUPABASE_URL
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+const userEmail = body.user_email || body.email;
+
+if (!userEmail) {
+  console.warn("⚠️ No se recibió email del usuario");
+} else {
+  try {
+    const { error } = await supabase.from("device_data").insert([
+      {
+        user_email: userEmail,
+        at: ultimoDato.at,
+        T: ultimoDato.T,
+        lat: ultimoDato.lat,
+        lng: ultimoDato.lng,
+        timestamp: ultimoDato.timestamp,
+        raw: ultimoDato.raw,
+      },
+    ]);
+
+    if (error) console.error("Error insertando en Supabase:", error);
+    else console.log("✅ Datos guardados en Supabase para", userEmail);
+  } catch (e) {
+    console.error("Excepción al insertar en Supabase:", e);
+  }
+}
 
 const app = express()
 app.use(express.json())

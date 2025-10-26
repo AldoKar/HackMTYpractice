@@ -170,7 +170,7 @@ export default function PaySafeDashboard() {
                     </h1>
 
                     <p className="text-2xl text-gray-300 mb-4 leading-relaxed">
-                        Monitorea tu <span className="text-red-500 font-semibold">conducción en tiempo real</span>
+                        Haz pruebas con tu <span className="text-red-500 font-semibold">Pay$afe en tiempo real</span>
                     </p>
 
                     <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
@@ -241,20 +241,20 @@ export default function PaySafeDashboard() {
                                 value={dato.lat ? dato.lat.toFixed(6) : "N/A"} 
                                 unit="°"
                                 icon={MapPin}
-                                iconBg="bg-blue-600"
+                                iconBg="bg-gray-700"
                             />
                             <MetricCard 
                                 title="Longitud" 
                                 value={dato.lng ? dato.lng.toFixed(6) : "N/A"} 
                                 unit="°"
                                 icon={MapPin}
-                                iconBg="bg-green-600"
+                                iconBg="bg-gray-700"
                             />
                             <MetricCard 
                                 title="Movimientos Bruscos" 
                                 value={suddenMovements}
                                 icon={AlertTriangle}
-                                iconBg="bg-red-600"
+                                iconBg="bg-gray-700"
                             />
                         </div>
                     </div>
