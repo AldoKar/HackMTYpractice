@@ -71,6 +71,9 @@ export function NavigationMenuDemo() {
     const safeCoins = 34 // temporal, reemplazar por contexto/backend si hace falta
     const navigate = useNavigate()
     const { user, logout } = useAuth()
+    
+    // Verificar si el usuario es de Banorte
+    const isBanorteUser = user?.email?.endsWith('@banorte.com.mx') ?? false
 
     const handleEstadisticasClick = (e: React.MouseEvent) => {
         e.preventDefault()
@@ -260,54 +263,57 @@ export function NavigationMenuDemo() {
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
 
-                                <NavigationMenuItem>
-                                    <NavigationMenuTrigger className="text-red-600">Mapa Banorte</NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <ul className="grid w-[400px] gap-3 p-4">
-                                            <li>
-                                                <NavigationMenuLink asChild>
-                                                    <Link
-                                                        href="/mapabanorte"
-                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
-                                                    >
-                                                        <div className="text-sm font-medium leading-none text-red-600">Panel Administrativo Banorte</div>
-                                                        <p className="text-sm leading-snug text-muted-foreground">
-                                                            Visualiza las rutas y eventos de todos los usuarios de Pay$afe.
-                                                        </p>
-                                                    </Link>
-                                                </NavigationMenuLink>
-                                            </li>
-                                            <li>
-                                                <NavigationMenuLink asChild>
-                                                    <Link
-                                                        href="/mapabanorte"
-                                                        onClick={handleEstadisticasClick}
-                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
-                                                    >
-                                                        <div className="text-sm font-medium leading-none text-red-600">Estadísticas Banorte</div>
-                                                        <p className="text-sm leading-snug text-muted-foreground">
-                                                            Consulta gráficas, estadisticas y reportes de todos los usuarios de Pay$afe.
-                                                        </p>
-                                                    </Link>
-                                                </NavigationMenuLink>
-                                            </li>
-                                            <li>
-                                                <NavigationMenuLink asChild>
-                                                    <Link
-                                                        href="/mapabanorte"
-                                                        onClick={handleEstadisticasClick}
-                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
-                                                    >
-                                                        <div className="text-sm font-medium leading-none text-red-600">Pay$afe assistant Banorte</div>
-                                                        <p className="text-sm leading-snug text-muted-foreground">
-                                                            Consulta gráficas, estadisticas y reportes de todos los usuarios de Pay$afe.
-                                                        </p>
-                                                    </Link>
-                                                </NavigationMenuLink>
-                                            </li>
-                                        </ul>
-                                    </NavigationMenuContent>
-                                </NavigationMenuItem>
+                                {/* Menú Mapa Banorte - solo visible para usuarios @banorte.com.mx */}
+                                {isBanorteUser && (
+                                    <NavigationMenuItem>
+                                        <NavigationMenuTrigger className="text-red-600">Mapa Banorte</NavigationMenuTrigger>
+                                        <NavigationMenuContent>
+                                            <ul className="grid w-[400px] gap-3 p-4">
+                                                <li>
+                                                    <NavigationMenuLink asChild>
+                                                        <Link
+                                                            href="/mapabanorte"
+                                                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                        >
+                                                            <div className="text-sm font-medium leading-none text-red-600">Panel Administrativo Banorte</div>
+                                                            <p className="text-sm leading-snug text-muted-foreground">
+                                                                Visualiza las rutas y eventos de todos los usuarios de Pay$afe.
+                                                            </p>
+                                                        </Link>
+                                                    </NavigationMenuLink>
+                                                </li>
+                                                <li>
+                                                    <NavigationMenuLink asChild>
+                                                        <Link
+                                                            href="/mapabanorte"
+                                                            onClick={handleEstadisticasClick}
+                                                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                        >
+                                                            <div className="text-sm font-medium leading-none text-red-600">Estadísticas Banorte</div>
+                                                            <p className="text-sm leading-snug text-muted-foreground">
+                                                                Consulta gráficas, estadisticas y reportes de todos los usuarios de Pay$afe.
+                                                            </p>
+                                                        </Link>
+                                                    </NavigationMenuLink>
+                                                </li>
+                                                <li>
+                                                    <NavigationMenuLink asChild>
+                                                        <Link
+                                                            href="/mapabanorte"
+                                                            onClick={handleEstadisticasClick}
+                                                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors bg-muted/50 hover:bg-muted hover:text-accent-foreground focus:bg-muted focus:text-accent-foreground"
+                                                        >
+                                                            <div className="text-sm font-medium leading-none text-red-600">Pay$afe assistant Banorte</div>
+                                                            <p className="text-sm leading-snug text-muted-foreground">
+                                                                Consulta gráficas, estadisticas y reportes de todos los usuarios de Pay$afe.
+                                                            </p>
+                                                        </Link>
+                                                    </NavigationMenuLink>
+                                                </li>
+                                            </ul>
+                                        </NavigationMenuContent>
+                                    </NavigationMenuItem>
+                                )}
 
                             </NavigationMenuList>
                         </NavigationMenu>
@@ -330,14 +336,6 @@ export function NavigationMenuDemo() {
                             </Button>
                         )}
                     </div>
-
-                    <button
-                        onClick={handleLogout}
-                        className="inline-flex items-center px-3 py-1.5 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors"
-                        title="Cerrar sesión"
-                    >
-                        Logout
-                    </button>
                 </div>
             </div>
         </nav>
