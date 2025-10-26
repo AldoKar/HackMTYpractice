@@ -3,6 +3,20 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import { Button } from './ui/button'
 import { MessageCircle, X, Send, Loader2, Minus } from 'lucide-react'
 import { SYSTEM_PROMPT, WELCOME_MESSAGE } from '@/lib/chatbotConfig'
+import { 
+    loadDeviceData, 
+    analyzeAllData, 
+    analyzeByUser, 
+    analyzeByDay,
+    analyzeByTimeRange,
+    compareUsers,
+    getTopSafeDrivers,
+    getTopDangerousDrivers,
+    generateFullReport,
+    getUserEmail,
+    getUserContactInfo,
+    type DeviceData
+} from '@/lib/dataAnalyzer'
 
 interface Message {
     role: 'user' | 'assistant'
@@ -19,6 +33,7 @@ export function ChatBot() {
     const [isLoading, setIsLoading] = useState(false)
     const [size, setSize] = useState({ width: 400, height: 600 })
     const [position, setPosition] = useState(INITIAL_POSITION)
+    const [deviceData, setDeviceData] = useState<DeviceData[]>([])
     
     const chatRef = useRef<HTMLDivElement>(null)
     const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -35,6 +50,14 @@ export function ChatBot() {
     // Inicializar Gemini con el modelo 2.5 Flash (rápido y eficiente)
     const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEIMINI_API_KEY || '')
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
+    
+    // Cargar datos del CSV al montar el componente
+    useEffect(() => {
+        loadDeviceData().then(data => {
+            setDeviceData(data);
+            console.log(`✅ Datos cargados: ${data.length} registros`);
+        });
+    }, []);
 
     // Auto-scroll al final de los mensajes
     useEffect(() => {
@@ -62,14 +85,118 @@ export function ChatBot() {
         }
 
         setMessages(prev => [...prev, userMessage])
-        const currentInput = input
+        const currentInput = input.toLowerCase()
         setInput('')
         setIsLoading(true)
 
         try {
+            // Detectar si el usuario pide un reporte o análisis
+            let contextualData = '';
+            
+            // Email o información de contacto
+            if (currentInput.includes('email') || currentInput.includes('correo') || currentInput.includes('contacto')) {
+                const usuarios = [...new Set(deviceData.map(d => d.usuario))];
+                const usuarioEncontrado = usuarios.find(u => currentInput.includes(u.toLowerCase()));
+                
+                if (usuarioEncontrado) {
+                    const contactInfo = getUserContactInfo(deviceData, usuarioEncontrado);
+                    if (contactInfo) {
+                        contextualData = `\n\n[INFORMACIÓN DE CONTACTO - ${usuarioEncontrado.toUpperCase()}]\n` +
+                            `Email: ${contactInfo.email}\n` +
+                            `Total de registros: ${contactInfo.totalRegistros}\n` +
+                            `Aceleración promedio: ${contactInfo.aceleracionPromedio}g\n` +
+                            `Nivel de riesgo: ${contactInfo.nivelRiesgo}`;
+                    }
+                } else {
+                    // Si no se especifica usuario, mostrar lista de emails
+                    const emailList = usuarios.map(u => {
+                        const email = getUserEmail(deviceData, u);
+                        return `${u}: ${email}`;
+                    }).join('\n');
+                    contextualData = `\n\n[LISTA DE EMAILS DE USUARIOS]\n${emailList}`;
+                }
+            }
+            // Generar reporte completo
+            else if (currentInput.includes('reporte') || currentInput.includes('análisis general') || currentInput.includes('estadísticas generales')) {
+                const report = generateFullReport(deviceData);
+                contextualData = `\n\n[DATOS ACTUALES DEL SISTEMA]\n${report}`;
+            }
+            // Análisis de usuario específico
+            else if (currentInput.includes('usuario') || currentInput.includes('conductor')) {
+                const usuarios = [...new Set(deviceData.map(d => d.usuario))];
+                const usuarioEncontrado = usuarios.find(u => currentInput.includes(u.toLowerCase()));
+                
+                if (usuarioEncontrado) {
+                    const userAnalysis = analyzeByUser(deviceData, usuarioEncontrado);
+                    if (userAnalysis) {
+                        contextualData = `\n\n[ANÁLISIS DE ${usuarioEncontrado.toUpperCase()}]\n` +
+                            `Email: ${userAnalysis.email}\n` +
+                            `Total de registros: ${userAnalysis.totalRegistros}\n` +
+                            `Aceleración promedio: ${userAnalysis.aceleracionPromedio}g\n` +
+                            `Nivel de riesgo: ${userAnalysis.nivelRiesgo}\n` +
+                            `Distribución: ${userAnalysis.distribucionRiesgo.seguros} seguros, ${userAnalysis.distribucionRiesgo.precaucion} precaución, ${userAnalysis.distribucionRiesgo.peligrosos} peligrosos\n` +
+                            `Día más activo: ${userAnalysis.diaMasActivo}\n` +
+                            `Horario más activo: ${userAnalysis.horarioMasActivo}`;
+                    }
+                }
+            }
+            // Top conductores
+            else if (currentInput.includes('mejores') || currentInput.includes('top') || currentInput.includes('ranking')) {
+                const topSafe = getTopSafeDrivers(deviceData, 5);
+                const topDanger = getTopDangerousDrivers(deviceData, 3);
+                
+                contextualData = `\n\n[TOP CONDUCTORES]\n` +
+                    `🏆 TOP 5 MÁS SEGUROS:\n${topSafe.map((u, i) => `${i + 1}. ${u.usuario} - ${u.aceleracionPromedio}g`).join('\n')}\n\n` +
+                    `⚠️ TOP 3 MAYOR RIESGO:\n${topDanger.map((u, i) => `${i + 1}. ${u.usuario} - ${u.aceleracionPromedio}g`).join('\n')}`;
+            }
+            // Análisis por día
+            else if (currentInput.includes('lunes') || currentInput.includes('martes') || currentInput.includes('miércoles') || 
+                     currentInput.includes('jueves') || currentInput.includes('viernes') || currentInput.includes('sábado') || currentInput.includes('domingo')) {
+                const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+                const diaEncontrado = dias.find(d => currentInput.includes(d.toLowerCase()));
+                
+                if (diaEncontrado) {
+                    const dayAnalysis = analyzeByDay(deviceData, diaEncontrado);
+                    if (dayAnalysis) {
+                        contextualData = `\n\n[ANÁLISIS ${diaEncontrado.toUpperCase()}]\n` +
+                            `Total de registros: ${dayAnalysis.totalRegistros}\n` +
+                            `Usuarios activos: ${dayAnalysis.usuariosActivos}\n` +
+                            `Aceleración promedio: ${dayAnalysis.aceleracionPromedio}g\n` +
+                            `Distribución: ${dayAnalysis.distribucionRiesgo.seguros} seguros, ${dayAnalysis.distribucionRiesgo.precaucion} precaución, ${dayAnalysis.distribucionRiesgo.peligrosos} peligrosos`;
+                    }
+                }
+            }
+            // Análisis por horario
+            else if (currentInput.includes('mañana') || currentInput.includes('tarde') || currentInput.includes('noche')) {
+                let rangoHora = '';
+                if (currentInput.includes('mañana')) rangoHora = 'Mañana';
+                else if (currentInput.includes('tarde')) rangoHora = 'Tarde';
+                else if (currentInput.includes('noche')) rangoHora = 'Noche';
+                
+                if (rangoHora) {
+                    const timeAnalysis = analyzeByTimeRange(deviceData, rangoHora);
+                    if (timeAnalysis) {
+                        contextualData = `\n\n[ANÁLISIS ${rangoHora.toUpperCase()}]\n` +
+                            `Total de registros: ${timeAnalysis.totalRegistros}\n` +
+                            `Aceleración promedio: ${timeAnalysis.aceleracionPromedio}g\n` +
+                            `Registros peligrosos: ${timeAnalysis.registrosPeligrosos}\n` +
+                            `Nivel de riesgo: ${timeAnalysis.nivelRiesgo}`;
+                    }
+                }
+            }
+            // Comparar conductores
+            else if (currentInput.includes('comparar') || currentInput.includes('vs')) {
+                const general = analyzeAllData(deviceData);
+                contextualData = `\n\n[ESTADÍSTICAS GENERALES]\n` +
+                    `Total de usuarios: ${general.totalUsuarios}\n` +
+                    `Total de registros: ${general.totalRegistros}\n` +
+                    `Usuarios: ${general.usuarios.join(', ')}\n` +
+                    `Aceleración promedio global: ${general.aceleracion.promedio}g`;
+            }
+
             // Construir el historial de conversación
             const conversationHistory = messages
-                .filter(msg => msg.content !== WELCOME_MESSAGE) // Excluir mensaje de bienvenida
+                .filter(msg => msg.content !== WELCOME_MESSAGE)
                 .map(msg => ({
                     role: msg.role === 'user' ? 'user' : 'model',
                     parts: [{ text: msg.content }]
@@ -78,20 +205,19 @@ export function ChatBot() {
             const chat = model.startChat({
                 history: conversationHistory,
                 generationConfig: {
-                    maxOutputTokens: 300, // Respuestas más cortas (antes era 1000)
+                    maxOutputTokens: 400,
                     temperature: 0.7,
                 },
                 systemInstruction: {
                     role: 'system',
-                    parts: [{ text: SYSTEM_PROMPT + '\n\nIMPORTANTE: Mantén tus respuestas breves y concisas (máximo 2-3 párrafos cortos). Ve directo al punto.' }]
+                    parts: [{ text: SYSTEM_PROMPT + contextualData + '\n\nIMPORTANTE: Usa los datos proporcionados arriba para responder de forma precisa. Mantén tus respuestas breves y concisas (máximo 2-3 párrafos cortos). Ve directo al punto.' }]
                 }
             })
 
-            const result = await chat.sendMessage(currentInput)
+            const result = await chat.sendMessage(input)
             const response = await result.response
             const text = response.text()
 
-            // Verificar que la respuesta no esté vacía
             if (!text || text.trim() === '') {
                 throw new Error('La respuesta del modelo está vacía')
             }
@@ -105,8 +231,6 @@ export function ChatBot() {
             setMessages(prev => [...prev, assistantMessage])
         } catch (error: any) {
             console.error('Error completo:', error)
-            console.error('Mensaje de error:', error?.message)
-            console.error('Stack:', error?.stack)
             
             const errorMessage: Message = {
                 role: 'assistant',

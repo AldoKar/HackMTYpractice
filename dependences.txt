@@ -25,3 +25,5 @@ npm install react@rc react-dom@rc leaflet
 npm install -D @types/leaflet
 npm install @google/generative-ai@latest
 npm install @google/generative-ai
+
+npx shadcn@latest add select

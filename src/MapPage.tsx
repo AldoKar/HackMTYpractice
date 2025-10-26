@@ -1,8 +1,15 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import { MapPin, TrendingUp, AlertCircle, BarChart3, Brain, Route, Map as MapIcon, Building2, Loader2, ChevronRight } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -37,6 +44,79 @@ function MapPage() {
     const [openDetails, setOpenDetails] = useState(false)
     const detailsRef = useRef<HTMLDivElement | null>(null)
     const [gpsLogs, setGpsLogs] = useState<Array<{latitude: number, longitude: number, user_id: string}>>([]);
+    const [selectedDay, setSelectedDay] = useState<string>("todos");
+
+    // Datos de dispositivos en Monterrey con aceleración, temperatura, día y hora
+    const allDevices = [
+        // Lunes
+        { lat: 25.6866, lng: -100.3161, aceleracion: 0.8, temperatura: 28.5, dia: 'Lunes', hora: '08:15' },
+        { lat: 25.6712, lng: -100.3089, aceleracion: 1.3, temperatura: 30.2, dia: 'Lunes', hora: '09:45' },
+        { lat: 25.6950, lng: -100.3350, aceleracion: 1.7, temperatura: 27.1, dia: 'Lunes', hora: '12:30' },
+        { lat: 25.6800, lng: -100.3100, aceleracion: 2.5, temperatura: 32.8, dia: 'Lunes', hora: '14:20' },
+        { lat: 25.6600, lng: -100.2950, aceleracion: 1.1, temperatura: 29.0, dia: 'Lunes', hora: '16:05' },
+        
+        // Martes
+        { lat: 25.7000, lng: -100.3200, aceleracion: 1.4, temperatura: 28.8, dia: 'Martes', hora: '07:50' },
+        { lat: 25.6750, lng: -100.3400, aceleracion: 2.8, temperatura: 26.5, dia: 'Martes', hora: '10:15' },
+        { lat: 25.6900, lng: -100.3000, aceleracion: 0.9, temperatura: 27.8, dia: 'Martes', hora: '11:40' },
+        { lat: 25.6650, lng: -100.3250, aceleracion: 1.6, temperatura: 31.2, dia: 'Martes', hora: '13:25' },
+        { lat: 25.6920, lng: -100.3120, aceleracion: 2.2, temperatura: 29.5, dia: 'Martes', hora: '15:50' },
+        
+        // Miércoles
+        { lat: 25.6780, lng: -100.3180, aceleracion: 1.2, temperatura: 30.1, dia: 'Miércoles', hora: '08:30' },
+        { lat: 25.6850, lng: -100.3050, aceleracion: 1.8, temperatura: 28.3, dia: 'Miércoles', hora: '09:20' },
+        { lat: 25.6700, lng: -100.3300, aceleracion: 0.7, temperatura: 26.9, dia: 'Miércoles', hora: '11:00' },
+        { lat: 25.6950, lng: -100.3150, aceleracion: 2.1, temperatura: 31.5, dia: 'Miércoles', hora: '13:45' },
+        { lat: 25.6620, lng: -100.3080, aceleracion: 1.5, temperatura: 29.7, dia: 'Miércoles', hora: '16:30' },
+        
+        // Jueves
+        { lat: 25.6880, lng: -100.3220, aceleracion: 1.0, temperatura: 27.5, dia: 'Jueves', hora: '07:45' },
+        { lat: 25.6730, lng: -100.3110, aceleracion: 2.4, temperatura: 32.1, dia: 'Jueves', hora: '10:05' },
+        { lat: 25.6990, lng: -100.3280, aceleracion: 1.3, temperatura: 28.6, dia: 'Jueves', hora: '12:15' },
+        { lat: 25.6580, lng: -100.2980, aceleracion: 0.8, temperatura: 27.2, dia: 'Jueves', hora: '14:40' },
+        { lat: 25.6940, lng: -100.3090, aceleracion: 1.9, temperatura: 30.8, dia: 'Jueves', hora: '17:10' },
+        
+        // Viernes
+        { lat: 25.6820, lng: -100.3170, aceleracion: 1.6, temperatura: 29.4, dia: 'Viernes', hora: '08:00' },
+        { lat: 25.6680, lng: -100.3240, aceleracion: 2.7, temperatura: 31.9, dia: 'Viernes', hora: '09:30' },
+        { lat: 25.6970, lng: -100.3320, aceleracion: 1.1, temperatura: 26.8, dia: 'Viernes', hora: '11:50' },
+        { lat: 25.6640, lng: -100.3060, aceleracion: 1.4, temperatura: 28.1, dia: 'Viernes', hora: '13:20' },
+        { lat: 25.6910, lng: -100.3140, aceleracion: 2.0, temperatura: 30.3, dia: 'Viernes', hora: '16:45' },
+        
+        // Sábado
+        { lat: 25.6760, lng: -100.3200, aceleracion: 0.9, temperatura: 27.9, dia: 'Sábado', hora: '10:20' },
+        { lat: 25.6890, lng: -100.3070, aceleracion: 1.5, temperatura: 29.2, dia: 'Sábado', hora: '12:00' },
+        { lat: 25.6610, lng: -100.3150, aceleracion: 2.3, temperatura: 31.6, dia: 'Sábado', hora: '14:30' },
+        { lat: 25.6980, lng: -100.3260, aceleracion: 1.2, temperatura: 28.4, dia: 'Sábado', hora: '16:15' },
+        { lat: 25.6720, lng: -100.3190, aceleracion: 1.7, temperatura: 30.0, dia: 'Sábado', hora: '18:00' },
+        
+        // Domingo
+        { lat: 25.6840, lng: -100.3130, aceleracion: 0.6, temperatura: 26.5, dia: 'Domingo', hora: '11:10' },
+        { lat: 25.6670, lng: -100.3270, aceleracion: 1.4, temperatura: 28.7, dia: 'Domingo', hora: '13:00' },
+        { lat: 25.6930, lng: -100.3040, aceleracion: 2.6, temperatura: 32.4, dia: 'Domingo', hora: '15:20' },
+        { lat: 25.6790, lng: -100.3210, aceleracion: 1.0, temperatura: 27.6, dia: 'Domingo', hora: '17:45' },
+        { lat: 25.6960, lng: -100.3160, aceleracion: 1.8, temperatura: 29.9, dia: 'Domingo', hora: '19:30' },
+    ];
+
+    // Filtrar dispositivos por día seleccionado
+    const devices = selectedDay === "todos" 
+        ? allDevices 
+        : allDevices.filter(device => device.dia === selectedDay);
+
+    // Función para determinar el color según la aceleración
+    const getColorByAcceleration = (aceleracion: number) => {
+        if (aceleracion >= 2) return '#DC2626'; // Rojo - Peligroso
+        if (aceleracion >= 1.5 && aceleracion < 2) return '#F59E0B'; // Amarillo - Precaución
+        if (aceleracion >= 1 && aceleracion < 1.5) return '#10B981'; // Verde - Seguro
+        return '#10B981'; // Verde por defecto para valores < 1
+    };
+
+    // Función para obtener el estado según la aceleración
+    const getStatusByAcceleration = (aceleracion: number) => {
+        if (aceleracion >= 2) return 'Peligroso';
+        if (aceleracion >= 1.5 && aceleracion < 2) return 'Precaución';
+        return 'Seguro';
+    };
 
 useEffect(() => {
   async function fetchLogs() {
@@ -74,16 +154,35 @@ useEffect(() => {
         currentStreak: 7
     };
 
-    // Datos para la gráfica
-    const chartData = [
-        { name: 'Lunes', score: 85, coins: 45 },
-        { name: 'Martes', score: 88, coins: 52 },
-        { name: 'Miércoles', score: 92, coins: 60 },
-        { name: 'Jueves', score: 87, coins: 48 },
-        { name: 'Viernes', score: 95, coins: 68 },
-        { name: 'Sábado', score: 90, coins: 55 },
-        { name: 'Domingo', score: 93, coins: 62 },
-    ];
+    // Calcular datos de la gráfica basados en los dispositivos reales
+    const calculateChartData = () => {
+        const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        
+        return dias.map(dia => {
+            const devicesDia = allDevices.filter(d => d.dia === dia);
+            
+            if (devicesDia.length === 0) {
+                return { name: dia, aceleracionPromedio: 0, temperatura: 0, registros: 0 };
+            }
+            
+            const aceleracionPromedio = devicesDia.reduce((sum, d) => sum + d.aceleracion, 0) / devicesDia.length;
+            const temperaturaPromedio = devicesDia.reduce((sum, d) => sum + d.temperatura, 0) / devicesDia.length;
+            
+            return {
+                name: dia,
+                aceleracionPromedio: Number(aceleracionPromedio.toFixed(2)),
+                temperatura: Number(temperaturaPromedio.toFixed(1)),
+                registros: devicesDia.length
+            };
+        });
+    };
+
+    const chartData = calculateChartData();
+    
+    // Filtrar datos de la gráfica si hay un día seleccionado
+    const filteredChartData = selectedDay === "todos" 
+        ? chartData 
+        : chartData.filter(data => data.name === selectedDay);
 
     // Funciones para análisis con Gemini
     const handleAnalyzeRoute = async () => {
@@ -151,10 +250,33 @@ useEffect(() => {
                                 Tu Ruta en Tiempo Real
                             </h2>
                             <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
-                            <p className="text-gray-300 max-w-2xl mx-auto">
+                            <p className="text-gray-300 max-w-2xl mx-auto mb-8">
                                 Cada punto en el mapa representa un evento detectado por PaySafe.
                                 Identifica patrones y mejora tu conducción.
                             </p>
+                            
+                            {/* Filtro de Día */}
+                            <div className="flex items-center justify-center gap-3 mb-8">
+                                <span className="text-gray-300 font-semibold">Filtrar por día:</span>
+                                <Select value={selectedDay} onValueChange={setSelectedDay}>
+                                    <SelectTrigger className="w-[200px] bg-gray-700 border-gray-600 text-white">
+                                        <SelectValue placeholder="Selecciona un día" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-gray-700 border-gray-600">
+                                        <SelectItem value="todos" className="text-white hover:bg-gray-600">Todos los días</SelectItem>
+                                        <SelectItem value="Lunes" className="text-white hover:bg-gray-600">Lunes</SelectItem>
+                                        <SelectItem value="Martes" className="text-white hover:bg-gray-600">Martes</SelectItem>
+                                        <SelectItem value="Miércoles" className="text-white hover:bg-gray-600">Miércoles</SelectItem>
+                                        <SelectItem value="Jueves" className="text-white hover:bg-gray-600">Jueves</SelectItem>
+                                        <SelectItem value="Viernes" className="text-white hover:bg-gray-600">Viernes</SelectItem>
+                                        <SelectItem value="Sábado" className="text-white hover:bg-gray-600">Sábado</SelectItem>
+                                        <SelectItem value="Domingo" className="text-white hover:bg-gray-600">Domingo</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <Badge variant="outline" className="text-white border-gray-600">
+                                    {devices.length} {devices.length === 1 ? 'registro' : 'registros'}
+                                </Badge>
+                            </div>
                         </div>
 
                         {/* Mapa */}
@@ -170,15 +292,94 @@ useEffect(() => {
                                     url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                                 />
 
+                                {/* Círculos de dispositivos con código de colores */}
+                                {devices.map((device, index) => (
+                                    <Circle
+                                        key={`${device.lat}-${device.lng}-${index}`}
+                                        center={[device.lat, device.lng]}
+                                        radius={200}
+                                        pathOptions={{
+                                            fillColor: getColorByAcceleration(device.aceleracion),
+                                            color: '#fff',
+                                            weight: 2,
+                                            opacity: 1,
+                                            fillOpacity: 0.7
+                                        }}
+                                    >
+                                        <Popup>
+                                            <div className="text-sm min-w-[220px]">
+                                                <h3 className="font-bold text-gray-900 mb-3 text-base">
+                                                    Registro de Dispositivo
+                                                </h3>
+                                                <div className="space-y-2">
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        <span className="text-gray-700 font-semibold">Día:</span>
+                                                        <span className="font-mono text-gray-900">
+                                                            {device.dia}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        <span className="text-gray-700 font-semibold">Hora:</span>
+                                                        <span className="font-mono text-gray-900">
+                                                            {device.hora}
+                                                        </span>
+                                                    </div>
+                                                    <div className="border-t border-gray-200 pt-2 mt-2"></div>
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        <span className="text-gray-700 font-semibold">Aceleración:</span>
+                                                        <span className="font-mono font-bold" style={{ color: getColorByAcceleration(device.aceleracion) }}>
+                                                            {device.aceleracion.toFixed(2)} g
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        <span className="text-gray-700 font-semibold">Temperatura:</span>
+                                                        <span className="font-mono text-gray-900">
+                                                            {device.temperatura.toFixed(1)} °C
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        <span className="text-gray-700 font-semibold text-xs">Ubicación:</span>
+                                                        <span className="text-gray-600 text-xs">
+                                                            {device.lat.toFixed(4)}, {device.lng.toFixed(4)}
+                                                        </span>
+                                                    </div>
+                                                    <div className="mt-3 pt-2 border-t border-gray-200">
+                                                        <Badge 
+                                                            className={
+                                                                device.aceleracion >= 2 
+                                                                    ? 'bg-red-100 text-red-800 border border-red-300' 
+                                                                    : device.aceleracion >= 1.5
+                                                                    ? 'bg-yellow-100 text-yellow-800 border border-yellow-300'
+                                                                    : 'bg-green-100 text-green-800 border border-green-300'
+                                                            }
+                                                        >
+                                                            {device.aceleracion >= 2 ? '🚨 ' : device.aceleracion >= 1.5 ? '⚠️ ' : '✓ '}
+                                                            {getStatusByAcceleration(device.aceleracion)}
+                                                        </Badge>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Popup>
+                                    </Circle>
+                                ))}
+
                             </MapContainer>
 
                             {/* Leyenda sobre el mapa */}
                             <div className="absolute top-4 right-4 z-10 bg-gray-800/95 backdrop-blur p-4 rounded-lg border border-gray-700">
-                                <h3 className="text-white font-semibold mb-3 text-sm">Eventos</h3>
+                                <h3 className="text-white font-semibold mb-3 text-sm">Niveles de Aceleración</h3>
                                 <div className="space-y-2 text-xs">
                                     <div className="flex items-center gap-2">
                                         <div className="w-3 h-3 bg-red-600 rounded-full"></div>
-                                        <span className="text-white">Frenadas bruscas</span>
+                                        <span className="text-white">Peligroso (≥2.0 g)</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                        <span className="text-white">Precaución (1.5-2.0 g)</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                        <span className="text-white">Seguro (&lt;1.5 g)</span>
                                     </div>
                                 </div>
                             </div>
@@ -261,22 +462,24 @@ useEffect(() => {
                     <div className="max-w-6xl mx-auto">
                         <div className="text-center mb-12">
                             <h2 className="text-4xl font-bold text-white mb-4">
-                                Rendimiento Semanal
+                                Análisis por Día
                             </h2>
                             <div className="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
                             <p className="text-gray-300 max-w-2xl mx-auto">
-                                Observa la evolución de tu score de conducción y SafeCoins ganados durante la última semana.
+                                Visualiza los promedios de aceleración y temperatura por día de la semana.
                             </p>
                         </div>
 
                         <Card className="bg-gray-800 border-gray-700">
                             <CardHeader>
-                                <CardTitle className="text-white text-2xl">Últimos 7 días</CardTitle>
+                                <CardTitle className="text-white text-2xl">
+                                    {selectedDay === "todos" ? "Todos los días" : selectedDay}
+                                </CardTitle>
                             </CardHeader>
                             <CardContent className="pt-6">
                                 <div className="h-[400px]">
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <LineChart data={chartData}>
+                                        <LineChart data={filteredChartData}>
                                             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                                             <XAxis
                                                 dataKey="name"
@@ -294,26 +497,41 @@ useEffect(() => {
                                                     borderRadius: '8px',
                                                     color: '#fff'
                                                 }}
+                                                formatter={(value: any, name: string) => {
+                                                    if (name === 'aceleracionPromedio') return [value + ' g', 'Aceleración Promedio'];
+                                                    if (name === 'temperatura') return [value + ' °C', 'Temperatura Promedio'];
+                                                    if (name === 'registros') return [value, 'Número de Registros'];
+                                                    return [value, name];
+                                                }}
                                             />
                                             <Legend
                                                 wrapperStyle={{ color: '#fff' }}
                                             />
                                             <Line
                                                 type="monotone"
-                                                dataKey="score"
+                                                dataKey="aceleracionPromedio"
                                                 stroke="#DC2626"
                                                 strokeWidth={3}
-                                                name="Score de Conducción (%)"
+                                                name="Aceleración Promedio (g)"
                                                 dot={{ fill: '#DC2626', r: 5 }}
                                                 activeDot={{ r: 7 }}
                                             />
                                             <Line
                                                 type="monotone"
-                                                dataKey="coins"
-                                                stroke="#FFFFFF"
+                                                dataKey="temperatura"
+                                                stroke="#F59E0B"
                                                 strokeWidth={3}
-                                                name="SafeCoins Ganados"
-                                                dot={{ fill: '#FFFFFF', r: 5 }}
+                                                name="Temperatura Promedio (°C)"
+                                                dot={{ fill: '#F59E0B', r: 5 }}
+                                                activeDot={{ r: 7 }}
+                                            />
+                                            <Line
+                                                type="monotone"
+                                                dataKey="registros"
+                                                stroke="#10B981"
+                                                strokeWidth={3}
+                                                name="Número de Registros"
+                                                dot={{ fill: '#10B981', r: 5 }}
                                                 activeDot={{ r: 7 }}
                                             />
                                         </LineChart>

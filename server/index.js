@@ -2,6 +2,8 @@ import express from "express"
 import cors from "cors"
 import { createClient } from "@supabase/supabase-js"
 import dotenv from "dotenv"
+import fs from "fs"
+import path from "path"
 
 // Cargar variables de entorno
 dotenv.config()
@@ -21,6 +23,47 @@ app.use(
         allowedHeaders: ["Content-Type"],
     })
 )
+
+// Configuración de caché
+const CACHE_DIR = path.join(process.cwd(), 'cache')
+const CACHE_FILE = path.join(CACHE_DIR, 'sensor_data.json')
+const USE_CACHE = process.env.USE_CACHE === 'true' // Controlar por variable de entorno
+
+// Crear directorio de caché si no existe
+if (!fs.existsSync(CACHE_DIR)) {
+    fs.mkdirSync(CACHE_DIR, { recursive: true })
+}
+
+// Cargar caché al iniciar
+let dataCache = []
+if (fs.existsSync(CACHE_FILE)) {
+    try {
+        const cacheContent = fs.readFileSync(CACHE_FILE, 'utf-8')
+        dataCache = JSON.parse(cacheContent)
+        console.log(`✅ Caché cargado: ${dataCache.length} registros`)
+    } catch (e) {
+        console.error('❌ Error al cargar caché:', e)
+        dataCache = []
+    }
+}
+
+// Función para guardar en caché
+function saveToCache(data) {
+    dataCache.push(data)
+    
+    // Limitar tamaño del caché (últimos 1000 registros)
+    if (dataCache.length > 1000) {
+        dataCache = dataCache.slice(-1000)
+    }
+    
+    // Guardar en archivo
+    try {
+        fs.writeFileSync(CACHE_FILE, JSON.stringify(dataCache, null, 2))
+        console.log(`💾 Guardado en caché: ${dataCache.length} registros totales`)
+    } catch (e) {
+        console.error('❌ Error al guardar caché:', e)
+    }
+}
 
 // estado y historial
 let ultimoDato = {
@@ -159,30 +202,40 @@ app.post("/datos", async (req, res) => {
         });
         console.log("=======================\n");
 
-        // Guardar en Supabase
+        // Guardar datos (Caché o Supabase según configuración)
         if (user_id) {
-            try {
-                const { data, error } = await supabase.from("device_data").insert([
-                    {
-                        user_id: user_id,
-                        aceleracion: ultimoDato.at,
-                        temperatura: ultimoDato.T,
-                        latitud: ultimoDato.lat,
-                        longitud: ultimoDato.lng,
-                        timestamp: ultimoDato.timestamp,
-                    },
-                ]);
+            const dataToSave = {
+                user_id: user_id,
+                aceleracion: ultimoDato.at,
+                temperatura: ultimoDato.T,
+                latitud: ultimoDato.lat,
+                longitud: ultimoDato.lng,
+                timestamp: ultimoDato.timestamp,
+                day: ultimoDato.day,
+                weekday: ultimoDato.weekday,
+                hora: `${pad2(hour)}:${pad2(minute)}`,
+            };
 
-                if (error) {
-                    console.error("❌ Error insertando en Supabase:", error);
-                } else {
-                    console.log("✅ Datos guardados en Supabase para user_id:", user_id);
+            if (USE_CACHE) {
+                // Guardar en caché local
+                saveToCache(dataToSave);
+                console.log("💾 Datos guardados en caché para user_id:", user_id);
+            } else {
+                // Guardar en Supabase
+                try {
+                    const { data, error } = await supabase.from("device_data").insert([dataToSave]);
+
+                    if (error) {
+                        console.error("❌ Error insertando en Supabase:", error);
+                    } else {
+                        console.log("✅ Datos guardados en Supabase para user_id:", user_id);
+                    }
+                } catch (e) {
+                    console.error("❌ Excepción al insertar en Supabase:", e);
                 }
-            } catch (e) {
-                console.error("❌ Excepción al insertar en Supabase:", e);
             }
         } else {
-            console.warn("⚠️ No se recibió user_id, no se guardó en Supabase");
+            console.warn("⚠️ No se recibió user_id, no se guardó");
         }
 
         // emitir a clientes SSE y responder
@@ -217,6 +270,42 @@ app.get("/history", (req, res) => {
     res.json(history.slice(-100))
 })
 
+// Endpoint para obtener datos del caché
+app.get("/cache", (req, res) => {
+    const { user_id, limit } = req.query;
+    
+    let filteredData = dataCache;
+    
+    // Filtrar por user_id si se proporciona
+    if (user_id && user_id !== 'todos') {
+        filteredData = dataCache.filter(d => d.user_id === user_id);
+    }
+    
+    // Limitar resultados
+    const maxResults = limit ? parseInt(limit) : 100;
+    const results = filteredData.slice(-maxResults);
+    
+    res.json({
+        total: dataCache.length,
+        filtered: filteredData.length,
+        returned: results.length,
+        data: results
+    });
+})
+
+// Endpoint para limpiar el caché
+app.delete("/cache", (req, res) => {
+    dataCache = [];
+    try {
+        fs.writeFileSync(CACHE_FILE, JSON.stringify([], null, 2));
+        console.log("🗑️ Caché limpiado");
+        res.json({ success: true, message: "Caché limpiado exitosamente" });
+    } catch (e) {
+        console.error("❌ Error al limpiar caché:", e);
+        res.status(500).json({ success: false, error: e.message });
+    }
+})
+
 app.get("/", (req, res) => {
     res.send("Servidor PaySafe corriendo en puerto 3000")
 })
@@ -225,6 +314,11 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 3000
 app.listen(PORT, "0.0.0.0", () => {
     console.log("\n=== SERVIDOR PAYSAFE INICIADO ===");
     console.log(`Escuchando en puerto ${PORT}`);
+    console.log(`Modo de almacenamiento: ${USE_CACHE ? '💾 CACHÉ LOCAL' : '☁️ SUPABASE'}`);
+    if (USE_CACHE) {
+        console.log(`Archivo de caché: ${CACHE_FILE}`);
+        console.log(`Registros cargados: ${dataCache.length}`);
+    }
     console.log("Esperando datos del ESP32...");
     console.log("==============================\n");
 })

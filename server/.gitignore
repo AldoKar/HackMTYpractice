@@ -1,0 +1,9 @@
+# Archivos de caché
+cache/
+*.json
+
+# Variables de entorno
+.env
+
+# Node modules
+node_modules/
